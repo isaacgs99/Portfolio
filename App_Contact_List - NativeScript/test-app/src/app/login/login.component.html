@@ -1,0 +1,29 @@
+<ActionBar title="Login"></ActionBar>
+<GridLayout backgroundColor="#CCCCCC">
+  <ScrollView>
+    <StackLayout margin="10" verticalAlignment="center">
+      <StackLayout class="form" padding="15" backgroundColor="#FFFFFF">
+        <StackLayout class="input-field">
+          <Label text="Email" class="label font-weight-bold m-b-5"></Label>
+          <TextField class="input" [(ngModel)]="user.email" autocapitalizationType="none"></TextField>
+          <StackLayout class="hr-light"></StackLayout>
+        </StackLayout>
+        <StackLayout class="input-field">
+          <Label text="Password" class="label font-weight-bold m-b-5"></Label>
+          <TextField secure="true" class="input" [(ngModel)]="user.password" autocapitalizationType="none">
+          </TextField>
+          <StackLayout class="hr-light"></StackLayout>
+        </StackLayout>
+        <StackLayout>
+          <GridLayout>
+            <Switch (checkedChange)="onCheckedChange($event)" checked="false"></Switch>
+          </GridLayout>
+          <Label class="text-center" text="Remember me?"></Label>
+        </StackLayout>
+        <Button class="btn btn-primary w-full" text="Login" (tap)="login()"></Button>
+        <Label [nsRouterLink]="['/register']" text="Not a member? Register here." class="text-center footnote"></Label>
+        <Label [nsRouterLink]="['/api']" text="Api_Test" class="text-center footnote"></Label>
+      </StackLayout>
+    </StackLayout>
+  </ScrollView>
+</GridLayout>

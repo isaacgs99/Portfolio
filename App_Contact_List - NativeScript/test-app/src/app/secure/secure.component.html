@@ -1,0 +1,17 @@
+<ActionBar title="{N} Login Example">
+  <ActionItem text="Logout" ios.position="true" (tap)="logout()"></ActionItem>
+</ActionBar>
+<StackLayout orientation="vertical">
+  <Label text="Welcome to the secure page!" class="text-center"></Label>
+  <Label text="Logged in as: {{this.currentUser}} " class="text-center"></Label>
+  <button (tap)="AddNewContact()" text="Add"></button>
+  <ListView iosEstimatedRowHeight="0" [items]="items" class="list-group" (itemTap)="onItemTap($event)">
+    <ng-template let-item="item" let-i="index" let-odd="odd" let-even="even">
+      <!-- The item template can only have a single root view container (e.g. GridLayout, StackLayout, etc.)-->
+      <GridLayout>
+        <Label [text]="item.name" class="list-group-item" (itemTap)="onItemTap($event)"></Label>
+        <Button class="button-small" text="x" index="{{ index }}" (tap)="deleteContact(i)"> </Button>
+      </GridLayout>
+    </ng-template>
+  </ListView>
+</StackLayout>

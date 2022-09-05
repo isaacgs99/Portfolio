@@ -1,0 +1,36 @@
+<ActionBar title="{N} AddContact ">
+  <NavigationButton (tap)="goBack()" text="Back" ios.position="left"></NavigationButton>
+</ActionBar>
+<GridLayout backgroundColor="#CCCCCC">
+  <ScrollView>
+    <StackLayout margin="10" verticalAlignment="center">
+      <StackLayout class="form" padding="15" backgroundColor="#FFFFFF">
+        <StackLayout class="input-field">
+          <Label text="Name" class="label font-weight-bold m-b-5"></Label>
+          <TextField class="input" [(ngModel)]="contact.name"></TextField>
+          <StackLayout class="hr-light"></StackLayout>
+        </StackLayout>
+        <StackLayout class="input-field">
+          <Label text="Telephone number" class=" label font-weight-bold m-b-5"></Label>
+          <TextField class="input" [(ngModel)]="contact.telephone"></TextField>
+          <StackLayout class="hr-light"></StackLayout>
+        </StackLayout>
+        <StackLayout class="input-field">
+          <Label text="Email" class="label font-weight-bold m-b-5"></Label>
+          <TextField class="input" [(ngModel)]="contact.email" autocapitalizationType="none"></TextField>
+          <StackLayout class="hr-light"></StackLayout>
+        </StackLayout>
+        <Label text="Sex" class="label font-weight-bold m-b-5"></Label>
+        <ListPicker #picker [items]="genders" class="picker" [(ngModel)]="contact.sex" [selectedIndex]="selectedIndex"
+          (selectedIndexChange)="selectedIndexChanged(picker)"></ListPicker>
+        <StackLayout class="hr-light"></StackLayout>
+        <Label text="Birthdate" class="label font-weight-bold m-b-5"></Label>
+        <DatePickerField dateFormat="dd / MMMM / yyyy" hint="select date" verticalAlignment="center"
+          [(ngModel)]="contact.birthdate">
+        </DatePickerField>
+        <StackLayout class="hr-light"></StackLayout>
+      </StackLayout>
+      <Button class="btn btn-primary w-full" text="Register" (tap)="AddContact()"></Button>
+    </StackLayout>
+  </ScrollView>
+</GridLayout>
