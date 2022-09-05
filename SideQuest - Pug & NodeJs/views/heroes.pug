@@ -1,0 +1,367 @@
+extends layout
+include mixins/_spell_row
+
+//- TODO:
+    * Do through AJAX: input#js-racejson(type='hidden' value=`${JSON.stringify(hero.race)}`)
+    * Imrove hero max hp and starting hp calculation and display code: const startHPNum = parseInt(hero.class.hitpoints_start.split(' ')[0]);
+        - If improved, mixins/_hero_dropdown must also be changed
+
+block content
+    
+    //- Heroes main page
+    if url.endsWith('/heroes')
+        //- Header
+        .l-margin-start
+        .l-divider
+            .c-divider__left
+                h1 Héroes
+            .c-divider__right
+
+        //- Hero cards
+        .l-main-content
+            .l-cards
+                each hero in heroes
+                    a.c-card(href=`/heroes/${hero.name}`)
+                        .c-card__header
+                            .c-card__header-left
+                                h2 #{hero.name}
+                            .c-card__header-right
+                        if hero.image != '' && hero.image != undefined
+                            img.c-card__image(src=`http://res.cloudinary.com/duezou4td/image/upload/${hero.image}.png` alt=`${hero.name}'s Image`)
+                        else
+                            img.c-card__image(src=tmpImg)
+    
+    //- Viewing a hero
+    else
+        //- Header
+        .l-margin-start
+        a.l-divider(href='/heroes')
+            .c-divider__left
+                h1 &#10525; Héroes
+            .c-divider__right
+
+        .l-main-content
+            //- Hero image, summary, and physical characteristics sidebar
+            .l-text-wrap
+                //- Hero image
+                if hero.image != '' && hero.image != undefined
+                    img.l-text-wrap__image(src=`http://res.cloudinary.com/duezou4td/image/upload/${hero.image}.png` alt=`${hero.name}'s Image`)
+                
+                //- Hero summary
+                .c-basic-info
+                    h3 Resumen
+                    p= `Lugar de Origen: ${hero.description.place_of_origin || '???'}`
+                    p= `Edad: ${hero.description.physical.age || '???'}`
+                    if hero.race
+                        p= `Raza: ${hero.race.name || '???'}`
+                    else
+                        p= `Raza: ???`
+                    if hero.class
+                        p= `Clase: ${hero.class.name || '???'}`
+                    else
+                        p= `Clase: ???`
+                    p= `Background: ${hero.description.background || '???'}`
+                    p= `Alineamiento: ${hero.description.alignment || '???'}`
+                
+                //- Hero physical characteristics
+                .c-basic-info
+                    h3 Características Físicas
+                    p= `Estatura: ${hero.description.physical.height || '???'}`
+                    p= `Peso: ${hero.description.physical.weight || '???'}`
+                    p= `Piel (Color): ${hero.description.physical.skin_color || '???'}`
+                    p= `Ojos (Color): ${hero.description.physical.eye_color || '???'}`
+                    p= `Pelo (Color): ${hero.description.physical.hair_color || '???'}`
+            
+            //- Hero main section
+            h2= `${hero.name} `
+                if hero.class
+                    span#hero__classandlevel= `(${hero.class.name} nivel ${hero.level})`
+                else
+                    span#hero__classandlevel= `(Nivel ${hero.level})`
+            
+            //- If hero has a backstory in DB, display it
+            if hero.description.notes.backstory != '' && hero.description.notes.backstory != undefined
+                p !{hero.description.notes.backstory}
+            //- Else if no hero backstory is found, tell user
+            else
+                p #{hero.name} no tiene backstory.
+            
+            //- Hero personality
+            h3 Personalidad
+            p.m-color-gray <strong>Rasgos:</strong>
+                em= ` ${hero.description.personality.traits || '???'}`
+            p.m-color-gray <strong>Ideales:</strong>
+                em= ` ${hero.description.personality.ideals || '???'}`
+            p.m-color-gray <strong>Lazos:</strong>
+                em= ` ${hero.description.personality.bonds || '???'}`
+            p.m-color-gray <strong>Fallas:</strong>
+                em= ` ${hero.description.personality.flaws || '???'}`
+            
+            //- Hero Allies and Organizations
+            h3 Aliados y Organizaciones
+            //- If there is an emblem image on DB, display it
+            - const alliesOrgs = hero.description.notes.organization;
+            if alliesOrgs.emblem != '' && alliesOrgs.emblem != undefined
+                .l-text-wrap--right
+                    img.l-text-wrap__image#hero__organization-banner(src=`http://res.cloudinary.com/duezou4td/image/upload/${alliesOrgs.emblem}.png`, alt=`${hero.name}'s organization's emblem`)
+            
+            //- If hero isn't in an organization, tell user. Else, display its name.
+            if alliesOrgs.name === '' || alliesOrgs.name === undefined
+                p #{hero.name} no forma parte de ninguna organización hasta ahora.
+            else
+                p #{hero.name} forma parte de #{alliesOrgs.name}.
+            
+            //- Display hero.allies_and_organizations text with line breaks where they're supposed to go
+            - const parts = (alliesOrgs.text != undefined) ? alliesOrgs.text.split(/(\r\n)/g) : [];
+            each part in parts
+                p= part
+            
+            //- Hero Race info
+            if hero.race
+                h2 #{hero.race.name}
+                hr
+                p.m-align-justify !{hero.race.description}
+                h3 Features
+                p <strong>Alignment:</strong> #{hero.race.alignment}
+                p <strong>Speed:</strong> #{hero.race.speed}
+                p <strong>Languages:</strong> #{hero.race.languages}
+                
+                //- Race Ability Score Improvements
+                - let raceAI = '';
+                - for(const increase of hero.race.ability_increase) {
+                -   increase.increase > 0 ? raceAI += `+${increase.increase} ` : raceAI += `${increase.increase} `;
+                -   raceAI += increase.name[0].toUpperCase() + increase.name.substring(1) + ', ';
+                - }
+                - raceAI = raceAI.substring(0,raceAI.length-2);
+                p <strong>Ability Score Improvements:</strong> #{raceAI}
+                
+                //- Race traits
+                h3 Traits
+                input#js-racejson(type='hidden' value=`${JSON.stringify(hero.race)}`)
+                p#js-racetraits Race Traits
+            else
+                h2 Raza
+                input#js-racejson(type='hidden' value='false')
+                p #{hero.name} no tiene raza.
+
+            //- Hero Class info
+            if hero.class
+                h2 #{hero.class.name}
+                hr
+                p.m-align-justify !{hero.class.description}
+                h3 Hit Points
+                p <strong>Hit Die:</strong> #{hero.class.hit_die}
+                p <strong>Hit Points at 1st Level:</strong> #{hero.class.hitpoints_start}
+                p <strong>Hit Points at Higher Levels:</strong> #{hero.class.hitpoints_higherlvls}
+                
+                //- Class Abilities
+                h3 Abilities
+                - let classPA = '';
+                - for(const ability of hero.class.abilities) { classPA += ability[0].toUpperCase() + ability.substring(1) + ', '; }
+                - classPA = classPA.substring(0, classPA.length-2);
+                p <strong>Primary Abilities:</strong> #{classPA}
+                
+                //- Class Saving Throw Proficiencies
+                - let classSP = '';
+                - for(const ability of hero.class.st_proficiencies) { classSP += ability[0].toUpperCase() + ability.substring(1) + ', '; }
+                - classSP = classSP.substring(0, classSP.length-2);
+                p <strong>Saving Throw Proficiencies:</strong> #{classSP}
+                
+                //- Class Spellcasting
+                if hero.class.spell_ability != '' && hero.class.spell_ability != undefined
+                    - const classSA = `${hero.class.spell_ability[0].toUpperCase() + hero.class.spell_ability.substring(1)}`;
+                    p <strong>Spell Save DC =</strong> 8 + your proficiency bonus + your #{classSA} modifier
+                    p <strong>Spell Attack Modifier =</strong> your proficiency bonus + your #{classSA} modifier
+                
+                //- Class Proficiencies
+                h3 Proficiencies
+                - let classSK = '';
+                - for(const skill of hero.class.skills.skills) { classSK += skill[0].toUpperCase() + skill.substring(1) + ', '; }
+                - classSK = classSK.substring(0, classSK.length-2);
+                p <strong>Skills:</strong> Choose #{hero.class.skills.choose} skills from #{classSK}
+
+                p <strong>Armor and Weapon Proficiencies:</strong> #{hero.class.armor_weapon_proficiencies}
+                p <strong>Tool Proficiencies:</strong> #{`${hero.class.tool_proficiencies || 'none'}`}
+            else
+                h2 Clase
+                p #{hero.name} no tiene clase.
+            
+        //- Main statistics section
+        .l-main-content.l-clearleft
+            h2 Statistics
+            hr
+            //- Stat cards
+            .l-stat-cards
+                - const ab = hero.abilities;
+                - const physAtt = hero.physical_attributes;
+                .c-stat-card
+                    img.c-stat-card__image(src='/images/icons/shield.png' alt='Shield icon')
+                    h3 Armor Class
+                    p #{physAtt.ac}
+                .c-stat-card
+                    img.c-stat-card__image(src='/images/icons/d20.png' alt='d20 icon')
+                    h3 Initiative
+                    p= physAtt.initiative > 0 ? `+${physAtt.initiative}` : physAtt.initiative
+                .c-stat-card
+                    img.c-stat-card__image(src='/images/icons/d20.png' alt='d20 icon')
+                    h3 Proficiency Bonus
+                    if ab.proficiency_bonus > 0
+                        p +#{ab.proficiency_bonus}
+                    else
+                        p #{ab.proficiency_bonus}
+                .c-stat-card
+                    img.c-stat-card__image(src='/images/icons/eye.png' alt='Eye icon')
+                    h3 Passive Perception
+                    p #{ab.passive_perception}
+                .c-stat-card
+                    if ab.inspiration
+                        img.c-stat-card__image(src='/images/icons/checkmark.png' alt='Checkmark icon')
+                    else
+                        img.c-stat-card__image(src='/images/icons/cross.png' alt='Cross icon')
+                    h3 Inspiration
+                    p
+                .c-stat-card
+                    img.c-stat-card__image(src='/images/icons/heart.png' alt='Heart icon')
+                    h3 Max HP
+                    if hero.class
+                        - const startHPNum = parseInt(hero.class.hitpoints_start.split(' ')[0]);
+                        - const maxHPString = hero.class.hitpoints_higherlvls.split(')')[0];
+                        - const classHPNum = parseInt(maxHPString.substring(maxHPString.length-1));
+                        if (hero.level == 1)
+                            p= startHPNum + hero.abilities.constitution.modifier
+                        else
+                            p= (hero.level-1) * (classHPNum + hero.abilities.constitution.modifier) + startHPNum + hero.abilities.constitution.modifier
+                .c-stat-card
+                    img.c-stat-card__image(src='/images/icons/d20.png' alt='d20 icon')
+                    h3 Total HitDie
+                    if hero.class
+                        p #{hero.level}#{hero.class.hit_die}
+                .c-stat-card
+                    img.c-stat-card__image(src='/images/icons/running.png' alt='Running icon')
+                    h3 Speed
+                    p #{hero.physical_attributes.speed} ft
+            
+            //- Ability Score Table
+            h3 Ability Scores
+            - const st = hero.saving_throws;
+            - const abNameArr = ['Strength', 'Dexterity', 'Constitution', 'Intelligence', 'Wisdom', 'Charisma'];
+            - const abArr = [ ab.strength.total_score, ab.dexterity.total_score, ab.constitution.total_score, ab.intelligence.total_score, ab.wisdom.total_score, ab.charisma.total_score];
+            - const abModArr = [ab.strength.modifier, ab.dexterity.modifier, ab.constitution.modifier, ab.intelligence.modifier, ab.wisdom.modifier, ab.charisma.modifier];
+            - const stArr = [st.strength, st.dexterity, st.constitution, st.intelligence, st.wisdom, st.charisma];
+            table#hero__ability-scores
+                thead
+                    tr
+                        th Score
+                        th Ability
+                        th Ability Modifier
+                        th Saving Throw
+                tbody
+                    - for(let i = 0; i < 6; i++)
+                        tr
+                            td= abArr[i]
+                            td= abNameArr[i]
+                            if (abModArr[i] > 0)
+                                td= `+${abModArr[i]}`
+                            else
+                                td= abModArr[i]
+                            if (stArr[i])
+                                td= abModArr[i]+ab.proficiency_bonus > 0 ? `+${abModArr[i]+ab.proficiency_bonus}` : abModArr[i]+ab.proficiency_bonus
+                            else
+                                td= abModArr[i] > 0 ? `+${abModArr[i]}` : abModArr[i]
+
+            //- Skills Table
+            .l-margin--3
+            h3 Skills
+            - const sk = hero.skills;
+            - const skNameArr = ['Acrobatics', 'Animal Handling', 'Arcana', 'Athletics', 'Deception', 'History', 'Insight', 'Intimidation', 'Investigation', 'Medicine', 'Nature', 'Perception', 'Performance', 'Persuasion', 'Religion', 'Sleight of Hand', 'Stealth', 'Survival'];
+            - const skArr = [sk.acrobatics, sk.animal_handling, sk.arcana, sk.athletics, sk.deception, sk.history, sk.insight, sk.intimidation, sk.investigation, sk.medicine, sk.nature, sk.perception, sk.performance, sk.persuasion, sk.religion, sk.sleight_of_hand, sk.stealth, sk.survival];
+            - const skDict = {'Acrobatics': abModArr[1], 'Animal Handling': abModArr[4], 'Arcana': abModArr[3], 'Athletics': abModArr[0], 'Deception': abModArr[5], 'History': abModArr[3], 'Insight': abModArr[4], 'Intimidation': abModArr[5], 'Investigation': abModArr[3], 'Medicine': abModArr[4], 'Nature': abModArr[3], 'Perception': abModArr[4], 'Performance': abModArr[5], 'Persuasion': abModArr[5], 'Religion': abModArr[3], 'Sleight of Hand': abModArr[1], 'Stealth': abModArr[1], 'Survival': abModArr[4]}
+                table#hero__skills
+                    thead
+                        tr
+                            th Proficient
+                            th Bonus
+                            th Skill Name
+                    tbody
+                        - for(let i = 0; i < skArr.length; i++)
+                            tr
+                                if (skArr[i])
+                                    td
+                                        img(src='/images/icons/checkmark.png')
+                                    td= skDict[skNameArr[i]]+ab.proficiency_bonus > 0 ? `+${skDict[skNameArr[i]]+ab.proficiency_bonus}` : skDict[skNameArr[i]]+ab.proficiency_bonus
+                                else
+                                    td
+                                    td= skDict[skNameArr[i]] > 0 ? `+${skDict[skNameArr[i]]}` : skDict[skNameArr[i]]
+                                td= skNameArr[i]
+            
+            //- Hero Spells
+            if hero.class && hero.class.spell_ability != '' && hero.class.spell_ability != undefined
+                h2 Poderes
+                hr
+                //- Racial spells
+                if hero.race
+                    h3.js-spelltypetab.m-clickable &nabla; #{hero.race.name || 'Racial'} spells:
+                else
+                    h3.js-spelltypetab.m-clickable Racial spells:
+                
+                .js-spelltypespells
+                    each level in heroSpells.racial
+                        if level[0].level == 0
+                            h4.l-margin-bottom--0 Cantrips
+                        else
+                            h4.l-margin-bottom--0= `Level ${level[0].level}`
+                        table.l-spells
+                            each spell in level
+                                +spellRow(spell)
+
+                //- Class spells
+                if hero.class
+                    h3.js-spelltypetab.m-clickable &nabla; #{hero.class.name || 'Class'} spells:
+                else
+                    h3.js-spelltypetab.m-clickable Class spells:
+                
+                .js-spelltypespells
+                    each level in heroSpells.class
+                        if level[0].level == 0
+                            h4.l-margin-bottom--0 Cantrips
+                        else
+                            h4.l-margin-bottom--0= `Level ${level[0].level}`
+                        table.l-spells
+                            each spell in level
+                                +spellRow(spell)
+
+            //- Character sheet pdf display
+            h2 Sheets
+            hr
+            - const urlSheet = `/heroes/${hero.name}/charactersheet/charactersheet`;
+            - const urlDetails = `/heroes/${hero.name}/charactersheet/characterdetails`;
+            - const urlSpell = `/heroes/${hero.name}/charactersheet/spellcasting`;
+            .l-sheetcontainer
+                object(data=`${urlSheet}#toolbar=0` type="application/pdf")
+                object(data=`${urlDetails}#toolbar=0` type="application/pdf")
+                object(data=`${urlSpell}#toolbar=0` type="application/pdf")
+
+            //- //- iframe(src=`${urlSheet}#toolbar=0` type="application/pdf" frameborder="0")
+            //- //- iframe(src=`${urlDetails}#toolbar=0` type="application/pdf" frameborder="0")
+            //- //- iframe(src=`${urlSpell}#toolbar=0` type="application/pdf" frameborder="0")
+            
+            #hero__sheetbuttons
+                a.c-button(href=urlSheet target='_blank') See Character Sheet
+                a.c-button(href=urlDetails target='_blank') See Details Sheet
+                a.c-button(href=urlSpell target='_blank') See Spell Sheet
+
+        script(src="/javascripts/script.js")
+        script.
+            document.addEventListener('DOMContentLoaded', () => {
+                setupSpellTables();
+                setupSpellTypeTabs();
+
+                // Load race traits
+                const racejson = document.querySelector('#js-racejson').value;
+                if(racejson != 'false') {
+                    const race = JSON.parse(racejson);
+                    const raceTraits = document.querySelector('#js-racetraits');
+                    //- raceTraits.innerHTML = race.traits.replace(/(\r\n|\r|\n)/g, '<br>');
+                    raceTraits.innerHTML = race.traits;
+                }
+            });

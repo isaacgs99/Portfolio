@@ -1,0 +1,29 @@
+extends ../layout
+
+block content
+
+    //- Header
+    .l-margin-start
+    .l-main-content
+        h1 #{siteAlias} Dungeon Master
+        hr
+    .l-margin--3
+
+    .l-main-content
+        //- DM Options cards
+        .l-cards
+            //- Announcements
+            a.c-card(href=`/dm/announcements`)
+                .c-card__header
+                    .c-card__header-left
+                        h2 Anuncios
+                    .c-card__header-right
+                img.c-card__image(src="/images/resources/megaphone.png", alt="Megaphone image")
+
+            //- Notes
+            a.c-card(href=`/dm/notes`)
+                .c-card__header
+                    .c-card__header-left
+                        h2 Notas
+                    .c-card__header-right
+                img.c-card__image(src="/images/resources/notes.png", alt="Notes image")

@@ -1,0 +1,1879 @@
+/*****************************************/
+/************* Color Pallette ************/
+/*****************************************/
+/*
+    * [Black] Primary Color: #000000
+    * [Dark Red] Secondary Color: #a50000
+    * [Red] Nav Border Color: #d00000
+    * [Dark Gray] Nav Dropdown Color: #242527
+    * [Gray] Checkbox Background: #555
+    * [Black] Button Color: #000000
+*/
+:root {
+    --main-color: #000000;
+    --secondary-color: #a50000;
+    --nav-border-color: #d00000;
+    --nav-dropdown: #242527;
+    --checkbox-background: #555;
+    --checkbox-checked: #a50000;
+    --button-color: #000000;
+}
+/*****************************************/
+/************* Global Styling ************/
+/*****************************************/
+body {
+    margin: 0;
+    background: #fcfbf9;
+
+    font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+}
+
+a {
+    color: #000;
+    text-decoration: none;
+}
+
+hr {
+    border: 1px solid var(--secondary-color);
+}
+
+table {
+    border-collapse: collapse;
+    background-color: #fff;
+    width: 100%;
+}
+
+th, td {
+    border: 1px solid #cec8c3;
+    padding: 1em;
+}
+
+th {
+    padding: 2em;
+    border-bottom: 3px solid #cec8c3;
+}
+
+td {
+    text-align: center;
+}
+
+tbody tr:nth-child(odd){
+    background-color: #fbf8f7;
+}
+
+object {
+    margin: 1em 0;
+    width: 33%;
+    height: 550px;
+}
+
+form input::placeholder, form textarea::placeholder {
+    font: 12px "Lucida Grande", Helvetica, Arial, sans-serif;
+    font-style: italic;
+}
+
+/*****************************************/
+/************* Nav Styling ***************/
+/*****************************************/
+nav {
+    position: fixed;
+    top: 0;
+    z-index: 1000;
+
+    display: flex;
+    align-items: center;
+
+    padding: 0 1em 5px 52px;
+    /* height: 80px; */
+
+    background-color: var(--main-color);
+    border-bottom: 5px solid var(--nav-border-color);
+}
+
+nav a {
+    color: #fff;
+}
+
+.nav__logo {
+    width: 13%;
+    margin: 0;
+    margin-top: 22px;
+}
+
+nav ul {
+    display: flex;
+    margin: 0;
+    margin-left: auto;
+}
+
+nav li {
+    list-style: none;
+    font-size: 1.4em;
+    margin: 0 1.7em;
+    align-self: center;
+}
+
+#nav__icon {
+    height: 30px;
+    align-self: flex-end;
+}
+
+.l-dropdown {
+    position: relative;
+}
+
+.l-dropdown:hover .c-dropdown {
+    display: flex;
+}
+
+.c-dropdown {
+    display: none;
+    flex-direction: column;
+    position: absolute;
+    background-color: var(--main-color);
+    margin: 0;
+    padding: 0;
+    padding-top: 1.6em;
+}
+
+.c-dropdown li {
+    align-self: flex-start;
+    width: 5em;
+    margin: 0;
+    padding: 1em 2em;
+    padding-left: 1em;
+    font-size: 0.8em;
+}
+
+.c-dropdown li:hover {
+    background-color: var(--nav-dropdown);
+}
+
+main {
+    margin-top: 85px;
+}
+
+/*****************************************/
+/******* Main 'Carousel' Styling *********/
+/*****************************************/
+.l-carousel {
+    display: flex;
+    justify-content: center;
+    align-content: center;
+
+    margin-top: 17em;
+}
+
+.l-carousel__option {
+    margin: 0 3.5em;
+    
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.l-carousel__option img {
+    height: 20em;
+    margin-bottom: 6em;
+}
+
+.l-carousel__option:last-child img{
+    height: 25em;
+    margin-bottom: 1em;
+}
+
+/*****************************************/
+/******* Section divider Styling *********/
+/*****************************************/
+.l-divider {
+    display: grid;
+    grid-template-columns: 3fr 1fr;
+    grid-template-rows: repeat(1, 1fr);
+}
+
+.c-divider__left {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+
+    background-color: var(--main-color);
+    color: #fff;
+    padding: 1em 4em;
+}
+
+.c-divider__left h1 {
+    margin: 0;
+}
+
+.c-divider__right {
+    border-color: transparent;
+    border-left-color: var(--main-color);
+    border-style: solid;
+    border-width: 5em;
+    border-top-width: 0px;
+    height: 0px;
+    width: 0px;
+}
+
+/*****************************************/
+/******** Content Box Styling ************/
+/*****************************************/
+.l-content-box {
+    margin: 2em 10%;
+    width: 80%;
+}
+
+.l-content-box--full-width {
+    margin: 2em 0;
+    width: 100%;
+}
+
+.c-content-box {
+    border: 1px solid #dad4d2;
+    box-shadow: 0 0 1em 0 rgba(0, 0, 0, 0.4);
+    background-color: #fff;
+
+    display: grid;
+    grid-template-columns: 10% 90%;
+
+    padding: 1em 2em;
+}
+
+.c-content-box__image {
+    width: 80%;
+    padding: 0.2em;
+    border-radius: 10px;
+
+    justify-self: center;
+}
+
+.l-content-box--full-width .c-content-box__image {
+    width: 60%;
+}
+
+.l-content-box__content {
+    margin-left: 1em;
+}
+
+.c-content-box__title {
+    display: flex;
+    align-items: center;
+    background-color: #242527;
+    color: #fff;
+    padding: 0 1em;
+}
+
+.l-content-box__title--info {
+    margin-left: auto;
+}
+
+/*****************************************/
+/********** Main Content Styling *********/
+/*****************************************/
+.l-main-content {
+    margin: 2em 5%;
+    width: 90%;
+}
+
+/* Cards Styling */
+.l-cards {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-gap: 5em;
+}
+
+.l-cards--4 {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    grid-gap: 5em;
+}
+
+.c-card {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border: 1px solid #dad4d2;
+    box-shadow: 0 0 1em 0 rgba(0, 0, 0, 0.4);
+    background-color: #fff;
+    height: 380px;
+
+    overflow: hidden;
+}
+
+.c-card__image {
+    height: 110%;
+}
+
+.c-card__header {
+    position: absolute;
+    bottom: 10px;
+    z-index: 1;
+    display: grid;
+    grid-template-columns: 3fr 1fr;
+    grid-template-rows: repeat(1, 1fr);
+
+    -webkit-filter: drop-shadow(0 0 1em rgba(0, 0, 0, 0.6));
+    filter: drop-shadow(0 0 1em rgba(0, 0, 0, 0.6));
+}
+
+.c-card__header-left {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+
+    background-color: #fff;
+    color: #000;
+    padding: 1em 4em;
+}
+
+.c-card__header-left h2 {
+    margin: 0;
+}
+
+.c-card__header-right {
+    border-color: transparent;
+    border-left-color: #fff;
+    border-style: solid;
+    border-width: 5em;
+    border-top-width: 0px;
+    height: 0px;
+    width: 0px;
+}
+
+/*****************************************/
+/*********** Heroes Styling **************/
+/*****************************************/
+#hero__classandlevel {
+    font-size: 0.7em;
+}
+
+#hero__organization-banner {
+    width: 200px;
+}
+
+#hero__ability-scores td:nth-child(2) {
+    width: 100%;
+    text-align: left;
+}
+
+#hero__skills td:last-child {
+    width: 100%;
+    text-align: left;
+}
+
+#hero__skills  img {
+    width: 20px;
+}
+
+#hero__sheetbuttons {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    text-align: center;
+    margin-top: 2em;
+    margin-bottom: 10em;
+}
+
+.l-text-wrap {
+    float: left;
+    margin: 0 3em 3em 0;
+}
+
+.l-text-wrap--right {
+    float: right;
+    margin: 0 3em 3em 0;
+}
+
+.l-text-wrap__image {
+    width: 400px;
+    border-radius: 5px;
+    box-shadow: 0 0 1em 0.5em rgba(0, 0, 0, 0.4);
+}
+
+.c-basic-info {
+    border: 1px solid #dad4d2;
+    padding: 1em;
+    margin: 1em 0;
+    background: #fff;
+    box-shadow: 0 0 1em 0.5em rgba(0, 0, 0, 0.4);
+    width: 400px;
+}
+
+.l-stat-cards {
+    text-align: center;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    grid-gap: 3em;
+    margin: 3em 0;
+}
+
+.c-stat-card {
+    border: 1px solid #dad4d2;
+    background-color: #fff;
+    box-shadow: 0 0 1em 0em rgba(0, 0, 0, 0.4);
+    padding: 2em 0;
+}
+
+.c-stat-card__image {
+    width: 50px;
+    border-radius: 100px;
+}
+
+.l-spells {
+    border-collapse: separate;
+    border-spacing: 0 1em;
+    background: none;
+}
+
+.c-spell {
+    background-color: #fff !important;
+    border: 1px solid #dad4d2;
+    box-shadow: 0 0 1em 0em rgba(0, 0, 0, 0.4);
+}
+
+.c-spell__image {
+    border-radius: 5px;
+}
+
+.c-spell td {
+    border: none;
+    
+}
+
+.c-spell td:first-child {
+    width: 7%;
+}
+
+.c-spell td:nth-child(2) {
+    width: 43%;
+    text-align: left;
+}
+
+.c-spell td:nth-child(2) p {
+    margin: 0;
+}
+
+.c-spell td:nth-child(3) {
+    width: 15%;
+}
+
+.c-spell td:nth-child(4) {
+    width: 15%;
+}
+
+.c-spell td:last-child {
+    width: 7%;
+}
+
+.c-spell--display td:nth-child(2) {
+    width: 7%;
+}
+
+.c-spell--display td:nth-child(3) {
+    width: 40%;
+}
+
+.c-spell--display td:nth-child(3) p {
+    margin: 0;
+}
+
+.c-spell--display td:nth-child(4) {
+    width: 13%;
+}
+
+.c-spell--display td:nth-child(5) {
+    width: 13%;
+}
+
+.c-spell--display td:nth-child(6) {
+    width: 13%;
+}
+
+.c-spell td:last-child {
+    width: 7%;
+}
+
+.c-spell-description {
+    background-color: #fff;
+    border: 1px solid #dad4d2;
+    box-shadow: 0 0 1em 0em rgba(0, 0, 0, 0.4);
+    text-align: left;
+    padding: 2em;
+
+    display: none;
+}
+
+.c-spell-description h4 {
+    margin: 0.5em 0;
+}
+
+.c-spell-description em {
+    margin-bottom: 500em;
+}
+
+.c-spell-description p {
+    margin: 0.5em 0;
+}
+
+.l-sheetcontainer {
+    display: block;
+}
+
+/*****************************************/
+/********* Characters Styling ************/
+/*****************************************/
+.l-search {
+    background-color: #ececec;
+    padding: 2em;
+}
+
+.c-search {
+    display: flex;
+    flex-direction: row;
+    align-items: flex-end;
+}
+
+.c-search__input--button {
+    margin-left: auto;
+}
+
+.c-search__input {
+    display: flex;
+    flex-direction: column;
+    margin: 0 2em;
+}
+
+.c-search__input label {
+    font-size: 1.5em;
+    font-weight: bold;
+}
+
+.c-search__input input {
+    height: 3em;
+    margin-top: 1em;
+}
+
+.c-search__input:first-child input, .c-search__input:nth-child(2) input {
+    width: 17em;
+}
+
+.c-search__input:nth-child(3) input, .c-search__input:nth-child(4) input {
+    width: 13em;
+}
+
+/*****************************************/
+/***************** Login *****************/
+/*****************************************/
+#login__logo {
+    width: 100%;
+}
+
+.l-login {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    grid-template-rows: repeat(1);
+    align-items: center;
+    justify-items: center;
+    grid-gap: 5%;
+}
+
+.c-login-form {
+    background-color: var(--main-color);
+    color: #fff;
+    padding: 5em;
+    justify-self: flex-start;
+    width: 50%;
+}
+
+.c-login-form__input {
+    display: flex;
+    flex-direction: column;
+}
+
+.c-login-form input {
+    height: 3em;
+    width: 100%;
+    background: #fff;
+    border: none;
+    margin: 1em 0 2em 0;
+}
+
+.c-login-form label {
+    font-weight: bold;
+    font-size: 1.5em;
+}
+
+/*****************************************/
+/************* Edit Hero *****************/
+/*****************************************/
+.image-preview {
+    display: block;
+    width: 80%;
+    margin-bottom: 2em;
+}
+
+#l-main-content--edit-hero {
+    margin: 2em 25%;
+    margin-left: 27%;
+    width: 50%;
+    
+    background: #ececec;
+    padding: 2em;
+}
+
+.c-tabs__sidebar {
+    position: fixed;
+    top: 30%;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+
+    width: 20%;
+
+    background-color: white;
+    border: 1px solid #dad4d2;
+    border-left: none;
+    box-shadow: 0 0 1em 0 rgba(0, 0, 0, 0.4);
+
+    padding: 1em 2em;
+    padding-right: 0;
+}
+
+.c-tabs__topbar {
+    position: relative;
+    display: flex;
+    flex-flow: row nowrap;
+    justify-content: space-evenly;
+
+    padding: 0;
+
+    background-color: white;
+    border: 1px solid #dad4d2;
+    border-left: none;
+    box-shadow: 0 0 1em 0 rgba(0, 0, 0, 0.4);
+
+    padding: 1em 2em;
+    padding-right: 0;
+}
+
+.c-tabs__button {
+    display: grid;
+    grid-template-columns: 4fr 1fr;
+    grid-template-rows: repeat(1, 1fr);
+
+    margin: 1em 0;
+}
+
+.c-tabs__button h2 {
+    margin: 0;
+}
+
+.c-tabs__button-left {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: center;
+
+    background-color: #dfdfdf;
+    color: #000;
+    padding: 1em 2em;
+}
+
+.c-tabs__button-left--active {
+    background-color: #000;
+    color: #fff;
+}
+
+.c-tabs__button-right {
+    border-width: 2em;
+    border-right-width: 0;
+    
+    border-color: transparent;
+    border-left-color: #dfdfdf;
+    border-style: solid;
+}
+
+.c-tabs__button-right--active {
+    border-left-color: #000;
+}
+
+.c-tabs__content {
+    display: none;
+}
+
+.c-tabs__content--active {
+    display: block;
+}
+
+.c-edithero-form #hero-name {
+    height: 4.5em;
+    width: 100%;
+    font-size: 1.2em;
+}
+
+.c-edithero-form #hero-name::placeholder {
+    font-size: 1.2em;
+}
+
+.c-edithero-form select {
+    height: 4.5em;
+    width: 100%;
+    font-size: 1.2em;
+}
+
+.c-edithero-form__input {
+    font-size: 1.3em;
+    display: grid;
+    grid-template-columns: 20% 1fr;
+    grid-gap: 2em;
+    align-items: center;
+}
+
+.c-edithero-form__input input {
+    height: 3em;
+}
+
+.c-edithero-form__input--stack {
+    display: flex;
+    flex-direction: column;
+    grid-gap: 1em;
+    align-items: flex-start;
+    margin-top: 2em;
+}
+
+.c-edithero-form__input--stack input {
+    min-width: 100%;
+    max-width: 100%;
+}
+
+.c-edithero-form__input--stack textarea {
+    min-height: 7em;
+    max-width: 100%;
+    min-width: 100%;
+}
+
+.c-description {
+    display: none;
+}
+
+.c-skillprofs {
+    display: flex;
+}
+
+.c-skillprofs select {
+    margin: 0 1em;
+    height: 2em;
+}
+
+.l-ability-points-grid {
+    display: grid;
+    grid-template-columns: repeat(6, 1fr);
+    grid-gap: 1em;
+    grid-row-gap: 2em;
+    align-items: center;
+    justify-content: center;
+}
+
+.l-ability-points-grid.grid--2 {
+    grid-template-columns: repeat(2, 1fr);
+}
+
+.l-ability-points-grid.grid--3 {
+    grid-template-columns: repeat(3, 1fr);
+}
+
+.l-ability-points-grid.grid--4 {
+    grid-template-columns: repeat(4, 1fr);
+}
+
+.l-ability-points-grid.grid--5 {
+    grid-template-columns: repeat(5, 1fr);
+}
+
+.c-ability-points {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: baseline;
+}
+
+.c-ability-points label{
+    font-weight: bold;
+    font-size: 0.9em;
+}
+
+.c-ability-points input[type='number'] {
+    height: 3em;
+    text-align: center;
+    width: 80%;
+}
+
+.c-ability-points input[type='checkbox'] {
+    -webkit-appearance:none;
+    margin-top: 1em;
+    width: 2em;;
+    height: 2em;
+    background: var(--checkbox-background);
+    border-radius: 5px;
+    border: 2px solid var(--main-color);
+}
+
+.c-ability-points input[type='checkbox']:checked {
+    background: var(--checkbox-checked);
+}
+
+.c-ability-points input[type='checkbox']:focus {
+    outline: none;
+}
+
+.c-ability-points input[type='radio'] {
+    -webkit-appearance:none;
+    margin-top: 1em;
+    width: 2em;;
+    height: 2em;
+    background: var(--checkbox-background);
+    border-radius: 50px;
+    border: 2px solid var(--main-color);
+}
+
+.c-ability-points input[type='radio']:checked {
+    background: var(--checkbox-checked);
+}
+
+.c-ability-points input[type='radio']:focus {
+    outline: none;
+}
+
+.l-ability-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-template-rows: repeat(2, 1fr);
+    grid-gap: 2em;
+}
+
+.c-ability__table input {
+    width: 80%;
+    height: 1.5em;
+}
+
+.c-ability__header {
+    background-color: var(--main-color);
+    text-align: left;
+    vertical-align: baseline;
+}
+
+.c-ability__header-content {
+    display: flex;
+    align-items: center;
+    color: #fff;
+}
+
+.c-ability__header-content img {
+    width: 15%;
+    height: auto;
+    margin-left: auto;
+}
+
+.c-ability__input {
+    display: flex;
+    margin: 0.5em;
+    align-items: center;
+    justify-content: center;
+}
+
+.c-ability__input input {
+    width: 4em;
+    height: 2em;
+    margin-left: 2em;
+}
+
+.c-radiochoice input[type=radio] {
+    margin-right: 1em;
+}
+/*****************************************/
+/*********** Spell Compendium ************/
+/*****************************************/
+.c-loadingbg {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1001;
+
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0,0,0,0.7);
+    position: fixed;
+    top: 0;
+
+    display: none;
+}
+
+.c-loadingbg__animation {
+    border: 16px solid var(--main-color);
+    border-top: 16px solid var(--nav-border-color);
+    border-radius: 100%;
+    width: 120px;
+    height: 120px;
+    -webkit-animation: spin 2s linear infinite; /* Safari */
+    animation: spin 2s linear infinite;
+}
+
+.c-loadingbg__animation--small {
+    width: 30px;
+    height: 30px;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+/* Safari */
+@-webkit-keyframes spin {
+    0% { -webkit-transform: rotate(0deg); }
+    100% { -webkit-transform: rotate(360deg); }
+  }
+
+/*****************************************/
+/*********** Edit Character **************/
+/*****************************************/
+#titleinput {
+    width: 50%;
+}
+
+#affiliationinput {
+    width: 70%;
+}
+
+#charnameinput {
+    height: 2em;
+    width: 15em;
+    font-size: 1.5em;
+}
+
+.l-editchar-grid {
+    display: grid;
+    grid-template-columns: 40% 1fr;
+}
+
+.c-editchar-form__input {
+    margin-bottom: 1em;
+}
+
+.c-editchar-form__input input {
+    display: inline-block;
+    width: 25%;
+    margin-left: 5%;
+}
+
+.c-editchar-form__input textarea {
+    min-width: 100%;
+    max-width: 100%;
+    min-height: 10em;
+}
+
+/*****************************************/
+/**************** Maps *******************/
+/*****************************************/
+.c-mapimage {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+}
+
+.c-mapimage > img {
+    max-width: 100%;
+    max-height: 600px;
+}
+
+/*****************************************/
+/*************** Modals ******************/
+/*****************************************/
+#js-spellform {
+    display: none;
+}
+
+#save_changes {
+    display: none;
+}
+
+#modal_description {
+    font-size: 0.7em;
+}
+
+.c-modalbg {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1001;
+
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0,0,0,0.7);
+    position: fixed;
+    top: 0;
+
+    display: none;
+}
+
+.c-modalbg--active {
+    display: flex;
+}
+
+.c-modal {
+    width: 600px;
+    height: 600px;
+    overflow: scroll;
+    padding: 2em;
+    background-color: #fff;
+}
+
+.c-modal__header {
+    display: flex;
+    position: sticky;
+    top: -2em;
+    margin-bottom: 1em;
+    padding-top: 1em;
+    
+    background: inherit;
+    border-bottom: 3px solid var(--secondary-color);
+}
+
+.c-modal__header p {
+    margin-left: auto;
+    align-self: flex-start;
+}
+
+/*****************************************/
+/**************** Admin ******************/
+/*****************************************/
+.l-manageusers-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-gap: 2em;
+}
+
+.c-manageusers-grid__list {
+    padding: 0;
+}
+
+.c-manageusers-grid__list li {
+    list-style: none;
+    margin-bottom: 3em;
+}
+
+/* Admin user */
+.c-adminuser-form {
+    background-color: #ececec;
+    padding: 10%;
+}
+
+.c-adminuser-form__input {
+    display: flex;
+    flex-direction: column;
+}
+
+.c-adminuser-form__input input {
+    height: 3em;
+    width: 100%;
+    background: #fff;
+    border: none;
+    margin: 1em 0 2em 0;
+}
+
+.c-adminuser-form__input label {
+    font-weight: bold;
+    font-size: 1.5em;
+}
+
+.c-adminuser-checkboxes {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    
+}
+
+.c-checkbox {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.c-checkbox input[type='checkbox'] {
+    -webkit-appearance:none;
+    margin-top: 1em;
+    width: 2em;;
+    height: 2em;
+    background: var(--checkbox-background);
+    border-radius: 5px;
+    border: 2px solid var(--main-color);
+}
+
+.c-checkbox input[type='checkbox']:checked {
+    background: var(--checkbox-checked);
+}
+
+.c-checkbox input[type='checkbox']:focus {
+    outline: none;
+}
+
+/*****************************************/
+/***************** DM ********************/
+/*****************************************/
+/* Notes */
+.c-table__image {
+    width: 50px;
+}
+
+#l-main-content--note-compendium {
+    margin: 2em 0;
+    
+    background: #ececec;
+    padding: 2em;
+}
+
+.l-notes {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    grid-gap: 4em;
+}
+
+.c-notes-section {
+    background-color: #fff;
+    box-shadow: 0 0 1em 0 rgba(0, 0, 0, 0.4);
+    
+    height: 100vh;
+    overflow: scroll;
+    padding: 2em;
+}
+
+.c-spell__herotableimage {
+    width: 50px;
+}
+
+.l-stat-cards--notes {
+    grid-template-columns: repeat(2, 1fr) !important;
+}
+
+.hero__ability-scores--notes th {
+    padding: 1em;
+}
+
+/*****************************************/
+/********* Global Class Styling **********/
+/*****************************************/
+.l-select-button {
+    display: grid;
+    grid-template-columns: auto 10%;
+    grid-gap: 1em;
+}
+
+.l-select-button.button--2 {
+    grid-template-columns: auto repeat(2, 10%);
+}
+
+.c-button {
+    background-color: var(--button-color);
+    padding: 1em;
+    box-shadow: 0 0 2em 0 rgba(0, 0, 0, 0.4);
+    border: none;
+    color: #fff;
+}
+
+.c-button--white {
+    background-color: #fff;
+    padding: 1em;
+    box-shadow: 0 0 2em 0 rgba(0, 0, 0, 0.4);
+    border: none;
+    color: #000;
+}
+
+.c-button--large {
+    color: #fff;
+    background-color: var(--button-color);
+    padding: 1em 2em;
+    box-shadow: 0 0 2em 0 rgba(0, 0, 0, 0.4);
+    border: none;
+    font-size: 1.5em;
+    text-align: center;
+}
+
+.m-inactive {
+    display: none;
+}
+
+.m-active {
+    display: block;
+}
+
+.m-clickable {
+    cursor: pointer;
+}
+
+.m-cursor-normal {
+    cursor: default;
+}
+
+.l-margin-start {
+    margin-top: 9em
+}
+
+.l-margin--9 {
+    margin: 9em 0;
+}
+
+.l-margin--7 {
+    margin: 7em 0;
+}
+
+.l-margin--5 {
+    margin: 5em 0;
+}
+
+.l-margin--3 {
+    margin: 3em 0;
+}
+
+.l-margin--2 {
+    margin: 2em 0;
+}
+
+.l-margin--1 {
+    margin: 1em 0;
+}
+
+.l-margin-bottom--1 {
+    margin-bottom: 1em;
+}
+
+.l-margin-bottom--0 {
+    margin-bottom: 0;
+}
+
+.l-margin-right--1 {
+    margin-right: 1em;
+}
+
+.l-clearleft {
+    clear: left;
+}
+
+.m-color-black {
+    color: #000;
+}
+
+.m-color-gray {
+    color: #232426;
+}
+
+.m-color-lightgray {
+    color: #858585;
+}
+
+.m-color-red {
+    color: var(--secondary-color);
+}
+
+.m-background-lightgray {
+    background-color: #858585;
+}
+
+.m-background-red {
+    background-color: var(--secondary-color);
+}
+
+.m-align-left {
+    text-align: left;
+}
+
+.m-align-center {
+    text-align: center;
+}
+
+.m-align-justify {
+    text-align: justify;
+}
+
+.m-responsive-display--table {
+    display: table-cell;
+}
+
+
+
+/*****************************************/
+/************ Pagedown Styling ***********/
+/*****************************************/
+blockquote{
+    border-left: 2px dotted #888;
+    padding-left: 5px;
+    background: rgba(0, 0, 0, 0.1);
+    border-radius: 5px;
+    overflow: hidden;
+  }
+  
+  blockquote > p {
+    padding: 1em;
+  }
+  
+  .heroSummary > blockquote {
+    overflow: hidden;
+    background: #d9d9d9;
+  }
+
+
+
+/*****************************************/
+/************* Media Queries *************/
+/*****************************************/
+@media (min-width: 0px) {
+    main {
+        margin-top: 2em;
+    }
+
+    /*****************************************/
+    /************* Nav Styling ***************/
+    /*****************************************/
+    nav {
+        position: relative;
+
+        flex-direction: column;
+        height: auto;
+    }
+    .nav__logo {
+        width: 40%;
+        margin-bottom: 1em;
+    }
+    nav ul {
+        flex-flow: row wrap;
+        margin-left: 0;
+        padding: 0;
+    }
+    nav li {
+        margin-bottom: 1em;
+    }
+
+    /*****************************************/
+    /******* Main 'Carousel' Styling *********/
+    /*****************************************/
+    .l-carousel {
+        flex-direction: column;
+    }
+    
+    .l-carousel__option {
+        margin-bottom: 2em;
+    }
+
+    /*****************************************/
+    /******* Section divider Styling *********/
+    /*****************************************/
+    .c-divider__left h1 {
+        /* font-size: 1.75rem; */
+        font-size: 1.2em;
+    }
+
+    /*****************************************/
+    /******** Content Box Styling ************/
+    /*****************************************/
+    .l-content-box {
+        margin: 2em 1em;
+        width: auto;
+    }
+
+    .c-content-box {
+        display: block;
+    }
+
+    .c-content-box__image {
+        width: 100%;
+        display: none;
+    }
+
+    .c-content-box__title {
+        flex-direction: column;
+        text-align: center;
+    }
+
+    .l-content-box__title--info {
+        margin-left: 0;
+        margin-bottom: 1em;
+    }
+
+    /*****************************************/
+    /********** Main Content Styling *********/
+    /*****************************************/
+    /* Cards Styling */
+    .l-cards {
+        display: flex;
+        flex-direction: column;
+    }
+
+    .c-card {
+        height: 500px;
+    }
+
+    /*****************************************/
+    /*********** Heroes Styling **************/
+    /*****************************************/
+    #hero__organization-banner {
+        width: 100px;
+    }
+
+    #hero__sheetbuttons {
+        grid-template-columns: repeat(1, 1fr);
+        grid-gap: 1em;
+    }
+
+    .l-stat-cards {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .l-sheetcontainer {
+        display: none;
+    }
+
+    /*****************************************/
+    /********* Characters Styling ************/
+    /*****************************************/
+    .l-cards--4 {
+        grid-template-columns: repeat(1, 1fr);
+    }
+
+    .c-search {
+        flex-wrap: wrap;
+    }
+
+    .c-search__input {
+        margin-bottom: 1em;
+    }
+
+    /*****************************************/
+    /***************** Login *****************/
+    /*****************************************/
+    .l-login {
+        grid-template-columns: repeat(1, 1fr);
+        grid-template-rows: repeat(2, 1fr);
+    }
+
+    /*****************************************/
+    /************* Edit Hero *****************/
+    /*****************************************/
+    #l-main-content--edit-hero {
+        margin: 0;
+        width: 89%;
+    }
+
+    .c-tabs__sidebar {
+        position: relative;
+        flex-flow: row wrap;
+        justify-content: space-evenly;
+        width: 100%;
+        padding: 0;
+    }
+
+    .c-tabs__button {
+        grid-template-columns: repeat(1, 1fr);
+        grid-template-rows: 1fr;
+    }
+
+    .c-tabs__button-right {
+        display: none;
+    }
+
+    #m-abilities__physical {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .l-ability-points-grid, .l-ability-grid  {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    #m-spells_selectbuttons {
+        grid-template-columns: auto 30%;
+    }
+
+    /*****************************************/
+    /*********** Edit Character **************/
+    /*****************************************/
+    .l-editchar-grid {
+        grid-template-columns: 100%;
+        grid-template-rows: repeat(2);
+    }
+
+    /*****************************************/
+    /**************** Admin ******************/
+    /*****************************************/
+    .l-manageusers-grid {
+        grid-template-columns: 1fr;
+    }
+
+    /*****************************************/
+    /***************** DM ********************/
+    /*****************************************/
+    /* Notes */
+    .l-notes {
+        grid-template-columns: 1fr;
+    }
+
+    .c-tabs__topbar {
+        flex-flow: row wrap;
+    }
+
+    #l-main-content--note-compendium {
+        background: none;
+        padding: 0;
+    }
+
+    .m-responsive-display--table {
+        display: none;
+    }
+
+    /*****************************************/
+    /********* Global Class Styling **********/
+    /*****************************************/
+    .l-margin-start {
+        margin-top: 0em;
+    }
+}
+
+@media (min-width: 600px) {
+    /*****************************************/
+    /********** Main Content Styling *********/
+    /*****************************************/
+    /* Cards Styling */
+    .l-cards {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .c-card {
+        height: 300px;
+    }
+
+    /*****************************************/
+    /********* Characters Styling ************/
+    /*****************************************/
+    .l-cards--4 {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (min-width: 800px) {
+    /*****************************************/
+    /********** Main Content Styling *********/
+    /*****************************************/
+    /* Cards Styling */
+    .c-card {
+        height: 380px;
+    }
+
+    /*****************************************/
+    /******* Section divider Styling *********/
+    /*****************************************/
+    .c-divider__left h1 {
+        font-size: 1.75rem;
+    }
+
+    /*****************************************/
+    /******** Content Box Styling ************/
+    /*****************************************/
+    .l-content-box {
+        margin: 2em 10%;
+        width: 80%;
+    }
+
+    .c-content-box {
+        display: grid;
+    }
+
+    .c-content-box__image {
+        display: block;
+    }
+
+    /*****************************************/
+    /*********** Heroes Styling **************/
+    /*****************************************/
+    .l-stat-cards {
+        grid-template-columns: repeat(4, 1fr);
+    }
+
+    /*****************************************/
+    /**************** Admin ******************/
+    /*****************************************/
+    .l-manageusers-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    /*****************************************/
+    /***************** DM ********************/
+    /*****************************************/
+    /* Notes */
+    .c-tabs__topbar {
+        flex-flow: row nowrap;
+    }
+
+    #l-main-content--note-compendium {
+        background: #ececec;
+        padding: 2em;
+    }
+
+    .m-responsive-display--table {
+        display: table-cell;
+    }
+}
+
+@media (min-width: 1000px) {
+    /*****************************************/
+    /******* Main 'Carousel' Styling *********/
+    /*****************************************/
+    .l-carousel {
+        flex-direction: row;
+    }
+    
+    .l-carousel__option {
+        margin-bottom: 0;
+    }
+
+    /*****************************************/
+    /******** Content Box Styling ************/
+    /*****************************************/
+    .c-content-box__image {
+        width: 80%;
+    }
+
+    .c-content-box__title {
+        flex-direction: row;
+        text-align: left;
+    }
+
+    .l-content-box__title--info {
+        margin-left: auto;
+        margin-bottom: 0;
+    }
+
+    /*****************************************/
+    /********** Main Content Styling *********/
+    /*****************************************/
+    /* Cards Styling */
+    .l-cards {
+        grid-template-columns: repeat(3, 1fr);
+    }
+
+    /*****************************************/
+    /*********** Heroes Styling **************/
+    /*****************************************/
+    #hero__organization-banner {
+        width: 200px;
+    }
+
+    /*****************************************/
+    /********* Characters Styling ************/
+    /*****************************************/
+    .l-cards--4 {
+        grid-template-columns: repeat(3, 1fr);
+    }
+
+    /*****************************************/
+    /***************** Login *****************/
+    /*****************************************/
+    .l-login {
+        grid-template-columns: repeat(2, 1fr);
+        grid-template-rows: repeat(1);
+    }
+
+    /*****************************************/
+    /*********** Edit Character **************/
+    /*****************************************/
+    .l-editchar-grid {
+        grid-template-columns: 40% 50%;
+        grid-template-rows: repeat(1);
+        grid-gap: 10%;
+    }
+
+    /*****************************************/
+    /**************** Admin ******************/
+    /*****************************************/
+    .l-manageusers-grid {
+        grid-template-columns: repeat(3, 1fr);
+    }
+
+    /*****************************************/
+    /***************** DM ********************/
+    /*****************************************/
+    /* Notes */
+    .l-notes {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .c-tabs__topbar {
+        flex-flow: row wrap;
+    }
+
+    #l-main-content--note-compendium {
+        background: none;
+        padding: 0;
+    }
+
+    .m-responsive-display--table {
+        display: none;
+    }
+}
+
+@media (min-width: 1200px) {
+    main {
+        margin-top: 85px;
+    }
+    /*****************************************/
+    /************* Nav Styling ***************/
+    /*****************************************/
+    nav {
+        position: fixed;
+
+        flex-direction: row;
+    }
+    .nav__logo {
+        width: 13%;
+        margin-bottom: 0;
+    }
+    nav ul {
+        margin-left: auto;
+    }
+    nav li {
+        margin-bottom: 0;
+    }
+
+    /*****************************************/
+    /*********** Heroes Styling **************/
+    /*****************************************/
+    #hero__sheetbuttons {
+        grid-template-columns: repeat(3, 1fr);
+        grid-gap: 1em;
+    }
+
+    .l-sheetcontainer {
+        display: flex;
+        flex-direction: row;
+    }
+
+    .l-sheetcontainer object{
+        width: 33.3333%;
+        height: 500px;
+    }
+
+    /*****************************************/
+    /********* Characters Styling ************/
+    /*****************************************/
+    .l-cards--4 {
+        grid-template-columns: repeat(4, 1fr);
+    }
+
+    /*****************************************/
+    /************* Edit Hero *****************/
+    /*****************************************/
+    #l-main-content--edit-hero {
+        margin: 2em 25%;
+        margin-left: 27%;
+        width: 50%;
+    }
+
+    .c-tabs__sidebar {
+        position: fixed;
+        flex-flow: column nowrap;
+        justify-content: center;
+        width: 20%;
+        padding: 1em 2em;
+        padding-right: 0;
+    }
+
+    .c-tabs__button {
+        grid-template-columns: 4fr 1fr;
+        grid-template-rows: repeat(1, 1fr);
+    }
+
+    .c-tabs__button-right {
+        display: block;
+    }
+
+    #m-abilities__physical {
+        grid-template-columns: repeat(5, 1fr);
+    }
+
+    .l-ability-points-grid  {
+        grid-template-columns: repeat(6, 1fr);
+    }
+
+    .l-ability-grid {
+        grid-template-columns: repeat(3, 1fr);
+    }
+
+    #m-spells_selectbuttons {
+        grid-template-columns: auto repeat(2, 10%);
+    }
+
+    /*****************************************/
+    /*********** Edit Character **************/
+    /*****************************************/
+    .l-editchar-grid {
+        grid-template-columns: 40% 1fr;
+        grid-gap: 0;
+    }
+
+    /*****************************************/
+    /***************** DM ********************/
+    /*****************************************/
+    /* Notes */
+    .c-tabs__topbar {
+        flex-flow: row nowrap;
+    }
+
+    .m-responsive-display--table {
+        display: table-cell;
+    }
+
+    /*****************************************/
+    /********* Global Class Styling **********/
+    /*****************************************/
+    .l-margin-start {
+        margin-top: 9em;
+    }
+}
+
+@media (min-width: 1400px) {
+    /*****************************************/
+    /********* Characters Styling ************/
+    /*****************************************/
+    .c-search {
+        flex-wrap: nowrap;
+    }
+
+    .c-search__input {
+        margin-bottom: 0em;
+    }
+
+    /*****************************************/
+    /***************** DM ********************/
+    /*****************************************/
+    /* Notes */
+    #l-main-content--note-compendium {
+        background: #ececec;
+        padding: 2em;
+    }
+}
+
+@media (min-width: 1600px) {
+    /*****************************************/
+    /********** Main Content Styling *********/
+    /*****************************************/
+    /* Cards Styling */
+    .c-card {
+        height: 500px;
+    }
+
+    /*****************************************/
+    /********* Global Class Styling **********/
+    /*****************************************/
+    .l-margin-start {
+        margin-top: 10em;
+    }
+}

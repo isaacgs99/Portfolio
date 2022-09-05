@@ -1,0 +1,117 @@
+extends ../layout
+include ../mixins/_spell_row
+include ../mixins/_spell_form
+
+block content
+    script(src="/javascripts/ajax/spells.js")
+
+    //- Header
+    .l-margin-start
+    //- Main section header
+    if url.endsWith('/spells')
+        .l-divider
+            .c-divider__left
+                h1 Spell Compendium
+            .c-divider__right
+    //- Spell search header (NOT USED)
+    //- else
+    //-     a.l-divider(href=`/users/spells`)
+    //-         .c-divider__left
+    //-             h1 &#10525; Spell Compendium: Search
+    //-         .c-divider__right
+
+    .l-main-content
+
+        //- Spell search bar
+        .l-search
+            //- form.c-search(action=`/users/spells/search` method='post')
+            form.c-search(action='' method='' autocomplete='off')
+                .c-search__input
+                    label(for='name') Spell name
+                    input(type='text' name='name' id='search-name' placeholder='Buscar spell por nombre')
+                .c-search__input
+                    label(for='level') Spell level
+                    input(type='text' name='level' id='search-level' placeholder='Buscar spell por nivel')
+                .c-search__input
+                    label(for='school') Spell school
+                    input(type='text' name='school' id='search-school' placeholder='Buscar spell por escuela')
+                .c-search__input--button
+                    //- button.c-button--large.m-clickable(type='submit') Buscar
+                    button.c-button--large.m-clickable(type='button' onclick=`searchSpells()`) Buscar
+        
+        //- Create and edit spell buttons
+        .l-margin--2
+        .l-ability-points-grid.grid--5
+            div
+            button.c-button--large.m-clickable.js-modalbutton(type='button' data-for-modal='0') Create Spell
+            div
+            button.c-button--large.m-clickable.js-modalbutton(type='button' data-for-modal='1') Edit Spell
+            div
+
+    //- Spell display tables
+    .l-margin--3
+    .l-main-content
+        table.l-spells
+            each spell in spells
+                +spellRow(spell)
+
+    //- Modal Section
+    .c-modalbg(data-modal='1')
+        .c-modal
+            //- Modal header
+            .c-modal__header
+                h2 Edit Spell
+                p.m-clickable.js-closemodal(data-close-modal='1') &times;
+            //- Main modal section
+            .c-modal__main
+                //- Spell search select
+                .l-select-button
+                    select(name='search_spell' id='js-search_spell')
+                        option(value='-1' selected) - select -
+                            each level in sortedSpells
+                                if (level[0] != undefined)
+                                    - const currLvl = level[0].level;
+                                    if (currLvl == 0)
+                                        - let levelName = 'Cantrip';
+                                        optgroup(label=levelName)
+                                    else
+                                        - let levelName = `Level ${currLvl}`;
+                                        optgroup(label=levelName)
+                                    each spell in level
+                                        if (spell instanceof Object)
+                                            option(value=`${spell.level},${spell._id}`) #{spell.name}
+                    button.c-button#js-searchspell(type='button' onclick=`loadSpell(${JSON.stringify(sortedSpells)})`) Find
+                //- Edit spell form
+                form.c-edithero-form(action=`/users/editSpell` method='post' autocomplete='off')
+                    input(type="hidden" name='spell_id' id='spell_id')
+                    #js-spellform
+                        .l-margin--2
+                        +spellForm()
+                    .l-margin--2
+                    .c-edithero-form__input
+                        button.c-button(type='submit' id='save_changes') Save changes
+
+    .c-modalbg(data-modal='0')
+        .c-modal
+            //- Modal header
+            .c-modal__header
+                h2 New Spell
+                p.m-clickable.js-closemodal(data-close-modal='0') &times;
+            //- Main modal section (create spell form)
+            .c-modal__main
+                form.c-edithero-form(action=`/users/savespell` method='post' autocomplete='off')
+                    +spellForm()
+                    .l-margin--2
+                    .c-edithero-form__input
+                        button.c-button(type='submit') Add Spell
+
+    //- Spell search loading animation
+    .c-loadingbg
+        .c-loadingbg__animation
+    
+    script(src="/javascripts/script.js")
+    script.
+        document.addEventListener('DOMContentLoaded', () => {
+            setupModals();
+            setupSpellTables();
+        });

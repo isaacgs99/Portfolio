@@ -1,0 +1,105 @@
+extends ../layout
+
+block content
+
+    //- Headers
+    .l-margin-start
+    //- Edit map main header
+    if url.endsWith('/maps')
+        .l-divider
+            .c-divider__left
+                h1 Editar Mapas
+            .c-divider__right
+    //- New, edit, and search map headers
+    else
+        a.l-divider(href=`/users/maps`)
+            .c-divider__left
+                //- New map header
+                if url.endsWith('/newmap')
+                    h1 &#10525; Mapa Nuevo
+                //- Search map header
+                else if url.endsWith('/search')
+                    h1 &#10525; Editar Mapas: Búsqueda
+                //- Edit map header
+                else
+                    h1 &#10525; Editar Mapa: #{map.name}
+            .c-divider__right
+    
+    //- Main edit map display and searh map display section
+    if url.endsWith('/maps') || url.endsWith('/search')
+        .l-main-content
+            //- Validation Errors
+            if errors
+                h2 Please fix the following errors:
+                ul
+                    each error in errors
+                        li= error.msg
+                        
+            //- Edit map search bar
+            .l-search
+                form.c-search(action=`/users/maps/search` method='post' autocomplete='off')
+                    .c-search__input
+                        label(for='name') Nombre
+                        input(type='text' name='name' id='name' placeholder='Buscar mapa por nombre')
+                    .c-search__input--button
+                        button.c-button--large.m-clickable(type='submit') Buscar
+
+            //- New map button
+            .l-margin--2
+            .l-ability-points-grid.grid--3
+                div
+                a.c-button--large.m-clickable(href=`/users/maps/newmap`) Nuevo Mapa
+                div
+            
+            //- Map display cards
+            .l-margin--3
+            .l-cards--4
+                each map in maps
+                    a.c-card(href=`/users/maps/edit/${map._id}`)
+                        .c-card__header
+                            .c-card__header-left
+                                h2 #{map.name}
+                            .c-card__header-right
+                        img.c-card__image(src=`http://res.cloudinary.com/duezou4td/image/upload/${map.image}.png` alt=`${map.name} Image`)
+    
+    //- New map section
+    else if url.endsWith('/newmap')
+        .l-main-content
+            //- New map form
+            form.c-edithero-form(action='' method='post' enctype='multipart/form-data' autocomplete='off')
+                .c-edithero-form__input.c-edithero-form__input--stack
+                    label(for='name') *Nombre del Mapa:
+                    input(type='text' name='name' placeholder='Imedu: Encuentro con Oyzzyrnaith' required)
+
+                    label(for='image') *Imagen del Mapa:
+                    input(type='file' name='image' required)
+
+                    label(for='description') Descripción del Mapa (opcional):
+                    textarea.js-ckeditor(name='description' data-ckeditor='default' placeholder='Escribe la descripción del mapa o los eventos que ocurrieron en este mapa aquí.')
+                
+                //- New map button
+                .l-margin--2
+                button.c-button--large.m-clickable(type='submit') Crear Mapa
+    
+    //- Edit map section
+    else
+        .l-main-content
+            //- Edit map form
+            form.c-edithero-form(action='' method='post' enctype='multipart/form-data' autocomplete='off')
+                .c-edithero-form__input.c-edithero-form__input--stack
+                    label(for='name') *Nombre del Mapa:
+                    input(type='text' name='name' placeholder='Imedu: Encuentro con Oyzzyrnaith' value=map.name required)
+                    
+                    label(for='image') *Imagen del Mapa:
+                    input(type='file' name='image')
+                    .c-mapimage
+                        img(src=`http://res.cloudinary.com/duezou4td/image/upload/${map.image}.png` alt=`${map.name} Image`)
+                    .l-margin--1
+
+                    label(for='description') Descripción del Mapa (opcional):
+                    textarea.js-ckeditor(name='description' data-ckeditor='default' placeholder='Escribe la descripción del mapa o los eventos que ocurrieron en este mapa aquí.')= map.description || ''
+
+                //- Save map changes and delete map buttons
+                .l-margin--2
+                button.c-button--large.m-clickable.l-margin-right--1(type='submit' name='deletemap' value='false') Guardar Cambios
+                button.c-button--large.m-background-red.m-clickable(type='submit' name='deletemap' value='true') Borrar Mapa

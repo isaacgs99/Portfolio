@@ -1,0 +1,54 @@
+extends ../layout
+
+block content
+
+    //- Header
+    .l-margin-start
+    .l-main-content
+        h1 #{siteAlias} Admin
+        hr
+    .l-margin--3
+
+    //- Main admin options section
+    .l-main-content
+        //- Admin options display as cards
+        .l-cards
+            //- Manage users
+            a.c-card(href=`/admin/users`)
+                .c-card__header
+                    .c-card__header-left
+                        h2 Manage Users
+                    .c-card__header-right
+                img.c-card__image(src="/images/resources/rouge.jpg", alt="Rouge image")
+            
+            //- Manage heroes
+            a.c-card(href=`/admin/heroes`)
+                .c-card__header
+                    .c-card__header-left
+                        h2 Manage Heroes
+                    .c-card__header-right
+                img.c-card__image(src="/images/resources/group.png", alt="Group image")
+            
+            //- Announcements
+            a.c-card(href=`/admin/announcements`)
+                .c-card__header
+                    .c-card__header-left
+                        h2 Announcements
+                    .c-card__header-right
+                img.c-card__image(src="/images/resources/megaphone.png", alt="Megaphone image")
+            
+            //- Races
+            a.c-card(href=`/admin/races`)
+                .c-card__header
+                    .c-card__header-left
+                        h2 Races
+                    .c-card__header-right
+                img.c-card__image(src="/images/resources/tortle.png", alt="Tortle image")
+            
+            //- Classes
+            a.c-card(href=`/admin/classes`)
+                .c-card__header
+                    .c-card__header-left
+                        h2 Classes
+                    .c-card__header-right
+                img.c-card__image(src="/images/resources/classes.jpg", alt="Classes image")

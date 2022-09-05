@@ -1,0 +1,88 @@
+//- Spell create and edit form
+mixin spellForm()
+
+    //- Spell name
+    .c-edithero-form__input
+        label(for='name') *Name:
+        input(type='text' name='name' id='name' placeholder='Wingardium Leviosa' required)
+    
+    //- Spell leve, school, ritual, and concentration grid
+    .l-margin--2
+    .l-ability-points-grid.grid--4
+        .c-ability-points
+            label(for='level') Level:
+            select(name='level' id='level')
+                option(value='0') Cantrip
+                option(value='1') Level 1
+                option(value='2') Level 2
+                option(value='3') Level 3
+                option(value='4') Level 4
+                option(value='5') Level 5
+                option(value='6') Level 6
+                option(value='7') Level 7
+                option(value='8') Level 8
+                option(value='9') Level 9
+        
+        .c-ability-points
+            label(for='school') School:
+            select(name='school' id='school')
+                option(value='none') None
+                option(value='Abjuration') Abjuration
+                option(value='Conjuration') Conjuration
+                option(value='Divination') Divination
+                option(value='Enchantment') Enchantment
+                option(value='Evocation') Evocation
+                option(value='Illusion') Illusion
+                option(value='Necromancy') Necromancy
+                option(value='Transmutation') Transmutation
+        
+        .c-ability-points
+            label(for='ritual') Ritual:
+            select(name='ritual' id='ritual')
+                option(value='false') No
+                option(value='true') Yes
+        
+        .c-ability-points
+            label(for='concentration') Concentration:
+            select(name='concentration' id='concentration')
+                option(value='false') No
+                option(value='true') Yes
+    
+    //- Spell casting time and range
+    .l-margin--2
+    .c-edithero-form__input
+        label(for='casting_time') Casting Time:
+        input(type='text' name='casting_time' id='casting_time' placeholder='1 action')
+
+        label(for='range') Range:
+        input(type='text' name='range' id='range' placeholder='60ft')
+    
+    //- Spell components grid
+    .l-margin--2
+    .l-ability-points-grid.grid--3
+        .c-ability-points
+            label(for='components.verbal') Verbal
+            input(type='checkbox' name='components[]' id='components.verbal' value='V')
+        .c-ability-points
+            label(for='components.somatic') Somatic
+            input(type='checkbox' name='components[]' id='components.somatic' value='S')
+        .c-ability-points
+            label(for='components.material') Material
+            input(type='checkbox' name='components[]' id='components.material' value='M')
+    
+    //- Spell materials
+    .l-margin--2
+    .c-edithero-form__input.c-edithero-form__input--stack
+        label(for='materials') Materials:
+        textarea(name='materials' id='materials' rows="3" placeholder='A sturdy wooden stick, a handful of powdered bones from a small bird')
+    
+    //- Spell duration
+    .l-margin--2
+    .c-edithero-form__input
+        label(for='duration') Duration:
+        input(type='text' name='duration' id='duration' placeholder='Instantaneous')
+    
+    //- Spell description
+    .c-edithero-form__input.c-edithero-form__input--stack
+        label(for='description') Description:
+        textarea(name='description' id='description' rows='10' placeholder='You point your finger at a creature and shout \'Wingardium Leviosa!\' The creature levitates off the ground and you may use your action to move it telepathically at a speed of 30ft. The creature is disabled, and may use its action to end the spell on a successful Strength check against your spell save DC.\n\nUpon reaching 5th level, you may target another creature.')

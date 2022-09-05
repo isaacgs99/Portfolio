@@ -1,0 +1,110 @@
+extends layout
+include mixins/_comments
+
+block content
+
+    //- Character main and search sections
+    if url.endsWith('/characters') || url.endsWith('/search')
+        //- script(src="/javascripts/ajax/characters.js")
+        
+        //- Header
+        .l-margin-start
+        if url.endsWith('/characters')
+            .l-divider
+                .c-divider__left
+                    h1 Personajes
+                .c-divider__right
+        else
+            a.l-divider(href='/characters')
+                .c-divider__left
+                    h1 &#10525; Personajes: Búsqueda
+                .c-divider__right
+
+        .l-main-content
+            //- Validation Errors
+            if errors
+                h2 Please fix the following errors:
+                ul
+                    each error in errors
+                        li= error.msg
+
+            //- Character search bar
+            .l-search
+                form.c-search(action='/characters/search' method='post' autocomplete='off')
+                    .c-search__input
+                        label(for='name') Nombre
+                        input(type='text' name='name' id='name' placeholder='Buscar personaje por nombre')
+                    .c-search__input
+                        label(for='relationship') Relacion
+                        input(type='text' name='relationship' id='relationship' placeholder='Buscar personaje por relacion')
+                    .c-search__input
+                        label(for='place') Lugar
+                        input(type='text' name='place' id='place' placeholder='Buscar personaje por lugar')
+                    .c-search__input
+                        label(for='race') Raza
+                        input(type='text' name='race' id='race' placeholder='Buscar personaje por raza')
+                    .c-search__input--button
+                        button.c-button--large.m-clickable(type='submit') Buscar
+            
+            //- Character cards
+            .l-margin--3
+            .l-cards--4
+                each character in characters
+                    a.c-card(href=`/characters/${character.name}`)
+                        .c-card__header
+                            .c-card__header-left
+                                h2 #{character.name}
+                            .c-card__header-right
+                        if character.image != '' && character.image != undefined
+                            img.c-card__image(src=`http://res.cloudinary.com/duezou4td/image/upload/${character.image}.png` alt=`${character.name}'s Image`)
+                        else
+                            img.c-card__image(src=tmpImg)
+    
+    //- Character view section
+    else
+        //- Header
+        .l-margin-start
+        a.l-divider(href='/characters')
+            .c-divider__left
+                h1 &#10525; Personajes
+            .c-divider__right
+
+        .l-main-content
+            //- Character image, summary, and appearance sidebar
+            .l-text-wrap
+                if character.image != '' && character.image != undefined
+                    img.l-text-wrap__image(src=`http://res.cloudinary.com/duezou4td/image/upload/${character.image}.png` alt=`${character.name}'s Image`)
+                
+                //- Character summary
+                .c-basic-info
+                    h3 Resumen
+                    p= `Título: ${character.title || '???'}`
+                    p= `Afiliación: ${character.affiliation || '???'}`
+                    p= `Lugar de Origen o donde fué conocido: ${character.place || '???'}`
+                    p= `Edad: ${character.age || '???'}`
+                    p= `Raza: ${character.race || '???'}`
+                    p= `Clase: ${character.class || '???'}`
+                    p= `Tamaño: ${character.size || '???'}`
+                
+                //- Character appearance
+                .c-basic-info
+                    h3 Apariencia
+                    if character.appearance != '' && character.appearance != undefined
+                        - const lines = character.appearance.split(/(\r\n|\r|\n)/g)
+                        each line in lines
+                            p= line
+                    else
+                        p ???
+
+            //- Character main section
+            h2= `${character.name}`
+
+            //- Character summary
+            if character.summary != '' && character.summary != undefined
+                p !{character.summary}
+            else
+                p #{character.name} no tiene historia/resumen.
+
+        //- Character coments
+        .l-main-content.l-clearleft
+            +comments(character.comments, `${character.name}`, 'characters')

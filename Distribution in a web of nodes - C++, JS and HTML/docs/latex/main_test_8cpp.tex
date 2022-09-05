@@ -1,0 +1,579 @@
+\hypertarget{main_test_8cpp}{}\doxysection{main\+Test.\+cpp File Reference}
+\label{main_test_8cpp}\index{mainTest.cpp@{mainTest.cpp}}
+{\ttfamily \#include $<$iostream$>$}\newline
+{\ttfamily \#include $<$stdio.\+h$>$}\newline
+{\ttfamily \#include $<$stdlib.\+h$>$}\newline
+{\ttfamily \#include $<$unistd.\+h$>$}\newline
+{\ttfamily \#include $<$pthread.\+h$>$}\newline
+{\ttfamily \#include $<$cstdint$>$}\newline
+{\ttfamily \#include $<$vector$>$}\newline
+{\ttfamily \#include $<$time.\+h$>$}\newline
+{\ttfamily \#include $<$omp.\+h$>$}\newline
+{\ttfamily \#include $<$limits.\+h$>$}\newline
+{\ttfamily \#include $<$math.\+h$>$}\newline
+{\ttfamily \#include $<$fstream$>$}\newline
+\doxysubsection*{Macros}
+\begin{DoxyCompactItemize}
+\item 
+\#define \mbox{\hyperlink{main_test_8cpp_a8e3d0b04841186d4f38b7880a9e4b5c6}{I\+T\+E\+MS}}~I\+N\+T\+\_\+\+M\+AX
+\item 
+\#define \mbox{\hyperlink{main_test_8cpp_a403cf3149c084cea115b85c90721039a}{B\+S\+I\+ZE}}~100
+\item 
+\#define \mbox{\hyperlink{main_test_8cpp_ab04c88bedc6b2be8ddfe7aa8d3e93f06}{NP}}~1
+\end{DoxyCompactItemize}
+\doxysubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+void $\ast$ \mbox{\hyperlink{main_test_8cpp_ae80dd73d4e01cf21553868b41607e7b2}{productor}} (void $\ast$)
+\item 
+void $\ast$ \mbox{\hyperlink{main_test_8cpp_aca3f8f1832211fe3d4b62b00899e3966}{consumidor}} (void $\ast$)
+\item 
+vector$<$ vector$<$ int $>$ $>$ \mbox{\hyperlink{main_test_8cpp_aa919dae118904b8943688ee489f6fba1}{generar\+Matriz}} (int n, int m)
+\item 
+int \mbox{\hyperlink{main_test_8cpp_a903856b70768b4ade0d78163a866e3d5}{multiplicar}} (vector$<$ vector$<$ int $>$$>$ A, vector$<$ vector$<$ int $>$$>$ B)
+\item 
+void \mbox{\hyperlink{main_test_8cpp_a8741beda2ee17e16771d523d92fc743a}{imprimir\+Matrices}} (vector$<$ int $>$ \mbox{\hyperlink{main_test_8cpp_ac3867ecb501f25557517d264f7763123}{vec}}, bool hold, int n\+Pro, int status, int proT, int \mbox{\hyperlink{main_test_8cpp_acb089a86ea45764bfc9ba5ba73b44941}{n\+Finish}}, int \mbox{\hyperlink{main_test_8cpp_a5446684d9183e70b71af3345c25a1265}{n\+Fail}})
+\item 
+void \mbox{\hyperlink{main_test_8cpp_a67a3ee453276554a5ac1e0eda679fb16}{imprimir\+Resultados}} (int \mbox{\hyperlink{main_test_8cpp_acb089a86ea45764bfc9ba5ba73b44941}{n\+Finish}}, int \mbox{\hyperlink{main_test_8cpp_a5446684d9183e70b71af3345c25a1265}{n\+Fail}})
+\item 
+bool \mbox{\hyperlink{main_test_8cpp_a9613fb7faf145390e03dc629530b86b4}{emparejar}} ()
+\item 
+void \mbox{\hyperlink{main_test_8cpp_a963969252f81e9ad1f980c3706229e7f}{asignar\+Valores}} (int processsors, int cores, float valalpha, float valbeta, float valdelta, float valnotgamma, int valc, time\+\_\+t valtime\+Sim, int valx)
+\item 
+int \mbox{\hyperlink{main_test_8cpp_a0ddf1224851353fc92bfbff6f499fa97}{main}} (int argc, char $\ast$argv\mbox{[}$\,$\mbox{]})
+\end{DoxyCompactItemize}
+\doxysubsection*{Variables}
+\begin{DoxyCompactItemize}
+\item 
+int \mbox{\hyperlink{main_test_8cpp_ab4cee453adc50fdf7fed706a78903134}{NC}}
+\item 
+int \mbox{\hyperlink{main_test_8cpp_a41f8e2c031fb0bfe4f5e25a1fd6a5f66}{N\+C\+O\+R\+ES}}
+\item 
+float \mbox{\hyperlink{main_test_8cpp_ab1551d8043c2aa4410fb7dbb1fe3be7b}{alpha}}
+\item 
+float \mbox{\hyperlink{main_test_8cpp_aa773d9a6c0ccefaa0fc9ab66fec68ec1}{beta}}
+\item 
+float \mbox{\hyperlink{main_test_8cpp_a1ee4a05b54419bfadd66ee351d05812e}{delta}}
+\item 
+float \mbox{\hyperlink{main_test_8cpp_abb68dd967686763745ef32d2c11fdcb4}{notgamma}}
+\item 
+int \mbox{\hyperlink{main_test_8cpp_a4e1e0e72dd773439e333c84dd762a9c3}{c}}
+\item 
+time\+\_\+t \mbox{\hyperlink{main_test_8cpp_aa5494ef8c0d1750c5a3c6184b1c4a2ee}{time\+Sim}}
+\item 
+int \mbox{\hyperlink{main_test_8cpp_a6150e0515f7202e2fb518f7206ed97dc}{x}}
+\item 
+int \mbox{\hyperlink{main_test_8cpp_a5446684d9183e70b71af3345c25a1265}{n\+Fail}} = 0
+\item 
+int \mbox{\hyperlink{main_test_8cpp_acb089a86ea45764bfc9ba5ba73b44941}{n\+Finish}} = 0
+\item 
+int \mbox{\hyperlink{main_test_8cpp_a26aeebe75887b4360c73659342f5dc61}{in}} = 0
+\item 
+int \mbox{\hyperlink{main_test_8cpp_aa8000eda101cade7c6c4b913fce0cc9c}{out}} = 0
+\item 
+int \mbox{\hyperlink{main_test_8cpp_ad43c3812e6d13e0518d9f8b8f463ffcf}{count}} = 0
+\item 
+int \mbox{\hyperlink{main_test_8cpp_a2c6a3fb7cddd9bd7254692264962b5b3}{contador}} = 0
+\item 
+int \mbox{\hyperlink{main_test_8cpp_a8eef4dec947b0a63b5ea6771b51a0484}{contador2}} = 0
+\item 
+bool \mbox{\hyperlink{main_test_8cpp_a63e28a2448682b0a10a9c490532d410a}{global\+Fail}} =false
+\item 
+vector$<$ int $>$ \mbox{\hyperlink{main_test_8cpp_ac3867ecb501f25557517d264f7763123}{vec}}
+\item 
+ofstream \mbox{\hyperlink{main_test_8cpp_a0a2814a2252fee90794304506ef2e9c0}{fout}}
+\item 
+ofstream \mbox{\hyperlink{main_test_8cpp_a7b217c59d93d29ced63a0587e88c703c}{fout2}}
+\item 
+pthread\+\_\+mutex\+\_\+t \mbox{\hyperlink{main_test_8cpp_a4acff8232e4aec9cd5c6dc200ac55ef3}{mutex}} = P\+T\+H\+R\+E\+A\+D\+\_\+\+M\+U\+T\+E\+X\+\_\+\+I\+N\+I\+T\+I\+A\+L\+I\+Z\+ER
+\item 
+pthread\+\_\+cond\+\_\+t \mbox{\hyperlink{main_test_8cpp_a886afcc143448118712044315e7f418d}{produce}} = P\+T\+H\+R\+E\+A\+D\+\_\+\+C\+O\+N\+D\+\_\+\+I\+N\+I\+T\+I\+A\+L\+I\+Z\+ER
+\item 
+pthread\+\_\+cond\+\_\+t \mbox{\hyperlink{main_test_8cpp_a271a0a8dec0ccdcbf6066f76ae670af8}{consume}} = P\+T\+H\+R\+E\+A\+D\+\_\+\+C\+O\+N\+D\+\_\+\+I\+N\+I\+T\+I\+A\+L\+I\+Z\+ER
+\item 
+vector$<$ vector$<$ int $>$ $>$ \mbox{\hyperlink{main_test_8cpp_ac063073df54df9a00a6b06565219b70f}{buffer}} \mbox{[}\mbox{\hyperlink{main_test_8cpp_a403cf3149c084cea115b85c90721039a}{B\+S\+I\+ZE}}\mbox{]}
+\item 
+vector$<$ vector$<$ vector$<$ int $>$ $>$ $>$ \mbox{\hyperlink{main_test_8cpp_a9fee131c75cd35be0952bbcff24b87b8}{list}}
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Macro Definition Documentation}
+\mbox{\Hypertarget{main_test_8cpp_a403cf3149c084cea115b85c90721039a}\label{main_test_8cpp_a403cf3149c084cea115b85c90721039a}} 
+\index{mainTest.cpp@{mainTest.cpp}!BSIZE@{BSIZE}}
+\index{BSIZE@{BSIZE}!mainTest.cpp@{mainTest.cpp}}
+\doxysubsubsection{\texorpdfstring{BSIZE}{BSIZE}}
+{\footnotesize\ttfamily \#define B\+S\+I\+ZE~100}
+
+
+
+Definition at line 24 of file main\+Test.\+cpp.
+
+\mbox{\Hypertarget{main_test_8cpp_a8e3d0b04841186d4f38b7880a9e4b5c6}\label{main_test_8cpp_a8e3d0b04841186d4f38b7880a9e4b5c6}} 
+\index{mainTest.cpp@{mainTest.cpp}!ITEMS@{ITEMS}}
+\index{ITEMS@{ITEMS}!mainTest.cpp@{mainTest.cpp}}
+\doxysubsubsection{\texorpdfstring{ITEMS}{ITEMS}}
+{\footnotesize\ttfamily \#define I\+T\+E\+MS~I\+N\+T\+\_\+\+M\+AX}
+
+
+
+Definition at line 23 of file main\+Test.\+cpp.
+
+\mbox{\Hypertarget{main_test_8cpp_ab04c88bedc6b2be8ddfe7aa8d3e93f06}\label{main_test_8cpp_ab04c88bedc6b2be8ddfe7aa8d3e93f06}} 
+\index{mainTest.cpp@{mainTest.cpp}!NP@{NP}}
+\index{NP@{NP}!mainTest.cpp@{mainTest.cpp}}
+\doxysubsubsection{\texorpdfstring{NP}{NP}}
+{\footnotesize\ttfamily \#define NP~1}
+
+
+
+Definition at line 25 of file main\+Test.\+cpp.
+
+
+
+\doxysubsection{Function Documentation}
+\mbox{\Hypertarget{main_test_8cpp_a963969252f81e9ad1f980c3706229e7f}\label{main_test_8cpp_a963969252f81e9ad1f980c3706229e7f}} 
+\index{mainTest.cpp@{mainTest.cpp}!asignarValores@{asignarValores}}
+\index{asignarValores@{asignarValores}!mainTest.cpp@{mainTest.cpp}}
+\doxysubsubsection{\texorpdfstring{asignarValores()}{asignarValores()}}
+{\footnotesize\ttfamily void asignar\+Valores (\begin{DoxyParamCaption}\item[{int}]{processsors,  }\item[{int}]{cores,  }\item[{float}]{valalpha,  }\item[{float}]{valbeta,  }\item[{float}]{valdelta,  }\item[{float}]{valnotgamma,  }\item[{int}]{valc,  }\item[{time\+\_\+t}]{valtime\+Sim,  }\item[{int}]{valx }\end{DoxyParamCaption})}
+
+Assigns the values of input variables to global variables. Some of these global variables will have the same value as the input variables, but some will be divided by the values of those input variables.
+
+
+\begin{DoxyParams}{Parameters}
+{\em processors} & The amount of processors/threads to be used for this simulation. \\
+\hline
+{\em cores} & The amount of cores to be used per processor/thread. \\
+\hline
+{\em valalpha} & The value of alpha. \\
+\hline
+{\em valbeta} & The value of beta. \\
+\hline
+{\em valdelta} & The value of delta. \\
+\hline
+{\em valnotgamma} & The value of valnotgamma. \\
+\hline
+{\em valc} & The value of c \\
+\hline
+{\em valtime\+Sim} & The value of time\+Sim \\
+\hline
+{\em valx} & The value of x \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line 270 of file main\+Test.\+cpp.
+
+\mbox{\Hypertarget{main_test_8cpp_aca3f8f1832211fe3d4b62b00899e3966}\label{main_test_8cpp_aca3f8f1832211fe3d4b62b00899e3966}} 
+\index{mainTest.cpp@{mainTest.cpp}!consumidor@{consumidor}}
+\index{consumidor@{consumidor}!mainTest.cpp@{mainTest.cpp}}
+\doxysubsubsection{\texorpdfstring{consumidor()}{consumidor()}}
+{\footnotesize\ttfamily void $\ast$ consumidor (\begin{DoxyParamCaption}\item[{void $\ast$}]{arg }\end{DoxyParamCaption})}
+
+A method used by every consumer thread that makes a call to \char`\"{}multiplicar\char`\"{} to multiply matrices. It can enter a state of recuperation or reboot in case the RC or RB flags are active.
+
+
+\begin{DoxyParams}{Parameters}
+{\em arg} & A pointer of type void that points to the ID or number of the thread using this method. \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line 353 of file main\+Test.\+cpp.
+
+\mbox{\Hypertarget{main_test_8cpp_a9613fb7faf145390e03dc629530b86b4}\label{main_test_8cpp_a9613fb7faf145390e03dc629530b86b4}} 
+\index{mainTest.cpp@{mainTest.cpp}!emparejar@{emparejar}}
+\index{emparejar@{emparejar}!mainTest.cpp@{mainTest.cpp}}
+\doxysubsubsection{\texorpdfstring{emparejar()}{emparejar()}}
+{\footnotesize\ttfamily bool emparejar (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+Checks wether two pair of matrices can be multiplied by checking if the amount of columns of the first matrix is the same as the amount of rows of the second matrix.
+
+\begin{DoxyReturn}{Returns}
+true or false as to if they can multiply or not. 
+\end{DoxyReturn}
+
+
+Definition at line 225 of file main\+Test.\+cpp.
+
+\mbox{\Hypertarget{main_test_8cpp_aa919dae118904b8943688ee489f6fba1}\label{main_test_8cpp_aa919dae118904b8943688ee489f6fba1}} 
+\index{mainTest.cpp@{mainTest.cpp}!generarMatriz@{generarMatriz}}
+\index{generarMatriz@{generarMatriz}!mainTest.cpp@{mainTest.cpp}}
+\doxysubsubsection{\texorpdfstring{generarMatriz()}{generarMatriz()}}
+{\footnotesize\ttfamily vector$<$vector$<$int$>$ $>$ generar\+Matriz (\begin{DoxyParamCaption}\item[{int}]{n,  }\item[{int}]{m }\end{DoxyParamCaption})}
+
+Generates a matriz using 2 random numbers, one for the columns and one for the rows. It also fills the matrix with random numbers;
+
+
+\begin{DoxyParams}{Parameters}
+{\em n} & The number of columns in the matrix. \\
+\hline
+{\em m} & The number of rows in the matrix.\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+vec, the matrix that was generated. 
+\end{DoxyReturn}
+
+
+Definition at line 71 of file main\+Test.\+cpp.
+
+\mbox{\Hypertarget{main_test_8cpp_a8741beda2ee17e16771d523d92fc743a}\label{main_test_8cpp_a8741beda2ee17e16771d523d92fc743a}} 
+\index{mainTest.cpp@{mainTest.cpp}!imprimirMatrices@{imprimirMatrices}}
+\index{imprimirMatrices@{imprimirMatrices}!mainTest.cpp@{mainTest.cpp}}
+\doxysubsubsection{\texorpdfstring{imprimirMatrices()}{imprimirMatrices()}}
+{\footnotesize\ttfamily void imprimir\+Matrices (\begin{DoxyParamCaption}\item[{vector$<$ int $>$}]{vec,  }\item[{bool}]{hold,  }\item[{int}]{n\+Pro,  }\item[{int}]{status,  }\item[{int}]{proT,  }\item[{int}]{n\+Finish,  }\item[{int}]{n\+Fail }\end{DoxyParamCaption})}
+
+Opens a text file and prints
+
+
+\begin{DoxyParams}{Parameters}
+{\em vec} & \\
+\hline
+{\em hold} & The variable that tells wether a matrix is on hold or not. \\
+\hline
+{\em n\+Pro} & The id of the producer thread. \\
+\hline
+{\em status} & The variable that tells wether a thread is working or not. \\
+\hline
+{\em proT} & The total amount of processors. \\
+\hline
+{\em n\+Finish} & The amount of finished multiplications. \\
+\hline
+{\em n\+Fail} & The amount of failed multiplications. \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line 185 of file main\+Test.\+cpp.
+
+\mbox{\Hypertarget{main_test_8cpp_a67a3ee453276554a5ac1e0eda679fb16}\label{main_test_8cpp_a67a3ee453276554a5ac1e0eda679fb16}} 
+\index{mainTest.cpp@{mainTest.cpp}!imprimirResultados@{imprimirResultados}}
+\index{imprimirResultados@{imprimirResultados}!mainTest.cpp@{mainTest.cpp}}
+\doxysubsubsection{\texorpdfstring{imprimirResultados()}{imprimirResultados()}}
+{\footnotesize\ttfamily void imprimir\+Resultados (\begin{DoxyParamCaption}\item[{int}]{n\+Finish,  }\item[{int}]{n\+Fail }\end{DoxyParamCaption})}
+
+Opens a text file and prints the number of finished multiplications and the number of failed multiplications.
+
+
+\begin{DoxyParams}{Parameters}
+{\em n\+Finish} & The amount of finished multiplications. \\
+\hline
+{\em n\+Fail} & The amount of failed multiplications. \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line 208 of file main\+Test.\+cpp.
+
+\mbox{\Hypertarget{main_test_8cpp_a0ddf1224851353fc92bfbff6f499fa97}\label{main_test_8cpp_a0ddf1224851353fc92bfbff6f499fa97}} 
+\index{mainTest.cpp@{mainTest.cpp}!main@{main}}
+\index{main@{main}!mainTest.cpp@{mainTest.cpp}}
+\doxysubsubsection{\texorpdfstring{main()}{main()}}
+{\footnotesize\ttfamily int main (\begin{DoxyParamCaption}\item[{int}]{argc,  }\item[{char $\ast$}]{argv\mbox{[}$\,$\mbox{]} }\end{DoxyParamCaption})}
+
+Receives all the necessary parameters when running the program using the executable or through the webpage,
+
+
+\begin{DoxyParams}{Parameters}
+{\em argc} & The number of arguments passed to the program \\
+\hline
+{\em argv} & The array that saves all the arguments \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line 289 of file main\+Test.\+cpp.
+
+\mbox{\Hypertarget{main_test_8cpp_a903856b70768b4ade0d78163a866e3d5}\label{main_test_8cpp_a903856b70768b4ade0d78163a866e3d5}} 
+\index{mainTest.cpp@{mainTest.cpp}!multiplicar@{multiplicar}}
+\index{multiplicar@{multiplicar}!mainTest.cpp@{mainTest.cpp}}
+\doxysubsubsection{\texorpdfstring{multiplicar()}{multiplicar()}}
+{\footnotesize\ttfamily int multiplicar (\begin{DoxyParamCaption}\item[{vector$<$ vector$<$ int $>$$>$}]{A,  }\item[{vector$<$ vector$<$ int $>$$>$}]{B }\end{DoxyParamCaption})}
+
+Receives two matrices to multiply after going through a Poisson distribution to determine wether the consumer thread using this method goes into RC or RB in a simulated manner.
+
+
+\begin{DoxyParams}{Parameters}
+{\em A} & The first matrix. \\
+\hline
+{\em B} & The second matrix.\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+an integer that helps signal if a matrix is ready to be multilpied or not. 
+\end{DoxyReturn}
+
+
+Definition at line 104 of file main\+Test.\+cpp.
+
+\mbox{\Hypertarget{main_test_8cpp_ae80dd73d4e01cf21553868b41607e7b2}\label{main_test_8cpp_ae80dd73d4e01cf21553868b41607e7b2}} 
+\index{mainTest.cpp@{mainTest.cpp}!productor@{productor}}
+\index{productor@{productor}!mainTest.cpp@{mainTest.cpp}}
+\doxysubsubsection{\texorpdfstring{productor()}{productor()}}
+{\footnotesize\ttfamily void $\ast$ productor (\begin{DoxyParamCaption}\item[{void $\ast$}]{arg }\end{DoxyParamCaption})}
+
+A method used by the productor thread that makes a call to \char`\"{}generar\+Matriz\char`\"{} to create matrices with random sizes and later pushes them back to the list of matrices. The matrices are also pushed into the buffer for the consumer threads to use.
+
+
+\begin{DoxyParams}{Parameters}
+{\em arg} & A pointer of type void that points to the ID or number of the thread using this method (which in this case is only 1). \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line 450 of file main\+Test.\+cpp.
+
+
+
+\doxysubsection{Variable Documentation}
+\mbox{\Hypertarget{main_test_8cpp_ab1551d8043c2aa4410fb7dbb1fe3be7b}\label{main_test_8cpp_ab1551d8043c2aa4410fb7dbb1fe3be7b}} 
+\index{mainTest.cpp@{mainTest.cpp}!alpha@{alpha}}
+\index{alpha@{alpha}!mainTest.cpp@{mainTest.cpp}}
+\doxysubsubsection{\texorpdfstring{alpha}{alpha}}
+{\footnotesize\ttfamily float alpha}
+
+
+
+Definition at line 31 of file main\+Test.\+cpp.
+
+\mbox{\Hypertarget{main_test_8cpp_aa773d9a6c0ccefaa0fc9ab66fec68ec1}\label{main_test_8cpp_aa773d9a6c0ccefaa0fc9ab66fec68ec1}} 
+\index{mainTest.cpp@{mainTest.cpp}!beta@{beta}}
+\index{beta@{beta}!mainTest.cpp@{mainTest.cpp}}
+\doxysubsubsection{\texorpdfstring{beta}{beta}}
+{\footnotesize\ttfamily float beta}
+
+
+
+Definition at line 33 of file main\+Test.\+cpp.
+
+\mbox{\Hypertarget{main_test_8cpp_ac063073df54df9a00a6b06565219b70f}\label{main_test_8cpp_ac063073df54df9a00a6b06565219b70f}} 
+\index{mainTest.cpp@{mainTest.cpp}!buffer@{buffer}}
+\index{buffer@{buffer}!mainTest.cpp@{mainTest.cpp}}
+\doxysubsubsection{\texorpdfstring{buffer}{buffer}}
+{\footnotesize\ttfamily vector$<$vector$<$int$>$ $>$ buffer\mbox{[}\mbox{\hyperlink{main_test_8cpp_a403cf3149c084cea115b85c90721039a}{B\+S\+I\+ZE}}\mbox{]}}
+
+
+
+Definition at line 56 of file main\+Test.\+cpp.
+
+\mbox{\Hypertarget{main_test_8cpp_a4e1e0e72dd773439e333c84dd762a9c3}\label{main_test_8cpp_a4e1e0e72dd773439e333c84dd762a9c3}} 
+\index{mainTest.cpp@{mainTest.cpp}!c@{c}}
+\index{c@{c}!mainTest.cpp@{mainTest.cpp}}
+\doxysubsubsection{\texorpdfstring{c}{c}}
+{\footnotesize\ttfamily int c}
+
+
+
+Definition at line 39 of file main\+Test.\+cpp.
+
+\mbox{\Hypertarget{main_test_8cpp_a271a0a8dec0ccdcbf6066f76ae670af8}\label{main_test_8cpp_a271a0a8dec0ccdcbf6066f76ae670af8}} 
+\index{mainTest.cpp@{mainTest.cpp}!consume@{consume}}
+\index{consume@{consume}!mainTest.cpp@{mainTest.cpp}}
+\doxysubsubsection{\texorpdfstring{consume}{consume}}
+{\footnotesize\ttfamily pthread\+\_\+cond\+\_\+t consume = P\+T\+H\+R\+E\+A\+D\+\_\+\+C\+O\+N\+D\+\_\+\+I\+N\+I\+T\+I\+A\+L\+I\+Z\+ER}
+
+
+
+Definition at line 55 of file main\+Test.\+cpp.
+
+\mbox{\Hypertarget{main_test_8cpp_a2c6a3fb7cddd9bd7254692264962b5b3}\label{main_test_8cpp_a2c6a3fb7cddd9bd7254692264962b5b3}} 
+\index{mainTest.cpp@{mainTest.cpp}!contador@{contador}}
+\index{contador@{contador}!mainTest.cpp@{mainTest.cpp}}
+\doxysubsubsection{\texorpdfstring{contador}{contador}}
+{\footnotesize\ttfamily int contador = 0}
+
+
+
+Definition at line 47 of file main\+Test.\+cpp.
+
+\mbox{\Hypertarget{main_test_8cpp_a8eef4dec947b0a63b5ea6771b51a0484}\label{main_test_8cpp_a8eef4dec947b0a63b5ea6771b51a0484}} 
+\index{mainTest.cpp@{mainTest.cpp}!contador2@{contador2}}
+\index{contador2@{contador2}!mainTest.cpp@{mainTest.cpp}}
+\doxysubsubsection{\texorpdfstring{contador2}{contador2}}
+{\footnotesize\ttfamily int contador2 = 0}
+
+
+
+Definition at line 48 of file main\+Test.\+cpp.
+
+\mbox{\Hypertarget{main_test_8cpp_ad43c3812e6d13e0518d9f8b8f463ffcf}\label{main_test_8cpp_ad43c3812e6d13e0518d9f8b8f463ffcf}} 
+\index{mainTest.cpp@{mainTest.cpp}!count@{count}}
+\index{count@{count}!mainTest.cpp@{mainTest.cpp}}
+\doxysubsubsection{\texorpdfstring{count}{count}}
+{\footnotesize\ttfamily int count = 0}
+
+
+
+Definition at line 46 of file main\+Test.\+cpp.
+
+\mbox{\Hypertarget{main_test_8cpp_a1ee4a05b54419bfadd66ee351d05812e}\label{main_test_8cpp_a1ee4a05b54419bfadd66ee351d05812e}} 
+\index{mainTest.cpp@{mainTest.cpp}!delta@{delta}}
+\index{delta@{delta}!mainTest.cpp@{mainTest.cpp}}
+\doxysubsubsection{\texorpdfstring{delta}{delta}}
+{\footnotesize\ttfamily float delta}
+
+
+
+Definition at line 35 of file main\+Test.\+cpp.
+
+\mbox{\Hypertarget{main_test_8cpp_a0a2814a2252fee90794304506ef2e9c0}\label{main_test_8cpp_a0a2814a2252fee90794304506ef2e9c0}} 
+\index{mainTest.cpp@{mainTest.cpp}!fout@{fout}}
+\index{fout@{fout}!mainTest.cpp@{mainTest.cpp}}
+\doxysubsubsection{\texorpdfstring{fout}{fout}}
+{\footnotesize\ttfamily ofstream fout}
+
+
+
+Definition at line 51 of file main\+Test.\+cpp.
+
+\mbox{\Hypertarget{main_test_8cpp_a7b217c59d93d29ced63a0587e88c703c}\label{main_test_8cpp_a7b217c59d93d29ced63a0587e88c703c}} 
+\index{mainTest.cpp@{mainTest.cpp}!fout2@{fout2}}
+\index{fout2@{fout2}!mainTest.cpp@{mainTest.cpp}}
+\doxysubsubsection{\texorpdfstring{fout2}{fout2}}
+{\footnotesize\ttfamily ofstream fout2}
+
+
+
+Definition at line 52 of file main\+Test.\+cpp.
+
+\mbox{\Hypertarget{main_test_8cpp_a63e28a2448682b0a10a9c490532d410a}\label{main_test_8cpp_a63e28a2448682b0a10a9c490532d410a}} 
+\index{mainTest.cpp@{mainTest.cpp}!globalFail@{globalFail}}
+\index{globalFail@{globalFail}!mainTest.cpp@{mainTest.cpp}}
+\doxysubsubsection{\texorpdfstring{globalFail}{globalFail}}
+{\footnotesize\ttfamily bool global\+Fail =false}
+
+
+
+Definition at line 49 of file main\+Test.\+cpp.
+
+\mbox{\Hypertarget{main_test_8cpp_a26aeebe75887b4360c73659342f5dc61}\label{main_test_8cpp_a26aeebe75887b4360c73659342f5dc61}} 
+\index{mainTest.cpp@{mainTest.cpp}!in@{in}}
+\index{in@{in}!mainTest.cpp@{mainTest.cpp}}
+\doxysubsubsection{\texorpdfstring{in}{in}}
+{\footnotesize\ttfamily int in = 0}
+
+
+
+Definition at line 46 of file main\+Test.\+cpp.
+
+\mbox{\Hypertarget{main_test_8cpp_a9fee131c75cd35be0952bbcff24b87b8}\label{main_test_8cpp_a9fee131c75cd35be0952bbcff24b87b8}} 
+\index{mainTest.cpp@{mainTest.cpp}!list@{list}}
+\index{list@{list}!mainTest.cpp@{mainTest.cpp}}
+\doxysubsubsection{\texorpdfstring{list}{list}}
+{\footnotesize\ttfamily vector$<$vector$<$vector$<$int$>$ $>$ $>$ list}
+
+
+
+Definition at line 57 of file main\+Test.\+cpp.
+
+\mbox{\Hypertarget{main_test_8cpp_a4acff8232e4aec9cd5c6dc200ac55ef3}\label{main_test_8cpp_a4acff8232e4aec9cd5c6dc200ac55ef3}} 
+\index{mainTest.cpp@{mainTest.cpp}!mutex@{mutex}}
+\index{mutex@{mutex}!mainTest.cpp@{mainTest.cpp}}
+\doxysubsubsection{\texorpdfstring{mutex}{mutex}}
+{\footnotesize\ttfamily pthread\+\_\+mutex\+\_\+t mutex = P\+T\+H\+R\+E\+A\+D\+\_\+\+M\+U\+T\+E\+X\+\_\+\+I\+N\+I\+T\+I\+A\+L\+I\+Z\+ER}
+
+
+
+Definition at line 53 of file main\+Test.\+cpp.
+
+\mbox{\Hypertarget{main_test_8cpp_ab4cee453adc50fdf7fed706a78903134}\label{main_test_8cpp_ab4cee453adc50fdf7fed706a78903134}} 
+\index{mainTest.cpp@{mainTest.cpp}!NC@{NC}}
+\index{NC@{NC}!mainTest.cpp@{mainTest.cpp}}
+\doxysubsubsection{\texorpdfstring{NC}{NC}}
+{\footnotesize\ttfamily int NC}
+
+
+
+Definition at line 27 of file main\+Test.\+cpp.
+
+\mbox{\Hypertarget{main_test_8cpp_a41f8e2c031fb0bfe4f5e25a1fd6a5f66}\label{main_test_8cpp_a41f8e2c031fb0bfe4f5e25a1fd6a5f66}} 
+\index{mainTest.cpp@{mainTest.cpp}!NCORES@{NCORES}}
+\index{NCORES@{NCORES}!mainTest.cpp@{mainTest.cpp}}
+\doxysubsubsection{\texorpdfstring{NCORES}{NCORES}}
+{\footnotesize\ttfamily int N\+C\+O\+R\+ES}
+
+
+
+Definition at line 29 of file main\+Test.\+cpp.
+
+\mbox{\Hypertarget{main_test_8cpp_a5446684d9183e70b71af3345c25a1265}\label{main_test_8cpp_a5446684d9183e70b71af3345c25a1265}} 
+\index{mainTest.cpp@{mainTest.cpp}!nFail@{nFail}}
+\index{nFail@{nFail}!mainTest.cpp@{mainTest.cpp}}
+\doxysubsubsection{\texorpdfstring{nFail}{nFail}}
+{\footnotesize\ttfamily int n\+Fail = 0}
+
+
+
+Definition at line 44 of file main\+Test.\+cpp.
+
+\mbox{\Hypertarget{main_test_8cpp_acb089a86ea45764bfc9ba5ba73b44941}\label{main_test_8cpp_acb089a86ea45764bfc9ba5ba73b44941}} 
+\index{mainTest.cpp@{mainTest.cpp}!nFinish@{nFinish}}
+\index{nFinish@{nFinish}!mainTest.cpp@{mainTest.cpp}}
+\doxysubsubsection{\texorpdfstring{nFinish}{nFinish}}
+{\footnotesize\ttfamily int n\+Finish = 0}
+
+
+
+Definition at line 45 of file main\+Test.\+cpp.
+
+\mbox{\Hypertarget{main_test_8cpp_abb68dd967686763745ef32d2c11fdcb4}\label{main_test_8cpp_abb68dd967686763745ef32d2c11fdcb4}} 
+\index{mainTest.cpp@{mainTest.cpp}!notgamma@{notgamma}}
+\index{notgamma@{notgamma}!mainTest.cpp@{mainTest.cpp}}
+\doxysubsubsection{\texorpdfstring{notgamma}{notgamma}}
+{\footnotesize\ttfamily float notgamma}
+
+
+
+Definition at line 37 of file main\+Test.\+cpp.
+
+\mbox{\Hypertarget{main_test_8cpp_aa8000eda101cade7c6c4b913fce0cc9c}\label{main_test_8cpp_aa8000eda101cade7c6c4b913fce0cc9c}} 
+\index{mainTest.cpp@{mainTest.cpp}!out@{out}}
+\index{out@{out}!mainTest.cpp@{mainTest.cpp}}
+\doxysubsubsection{\texorpdfstring{out}{out}}
+{\footnotesize\ttfamily int out = 0}
+
+
+
+Definition at line 46 of file main\+Test.\+cpp.
+
+\mbox{\Hypertarget{main_test_8cpp_a886afcc143448118712044315e7f418d}\label{main_test_8cpp_a886afcc143448118712044315e7f418d}} 
+\index{mainTest.cpp@{mainTest.cpp}!produce@{produce}}
+\index{produce@{produce}!mainTest.cpp@{mainTest.cpp}}
+\doxysubsubsection{\texorpdfstring{produce}{produce}}
+{\footnotesize\ttfamily pthread\+\_\+cond\+\_\+t produce = P\+T\+H\+R\+E\+A\+D\+\_\+\+C\+O\+N\+D\+\_\+\+I\+N\+I\+T\+I\+A\+L\+I\+Z\+ER}
+
+
+
+Definition at line 54 of file main\+Test.\+cpp.
+
+\mbox{\Hypertarget{main_test_8cpp_aa5494ef8c0d1750c5a3c6184b1c4a2ee}\label{main_test_8cpp_aa5494ef8c0d1750c5a3c6184b1c4a2ee}} 
+\index{mainTest.cpp@{mainTest.cpp}!timeSim@{timeSim}}
+\index{timeSim@{timeSim}!mainTest.cpp@{mainTest.cpp}}
+\doxysubsubsection{\texorpdfstring{timeSim}{timeSim}}
+{\footnotesize\ttfamily time\+\_\+t time\+Sim}
+
+
+
+Definition at line 41 of file main\+Test.\+cpp.
+
+\mbox{\Hypertarget{main_test_8cpp_ac3867ecb501f25557517d264f7763123}\label{main_test_8cpp_ac3867ecb501f25557517d264f7763123}} 
+\index{mainTest.cpp@{mainTest.cpp}!vec@{vec}}
+\index{vec@{vec}!mainTest.cpp@{mainTest.cpp}}
+\doxysubsubsection{\texorpdfstring{vec}{vec}}
+{\footnotesize\ttfamily vector$<$int$>$ vec}
+
+
+
+Definition at line 50 of file main\+Test.\+cpp.
+
+\mbox{\Hypertarget{main_test_8cpp_a6150e0515f7202e2fb518f7206ed97dc}\label{main_test_8cpp_a6150e0515f7202e2fb518f7206ed97dc}} 
+\index{mainTest.cpp@{mainTest.cpp}!x@{x}}
+\index{x@{x}!mainTest.cpp@{mainTest.cpp}}
+\doxysubsubsection{\texorpdfstring{x}{x}}
+{\footnotesize\ttfamily int x}
+
+
+
+Definition at line 43 of file main\+Test.\+cpp.
+

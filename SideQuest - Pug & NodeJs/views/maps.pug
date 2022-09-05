@@ -1,0 +1,63 @@
+extends layout
+include mixins/_comments
+
+block content
+    
+    .l-margin-start
+    //- Map header
+    if url.endsWith('/maps')
+        .l-divider
+            .c-divider__left
+                h1 Lugares
+            .c-divider__right
+    //- Map view header
+    else
+        a.l-divider(href=`/maps`)
+            .c-divider__left
+                h1 &#10525; Lugares
+            .c-divider__right
+        
+    //- Map main and search sections
+    if url.endsWith('/maps') || url.endsWith('/search')
+        .l-main-content
+            //- Validation Errors
+            if errors
+                h2 Please fix the following errors:
+                ul
+                    each error in errors
+                        li= error.msg
+
+            //- Map search bar
+            .l-search
+                form.c-search(action=`/maps/search` method='post' autocomplete='off')
+                    .c-search__input
+                        label(for='name') Nombre
+                        input(type='text' name='name' id='name' placeholder='Buscar lugar por nombre')
+                    .c-search__input--button
+                        button.c-button--large.m-clickable(type='submit') Buscar
+            
+            //- Map Cards
+            .l-margin--3
+            .l-cards--4
+                each map in maps
+                    a.c-card(href=`/maps/${map._id}`)
+                        .c-card__header
+                            .c-card__header-left
+                                h2 #{map.name}
+                            .c-card__header-right
+                        img.c-card__image(src=`http://res.cloudinary.com/duezou4td/image/upload/${map.image}.png` alt=`${map.name} Image`)
+    
+    //- Map view section
+    else
+        .l-main-content
+            h2= map.name
+            hr
+            .l-margin--2
+            .c-mapimage
+                img(src=`http://res.cloudinary.com/duezou4td/image/upload/${map.image}.png` alt=`${map.name} Image`)
+            if map.description != undefined && map.description != ''
+                p !{map.description}
+
+        //- Map comments
+        .l-main-content
+            +comments(map.comments, `${map._id}`, 'maps')

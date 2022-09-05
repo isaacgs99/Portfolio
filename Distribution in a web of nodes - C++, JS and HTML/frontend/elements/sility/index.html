@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+
+		<meta charset="utf-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<title>Distribución de trabajos en una red de nodos disrtibuidos</title>
+
+		<!-- Bootstrap -->
+		<link href="css/bootstrap.min.css" rel="stylesheet">
+		<!-- Material Design Icons -->
+		<link href="fonts/material-design-iconic-font/css/material-design-iconic-font.min.css" rel="stylesheet">
+		<!-- Font Awesome -->
+		<link href="http://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet">
+		<!-- Style.css -->
+		<link href="css/style.css" rel="stylesheet">
+
+		<!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+		<!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+		<!--[if lt IE 9]>
+			<script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+			<script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+		<![endif]-->
+
+	</head>
+	<body>
+		<!-- Header -->
+		<header class="header">
+			<div class="bottom clearfix">
+				<div class="title"><a href="index.html">Proyecto Final Equipo 4</a></div>
+				<a href="" class="responsive-menu-open">Menu <i class="fa fa-bars"></i></a>
+			</div> <!-- end .bottom -->
+		</header> <!-- end .header -->
+		<!-- Sections -->
+		<div class="sections">
+			<div class="sections-wrapper clearfix">
+
+				<!-- Home -->
+				<section id="section8">
+					<div class="container">
+						<h2>Insertar parámetros</h2>
+						<div class="row">
+							<div class="col-sm-7">
+								<form action="scripts/contact.php" method="post" class="form-horizontal contact-form">
+									<div class="form-group">
+										<label class="col-sm-2 control-label">Tiempo de simulación (segundos):</label>
+										<div class="col-sm-10">
+											<input type="text" class="contact-name" name="tiempo" />
+										</div> <!-- end .col-sm-10 -->
+									</div> <!-- end .form-group -->
+									<div class="form-group">
+										<label class="col-sm-2 control-label">x (Poisson)</label>
+										<div class="col-sm-10">
+											<input type="text" class="contact-name" name="x" />
+										</div> <!-- end .col-sm-10 -->
+									</div> <!-- end .form-group -->
+									<div class="form-group">
+										<label class="col-sm-2 control-label">Alfa</label>
+										<div class="col-sm-10">
+											<input type="text" class="contact-name" name="alfa" />
+										</div> <!-- end .col-sm-10 -->
+									</div> <!-- end .form-group -->
+									<div class="form-group">
+										<label class="col-sm-2 control-label">Beta</label>
+										<div class="col-sm-10">
+											<input type="text" class="contact-contact-name" name="beta" />
+										</div> <!-- end .col-sm-10 -->
+									</div> <!-- end .form-group -->
+									<div class="form-group">
+										<label class="col-sm-2 control-label">Delta</label>
+										<div class="col-sm-10">
+											<input type="text" class="contact-contact-name" name="delta" />
+										</div> <!-- end .col-sm-10 -->
+									</div> <!-- end .form-group -->
+									<div class="form-group">
+										<label class="col-sm-2 control-label">Gamma</label>
+										<div class="col-sm-10">
+											<input type="text" class="contact-contact-name" name="gamma" />
+										</div> <!-- end .col-sm-10 -->
+									</div> <!-- end .form-group -->
+									<div class="form-group">
+										<label class="col-sm-2 control-label">Procesadores</label>
+										<div class="col-sm-10">
+											<input type="text" class="contact-contact-name" name="process" />
+										</div> <!-- end .col-sm-10 -->
+									</div> <!-- end .form-group -->
+									<div class="form-group">
+										<label class="col-sm-2 control-label">Núcleos</label>
+										<div class="col-sm-10">
+											<input type="text" class="contact-contact-name" name="nuc" />
+										</div> <!-- end .col-sm-10 -->
+									</div> <!-- end .form-group -->
+									<div class="form-group">
+										<label class="col-sm-2 control-label">Probabilidad c</label>
+										<div class="col-sm-10">
+											<input type="text" class="contact-contact-name" name="c" />
+										</div> <!-- end .col-sm-10 -->
+									</div> <!-- end .form-group -->
+									<div class="form-group">
+										<div class="col-sm-10 col-sm-offset-2">
+											<button type="submit" class="button solid-button purple">Empezar</button>
+										</div> <!-- end .col-sm-10 -->
+									</div> <!-- end .form-group -->
+									<div class="contact-loading alert alert-info form-alert">
+										<span class="message">Loading...</span>
+										<button type="button" class="close" data-hide="alert" aria-label="Close"><i class="fa fa-times"></i></button>
+									</div>
+									<div class="contact-success alert alert-success form-alert">
+										<span class="message">Success!</span>
+										<button type="button" class="close" data-hide="alert" aria-label="Close"><i class="fa fa-times"></i></button>
+									</div>
+									<div class="contact-error alert alert-danger form-alert">
+										<span class="message">Error!</span>
+										<button type="button" class="close" data-hide="alert" aria-label="Close"><i class="fa fa-times"></i></button>
+									</div>
+								</form> <!-- end contact-form -->
+							</div>
+						</div>
+					</div> <!-- end .container -->
+				</section> <!-- end #section1 -->
+
+			</div> <!-- end .sections-wrapper -->
+		</div> <!-- end .sections -->
+		
+		<!-- Footer -->
+		<footer class="footer">
+			<div class="top">
+				<div class="container">
+					<div class="row">
+						<div class="col-sm-4">
+							<p>Clase</p>
+							<h4>Diseño y análisis de algoritmos</h4>
+						</div> <!-- end .col-sm-4 -->
+						<div class="col-sm-4">
+							<p>Integrantes</p>
+								<h4>Isaac Garza, Francisco Acúña</h4>
+								<h4>Rodrigo Sibaja, Sergio Hernández</h4>
+								<h4>Sebastián Gomez</h4>
+							</div> <!-- end .social-icons -->
+						</div> <!-- end .col-sm-4 -->
+	 <!-- end .bottom -->
+		</footer> <!-- end .footer -->
+
+		<!-- jQuery -->
+		<script src="js/jquery-1.11.2.min.js"></script>
+		<!-- Bootstrap -->
+		<script src="js/bootstrap.min.js"></script>
+		<!-- Images Loaded -->
+		<script src="js/imagesloaded.pkgd.min.js"></script>
+		<!-- Scripts.js -->
+		<script src="js/scripts.js"></script>
+
+	</body>
+</html>

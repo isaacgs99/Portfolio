@@ -1,0 +1,17 @@
+<svg width="140" height="140" xmlns="http://www.w3.org/2000/svg">
+
+ <title/>
+ <g>
+  <title>background</title>
+  <rect fill="none" id="canvas_background" height="402" width="582" y="-1" x="-1"/>
+ </g>
+ <g>
+  <title>Layer 1</title>
+  <circle fill="#ae0000" id="svg_1" r="64" cy="70" cx="70" class="cls-1"/>
+  <path fill="#525354" id="svg_2" d="m70,43.49c-25,0 -45,22.74 -48.48,26.87a1,1 0 0 0 0,1.28c3.48,4.13 23.48,26.87 48.48,26.87s45,-22.74 48.48,-26.87a1,1 0 0 0 0,-1.28c-3.48,-4.13 -23.48,-26.87 -48.48,-26.87z" class="cls-2"/>
+  <path fill="#ffffff" id="svg_3" d="m70,42.49c-25,0 -45,22.74 -48.48,26.87a1,1 0 0 0 0,1.28c3.48,4.13 23.48,26.87 48.48,26.87s45,-22.74 48.48,-26.87a1,1 0 0 0 0,-1.28c-3.48,-4.13 -23.48,-26.87 -48.48,-26.87z" class="cls-3"/>
+  <circle fill="#a4d5dc" id="svg_4" r="26.5" cy="70" cx="70" class="cls-4"/>
+  <circle fill="#525354" id="svg_5" r="13" cy="70" cx="70" class="cls-2"/>
+  <circle fill="#d7dadb" id="svg_6" r="2" cy="66" cx="76" class="cls-5"/>
+ </g>
+</svg>

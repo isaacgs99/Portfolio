@@ -1,0 +1,35 @@
+extends ../layout
+
+block content
+    
+    //- Header
+    .l-margin-start
+    if url.endsWith('/heroes')
+        a.l-divider(href=`/admin`)
+            .c-divider__left
+                h1 &#10525; Manage Heroes
+            .c-divider__right
+    
+    //- Main admin heroes section
+    if url.endsWith('/heroes')
+        .l-main-content
+            //- All heroes card display
+            .l-cards
+                each hero in heroes
+                    a.c-card(href=`heroes/${hero._id}`)
+                        .c-card__header
+                            .c-card__header-left
+                                h2 #{hero.name}
+                            .c-card__header-right
+                        if hero.image != '' && hero.image != undefined
+                            img.c-card__image(src=`http://res.cloudinary.com/duezou4td/image/upload/${hero.image}.png` alt=`${hero.name}'s Image`)
+                        else
+                            img.c-card__image(src=tmpImg)
+                
+                //- Future: Add admin hero creator
+                //- a.c-card(href='heroes/newHero')
+                //-     .c-card__header
+                //-         .c-card__header-left
+                //-             h2 Crear Héroe
+                //-         .c-card__header-right
+                //-     img.c-card__image(src='/images/resources/tortle.png' alt='Create Hero Image')

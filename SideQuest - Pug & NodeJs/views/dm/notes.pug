@@ -1,0 +1,439 @@
+extends ../layout
+include ../mixins/_hero_dropdown
+include ../mixins/_spell_row
+
+block content
+
+    //- Header
+    .l-margin-start
+    //- Main notes header
+    if url.endsWith('/notes')
+        a.l-divider(href=`/dm`)
+            .c-divider__left
+                h1 &#10525; Notas
+            .c-divider__right
+    //- New, edit, view, and search note headers
+    else
+        a.l-divider(href=`/dm/notes`)
+            .c-divider__left
+                //- New note header
+                if url.endsWith('/newnote')
+                    h1 &#10525; Nota Nueva
+                //- Search note header
+                else if url.endsWith('/search')
+                    h1 &#10525; Notas: Búsqueda
+                //- Edit note header
+                else
+                    h1 &#10525; Editar Nota: #{note.name}
+            .c-divider__right
+    
+    //- Main and search note section
+    if url.endsWith('/notes') || url.endsWith('/search')
+        .l-main-content
+            //- Validation Errors
+            if errors
+                h2 Please fix the following errors:
+                ul
+                    each error in errors
+                        li= error.msg
+                        
+            //- Note search bar
+            .l-search
+                form.c-search(action=`/dm/notes/search` method='post' autocomplete='off')
+                    .c-search__input
+                        label(for='name') Nombre de la nota
+                        input(type='text' name='name' id='name' placeholder='Buscar nota por nombre')
+                    .c-search__input--button
+                        button.c-button--large.m-clickable(type='submit') Buscar
+
+            //- New note button
+            .l-margin--2
+            .l-ability-points-grid.grid--3
+                div
+                a.c-button--large.m-clickable(href=`/dm/notes/newnote`) Nota Nueva
+                div
+        
+        //- Note table display
+        .l-margin--3
+        .l-main-content
+            table.l-spells
+                each note in notes
+                    tr.c-spell
+                        td.m-align-left
+                            - const date = new Date(note.date)
+                            p= `${String(date.getDate()).padStart(2,'0')}/${String(date.getMonth() + 1).padStart(2,'0')}/${date.getFullYear()}`
+                        td.m-align-left
+                            p #{note.name}
+                        td
+                            a(href=`/dm/notes/view/${note._id}`)
+                                img.c-table__image(src='/images/icons/eye.svg' alt='Eye icon')
+                        td
+                            a(href=`/dm/notes/edit/${note._id}`)
+                                img.c-table__image(src='/images/icons/edit.svg' alt='Edit icon')
+    
+    //- New note section
+    else if url.endsWith('/newnote')
+        .l-main-content
+            .l-notes
+                //- Note creation form
+                .c-notes-section
+                    h2.m-align-center Nota
+                    hr
+                    .l-margin--2
+                    form.c-edithero-form(action='' method='post' autocomplete='off')
+                        .c-edithero-form__input.c-edithero-form__input--stack
+                            label(for='name') *Nombre de la Nota:
+                            input(type='text' name='name' id='name' placeholder='Sesión 1: Notas' required)
+                        .c-edithero-form__input.c-edithero-form__input--stack
+                            label(for='notes') Nota:
+                            textarea.js-ckeditor(name='notes' data-ckeditor='default' placeholder='Escribe las notas aquí.')
+                        .l-margin--2
+                        .m-align-center
+                            button.c-button--large.m-clickable.l-margin-right--1(type='submit') Crear Nota
+                
+                //- Website compendium section
+                .c-notes-section
+                    h2.m-align-center Compendio
+                    hr
+                    .l-margin--2
+                    .c-tabs
+                        .c-tabs__topbar
+                            - const links = ['Heroes', 'Personajes', 'Spells'];
+                            each link, index in links
+                                .c-tabs__button.m-clickable(data-for-tab=`${index}`)
+                                    if index == 0
+                                        .c-tabs__button-left.c-tabs__button-left--active
+                                            h2= link
+                                    else
+                                        .c-tabs__button-left
+                                            h2= link
+                        
+                        //- Tab 1: Heroes
+                        #l-main-content--note-compendium.c-tabs__content.c-tabs__content--active(data-tab='0')
+                            //- Display heroes in spell row format
+                            table.l-spells
+                                each hero in heroes
+                                    tr.c-spell.c-spell--display.m-clickable
+                                        td
+                                            if hero.image != '' && hero.image != undefined
+                                                img.c-spell__image.c-spell__herotableimage(src=`http://res.cloudinary.com/duezou4td/image/upload/${hero.image}.png` alt=`${hero.name}'s Image`)
+                                            else
+                                                p No Image
+                                        td= hero.name
+                                        td.m-responsive-display--table= `${hero.race.name} ${hero.class.name}`
+                                            p.m-color-lightgray= `Level ${hero.level}`
+                                        if hero.class
+                                            - const startHPNum = parseInt(hero.class.hitpoints_start.split(' ')[0]);
+                                            - const maxHPString = hero.class.hitpoints_higherlvls.split(')')[0];
+                                            - const classHPNum = parseInt(maxHPString.substring(maxHPString.length-1));
+                                            if (hero.level == 1)
+                                                td= `${startHPNum + hero.abilities.constitution.modifier} HP`
+                                            else
+                                                td= `${(hero.level-1) * (classHPNum + hero.abilities.constitution.modifier) + startHPNum + hero.abilities.constitution.modifier} HP`
+                                        td= `${hero.physical_attributes.ac} AC`
+                                        //- td= `${hero.physical_attributes.speed}ft Speed`
+                                        td.c-dropdown-button &nabla;
+                                    tr
+                                        +heroDropdown(hero, 'hero')
+                        
+                        //- Tab 2: Characters
+                        #l-main-content--note-compendium.c-tabs__content(data-tab='1')
+                            //- Character AJAX search functionality import
+                            script(src="/javascripts/ajax/characters.js")
+
+                            //- Character search bar
+                            form.c-edithero-form(autocomplete='off')
+                                .c-edithero-form__input.c-edithero-form__input--stack
+                                    label(for='name') Nombre del Personaje
+                                    input(type='text' name='name' id='search-charname' placeholder='Buscar personaje por nombre')
+
+                                    button.c-button.m-clickable#js-charbutton(type='button' onclick=`searchCharsDM('/dm/notes/charactersearch')`) Search
+                                    //- Search loading animation
+                                    .m-inactive#js-char-loading
+                                        .c-loadingbg__animation.c-loadingbg__animation--small
+                            
+                            //- Display characters in spell row format
+                            .l-margin--2
+                            table.l-spells#js-charsearch
+                                each character in characters
+                                    tr.c-spell.c-spell--display.m-clickable
+                                        td
+                                            if character.image != '' && character.image != undefined
+                                                img.c-spell__image.c-spell__herotableimage(src=`http://res.cloudinary.com/duezou4td/image/upload/${character.image}.png` alt=`${character.name}'s Image`)
+                                            else
+                                                p No Image
+                                        td= character.name
+                                        td= `${character.race || '???'} ${character.class || '???'}`
+                                            p.m-color-lightgray= `Size: ${character.size || '???'}`
+                                        td.m-responsive-display--table= `Met in ${character.place || '???'}`
+                                        td= `Age: ${character.age || '???'}`
+                                        td.c-dropdown-button &nabla;
+                                    tr
+                                        +heroDropdown(character, 'character')
+                        
+                        //- Tab 3: Spells
+                        #l-main-content--note-compendium.c-tabs__content(data-tab='2')
+                            //- Spell AJAX search functionality import
+                            script(src="/javascripts/ajax/spells.js")
+                            
+                            //- Spell search bar
+                            form.c-edithero-form(autocomplete='off')
+                                .c-edithero-form__input.c-edithero-form__input--stack
+                                    label(for='name') Spell name
+                                    input(type='text' name='name' id='search-name' placeholder='Buscar spell por nombre')
+
+                                    button.c-button.m-clickable#js-spellbutton(type='button' onclick=`searchSpellsDM('/dm/notes/spellsearch')`) Search
+                                    //- Search loading animation
+                                    .m-inactive#js-spell-loading
+                                        .c-loadingbg__animation.c-loadingbg__animation--small
+
+                            //- Spells display
+                            .l-margin--2
+                            table.l-spells#js-spellsearch
+                                each spell in spells
+                                    +spellRow(spell, { dm: true })
+    
+    //- View note section
+    else if url.includes('/view/')
+        .l-main-content
+            .l-notes
+                //- Note view section
+                .c-notes-section
+                    h2.m-align-center Nota
+                    hr
+                    .l-margin--2
+                    h3.m-align-center= note.name
+                    .l-margin--2
+                    p !{note.notes}
+                
+                //- Website compendium section
+                .c-notes-section
+                    h2.m-align-center Compendio
+                    hr
+                    .l-margin--2
+                    .c-tabs
+                        .c-tabs__topbar
+                            - const links = ['Heroes', 'Personajes', 'Spells'];
+                            each link, index in links
+                                .c-tabs__button.m-clickable(data-for-tab=`${index}`)
+                                    if index == 0
+                                        .c-tabs__button-left.c-tabs__button-left--active
+                                            h2= link
+                                    else
+                                        .c-tabs__button-left
+                                            h2= link
+                        
+                        //- Tab 1: Heroes
+                        #l-main-content--note-compendium.c-tabs__content.c-tabs__content--active(data-tab='0')
+                            //- Display heroes in spell row format
+                            table.l-spells
+                                each hero in heroes
+                                    tr.c-spell.c-spell--display.m-clickable
+                                        td
+                                            if hero.image != '' && hero.image != undefined
+                                                img.c-spell__image.c-spell__herotableimage(src=`http://res.cloudinary.com/duezou4td/image/upload/${hero.image}.png` alt=`${hero.name}'s Image`)
+                                            else
+                                                p No Image
+                                        td= hero.name
+                                        td= `${hero.race.name} ${hero.class.name}`
+                                            p.m-color-lightgray= `Level ${hero.level}`
+                                        if hero.class
+                                            - const startHPNum = parseInt(hero.class.hitpoints_start.split(' ')[0]);
+                                            - const maxHPString = hero.class.hitpoints_higherlvls.split(')')[0];
+                                            - const classHPNum = parseInt(maxHPString.substring(maxHPString.length-1));
+                                            if (hero.level == 1)
+                                                td= `${startHPNum + hero.abilities.constitution.modifier} HP`
+                                            else
+                                                td= `${(hero.level-1) * (classHPNum + hero.abilities.constitution.modifier) + startHPNum + hero.abilities.constitution.modifier} HP`
+                                        td= `${hero.physical_attributes.ac} AC`
+                                        //- td= `${hero.physical_attributes.speed}ft Speed`
+                                        td.c-dropdown-button &nabla;
+                                    tr
+                                        +heroDropdown(hero, 'hero')
+                        
+                        //- Tab 2: Characters
+                        #l-main-content--note-compendium.c-tabs__content(data-tab='1')
+                            //- Character AJAX search functionality import
+                            script(src="/javascripts/ajax/characters.js")
+
+                            //- Character search bar
+                            form.c-edithero-form(autocomplete='off')
+                                .c-edithero-form__input.c-edithero-form__input--stack
+                                    label(for='name') Nombre del Personaje
+                                    input(type='text' name='name' id='search-charname' placeholder='Buscar personaje por nombre')
+
+                                    button.c-button.m-clickable#js-charbutton(type='button' onclick=`searchCharsDM('/dm/notes/charactersearch')`) Search
+                                    //- Search loading animation
+                                    .m-inactive#js-char-loading
+                                        .c-loadingbg__animation.c-loadingbg__animation--small
+                            
+                            //- Display characters in spell row format
+                            .l-margin--2
+                            table.l-spells#js-charsearch
+                                each character in characters
+                                    tr.c-spell.c-spell--display.m-clickable
+                                        td
+                                            if character.image != '' && character.image != undefined
+                                                img.c-spell__image.c-spell__herotableimage(src=`http://res.cloudinary.com/duezou4td/image/upload/${character.image}.png` alt=`${character.name}'s Image`)
+                                            else
+                                                p No Image
+                                        td= character.name
+                                        td= `${character.race || '???'} ${character.class || '???'}`
+                                            p.m-color-lightgray= `Size: ${character.size || '???'}`
+                                        td.m-responsive-display--table= `Met in ${character.place || '???'}`
+                                        td= `Age: ${character.age || '???'}`
+                                        td.c-dropdown-button &nabla;
+                                    tr
+                                        +heroDropdown(character, 'character')
+                        
+                        //- Tab 3: Spells
+                        #l-main-content--note-compendium.c-tabs__content(data-tab='2')
+                            //- Spell AJAX search functionality import
+                            script(src="/javascripts/ajax/spells.js")
+
+                            //- Spell search bar
+                            form.c-edithero-form(autocomplete='off')
+                                .c-edithero-form__input.c-edithero-form__input--stack
+                                    label(for='name') Spell name
+                                    input(type='text' name='name' id='search-name' placeholder='Buscar spell por nombre')
+
+                                    button.c-button.m-clickable#js-spellbutton(type='button' onclick=`searchSpellsDM('/dm/notes/spellsearch')`) Search
+                                    //- Search loading animation
+                                    .m-inactive#js-spell-loading
+                                        .c-loadingbg__animation.c-loadingbg__animation--small
+
+                            //- Spell display
+                            .l-margin--2
+                            table.l-spells#js-spellsearch
+                                each spell in spells
+                                    +spellRow(spell, { dm: true })
+    
+    //- Note edit section
+    else
+        .l-main-content
+            .l-notes
+                //- Note edit form
+                .c-notes-section
+                    h2.m-align-center Nota
+                    hr
+                    .l-margin--2
+                    form.c-edithero-form(action='' method='post' autocomplete='off')
+                        .c-edithero-form__input.c-edithero-form__input--stack
+                            label(for='name') *Nombre de la Nota:
+                            input(type='text' name='name' id='name' placeholder='Sesión 1: Notas' value=note.name required)
+                        .c-edithero-form__input.c-edithero-form__input--stack
+                            label(for='notes') Nota:
+                            textarea.js-ckeditor(name='notes' data-ckeditor='default' placeholder='Escribe las notas aquí.')= note.notes || ''
+                        .l-margin--2
+                        .m-align-center
+                            button.c-button--large.m-clickable.l-margin-right--1(type='submit' name='deletenote' value='false') Guardar Nota
+                            button.c-button--large.m-clickable.m-background-red.l-margin-right--1(type='submit' name='deletenote' value='true') Borrar Nota
+                
+                //- Website compendium section
+                .c-notes-section
+                    h2.m-align-center Compendio
+                    hr
+                    .l-margin--2
+                    .c-tabs
+                        .c-tabs__topbar
+                            - const links = ['Heroes', 'Personajes', 'Spells'];
+                            each link, index in links
+                                .c-tabs__button.m-clickable(data-for-tab=`${index}`)
+                                    if index == 0
+                                        .c-tabs__button-left.c-tabs__button-left--active
+                                            h2= link
+                                    else
+                                        .c-tabs__button-left
+                                            h2= link
+                        
+                        //- Tab 1: Heroes
+                        #l-main-content--note-compendium.c-tabs__content.c-tabs__content--active(data-tab='0')
+                            //- Display heroes in spell row format
+                            table.l-spells
+                                each hero in heroes
+                                    tr.c-spell.c-spell--display.m-clickable
+                                        td
+                                            if hero.image != '' && hero.image != undefined
+                                                img.c-spell__image.c-spell__herotableimage(src=`http://res.cloudinary.com/duezou4td/image/upload/${hero.image}.png` alt=`${hero.name}'s Image`)
+                                            else
+                                                p No Image
+                                        td= hero.name
+                                        td= `${hero.race.name} ${hero.class.name}`
+                                            p.m-color-lightgray= `Level ${hero.level}`
+                                        if hero.class
+                                            - const startHPNum = parseInt(hero.class.hitpoints_start.split(' ')[0]);
+                                            - const maxHPString = hero.class.hitpoints_higherlvls.split(')')[0];
+                                            - const classHPNum = parseInt(maxHPString.substring(maxHPString.length-1));
+                                            if (hero.level == 1)
+                                                td= `${startHPNum + hero.abilities.constitution.modifier} HP`
+                                            else
+                                                td= `${(hero.level-1) * (classHPNum + hero.abilities.constitution.modifier) + startHPNum + hero.abilities.constitution.modifier} HP`
+                                        td= `${hero.physical_attributes.ac} AC`
+                                        //- td= `${hero.physical_attributes.speed}ft Speed`
+                                        td.c-dropdown-button &nabla;
+                                    tr
+                                        +heroDropdown(hero, 'hero')
+                        
+                        //- Tab 2: Characters
+                        #l-main-content--note-compendium.c-tabs__content(data-tab='1')
+                            //- Character AJAX search functionality import
+                            script(src="/javascripts/ajax/characters.js")
+
+                            //- Character search bar
+                            form.c-edithero-form(autocomplete='off')
+                                .c-edithero-form__input.c-edithero-form__input--stack
+                                    label(for='name') Nombre del Personaje
+                                    input(type='text' name='name' id='search-charname' placeholder='Buscar personaje por nombre')
+
+                                    button.c-button.m-clickable#js-charbutton(type='button' onclick=`searchCharsDM('/dm/notes/charactersearch')`) Search
+                                    //- Search loading animation
+                                    .m-inactive#js-char-loading
+                                        .c-loadingbg__animation.c-loadingbg__animation--small
+                            
+                            //- Display characters in spell row format
+                            .l-margin--2
+                            table.l-spells#js-charsearch
+                                each character in characters
+                                    tr.c-spell.c-spell--display.m-clickable
+                                        td
+                                            if character.image != '' && character.image != undefined
+                                                img.c-spell__image.c-spell__herotableimage(src=`http://res.cloudinary.com/duezou4td/image/upload/${character.image}.png` alt=`${character.name}'s Image`)
+                                            else
+                                                p No Image
+                                        td= character.name
+                                        td= `${character.race || '???'} ${character.class || '???'}`
+                                            p.m-color-lightgray= `Size: ${character.size || '???'}`
+                                        td.m-responsive-display--table= `Met in ${character.place || '???'}`
+                                        td= `Age: ${character.age || '???'}`
+                                        td.c-dropdown-button &nabla;
+                                    tr
+                                        +heroDropdown(character, 'character')
+                        
+                        //- Tab 3: Spells
+                        #l-main-content--note-compendium.c-tabs__content(data-tab='2')
+                            //- Spell AJAX search functionality import
+                            script(src="/javascripts/ajax/spells.js")
+
+                            //- Spell search bar
+                            form.c-edithero-form(autocomplete='off')
+                                .c-edithero-form__input.c-edithero-form__input--stack
+                                    label(for='name') Spell name
+                                    input(type='text' name='name' id='search-name' placeholder='Buscar spell por nombre')
+
+                                    button.c-button.m-clickable#js-spellbutton(type='button' onclick=`searchSpellsDM('/dm/notes/spellsearch')`) Search
+                                    //- Search loading animation
+                                    .m-inactive#js-spell-loading
+                                        .c-loadingbg__animation.c-loadingbg__animation--small
+
+                            //- Spell display
+                            .l-margin--2
+                            table.l-spells#js-spellsearch
+                                each spell in spells
+                                    +spellRow(spell, { dm: true })
+
+    script(src="/javascripts/script.js")       
+    script.
+        document.addEventListener('DOMContentLoaded', () => {
+            setupTabs();
+            setupSpellTables();
+        });

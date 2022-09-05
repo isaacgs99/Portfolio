@@ -1,0 +1,66 @@
+//- Mixin for comments
+//- Params:
+    * comments: recieves comment object from schema (e.g. character.comments, map.comments, etc)
+    * identifier: recieves the identifier used in the route (e.g. /characters/CHARNAME/createcomment, /maps/MAPID/createcomment)
+    * route: recieves the route prefix to post to (e.g. /CHARACTERS/Arundil/createcomment, /STORY/5d2s39s391d3s506q1/createcomment)
+mixin comments(comments={}, identifier='', route='')
+    h2 Comentarios
+    hr
+    
+    //- If user is logged in, allow him to comment. Else, prompt him to login to comment.
+    if user
+        .l-content-box
+            .c-content-box
+                img.c-content-box__image(src='/images/logos/favicon.png' alt=`${siteName} Logo`)
+
+                .l-content-box__content
+                    //- Comment header
+                    .c-content-box__title
+                        h3 #{user.username}
+                        - const date = new Date()
+                        em.l-content-box__title--info= `Posted ${String(date.getDate()).padStart(2,'0')}/${String(date.getMonth() + 1).padStart(2,'0')}/${date.getFullYear()}`
+                    
+                    //- Comment text
+                    .l-content-box__text
+                        form.c-edithero-form(action=`/${route}/${identifier}/createcomment` method='post' autocomplete='off')
+                            .c-edithero-form__input.c-edithero-form__input--stack
+                                input(type='hidden' name='user_id' value=user._id)
+                                input(type='hidden' name='username' value=user.username)
+                                textarea.js-ckeditor(name='text' data-ckeditor='comment' placeholder='Escribe tu comentario aquí.')
+                                button.c-button.m-clickable(type='submit') Comentar
+    
+    //- Display comments
+    //- If comments exist, display them with appropriate line breaks
+    if comments != '' && comments != undefined
+        each comment in comments
+            .l-content-box--full-width
+                .c-content-box
+                    img.c-content-box__image(src='/images/logos/favicon.png' alt='')
+
+                    .l-content-box__content
+                        //- Comment header
+                        .c-content-box__title
+                            h4 #{comment.username}
+                            - const dateComment = new Date(comment.date)
+                            em.l-content-box__title--info= `Posted ${String(dateComment.getDate()).padStart(2,'0')}/${String(dateComment.getMonth() + 1).padStart(2,'0')}/${dateComment.getFullYear()}`
+                        
+                        //- Comment text
+                        .l-content-box__text
+                            p !{comment.text}
+                        
+                        //- Allow user to delete own comments, allow admin to delete all comments
+                        if user && user.isAdmin
+                            .l-margin--3
+                            form(action=`/${route}/${identifier}/deletecomment/${comment._id}` method='post')
+                                button.c-button.m-background-red.m-clickable(type='submit' name='_id' value=comment._id) Delete
+                            .l-margin--2
+                        else if user && user._id.toString() == comment.user_id.toString()
+                            .l-margin--3
+                            form(action=`/${route}/${identifier}/deletecomment/${comment._id}` method='post')
+                                button.c-button.m-background-red.m-clickable(type='submit' name='_id' value=comment._id) Delete
+                            .l-margin--2
+    else if !user
+        .l-margin--2
+        p No hay comentarios todavía. Para agregar un comentario, 
+            strong
+                a(href='/login') ingresa a tu cuenta.

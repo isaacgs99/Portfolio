@@ -1,0 +1,27 @@
+extends ../layout
+
+block content
+
+    //- Header
+    .l-margin-start
+    .l-divider
+        .c-divider__left
+            h1 Ingreso
+        .c-divider__right
+
+    //- Main login section
+    .l-main-content
+        .l-margin--7
+        //- Login form
+        .l-login
+            form.c-login-form(action='' method='post' autocomplete='off')
+                .c-login-form__input
+                    label(for="username") Usuario:
+                    input(type="text" name="username" id="username" placeholder="Ingresa tu usuario..." required)
+                .c-login-form__input
+                    label(for="password") Contraseña:
+                    input(type="password" name="password" id="password" placeholder="Ingresa tu contraseña..." required)
+                .c-login-form__input
+                    button.c-button--white(type="submit") Ingresar
+            //- Website logo image
+            img#login__logo(src='/images/logos/logo.png' alt=`${siteName} logo`)

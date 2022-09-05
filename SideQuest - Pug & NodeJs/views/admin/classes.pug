@@ -1,0 +1,309 @@
+extends ../layout
+
+block content
+    
+    //- Header
+    .l-margin-start
+    //- Main classes header
+    if url.endsWith('/classes')
+        a.l-divider(href=`/admin`)
+            .c-divider__left
+                h1 &#10525; Classes
+            .c-divider__right
+    //- New, edit, and search classes header
+    else
+        a.l-divider(href=`/admin/classes`)
+            .c-divider__left
+                //- New class header
+                if url.endsWith('/newclass')
+                    h1 &#10525; New Class
+                //- Search class header
+                else if url.endsWith('/search')
+                    h1 &#10525; Classes: Search
+                //- Edit class header
+                else
+                    h1 &#10525; Edit Class: #{heroClass.name}
+            .c-divider__right
+    
+    //- Main and search class section
+    if url.endsWith('/classes') || url.endsWith('/search')
+        .l-main-content
+            //- Validation Errors
+            if errors
+                h2 Please fix the following errors:
+                ul
+                    each error in errors
+                        li= error.msg
+
+            //- Class search bar
+            .l-search
+                form.c-search(action=`/admin/classes/search` method='post' autocomplete='off')
+                    .c-search__input
+                        label(for='name') Class name
+                        input(type='text' name='name' id='name' placeholder='Search for class by name')
+                    .c-search__input--button
+                        button.c-button--large.m-clickable(type='submit') Search
+        
+            //- New class button
+            .l-margin--2
+            .l-ability-points-grid.grid--3
+                div
+                a.c-button--large.m-clickable(href=`/admin/classes/newclass`) New Class
+                div
+        
+        //- Class table display 
+        .l-margin--3
+        .l-main-content
+            table.l-spells
+                each heroClass in classes
+                    tr.c-spell 
+                        td.m-align-left
+                            a.m-color-black(href=`/admin/classes/edit/${heroClass._id}`) #{heroClass.name}
+
+    //- New class section
+    else if url.endsWith('/newclass')
+        .l-main-content
+            //- Validation Errors
+            if errors
+                h2 Please fix the following errors:
+                ul
+                    each error in errors
+                        li= error.msg
+
+        .l-main-content
+            form.c-edithero-form(action='' method='post' autocomplete='off')
+                //- Class name
+                .c-edithero-form__input
+                    label(for='name') *Class Name:
+                    input(type='text' name='name' placeholder='Monk' required)
+                
+                //- Class description
+                .c-edithero-form__input.c-edithero-form__input--stack
+                    label(for='description') Description:
+                    textarea.js-ckeditor(name='description' data-ckeditor='herodesc' placeholder='Write class description here.')
+                
+                //- Class hit die, hitpoints at first level, and hitpoints at higher levels
+                .l-margin--2
+                .c-edithero-form__input
+                    label(for='hit_die') Hit Die:
+                    input(type='text' name='hit_die' placeholder='d8')
+                    
+                    label(for='hitpoints_start') Hit Points at 1st Level:
+                    input(type='text' name='hitpoints_start' placeholder='8 + your Constitution modifier')
+                    
+                    label(for='hitpoints_higherlvls') Hit Points at Higher Levels:
+                    input(type='text' name='hitpoints_higherlvls' placeholder='1d8 (or 5) + your Constitution modifier per Monk level after 1st')
+                
+                //- Class primary abilities
+                .l-margin--2
+                h2 Primary Abilities
+                hr
+                .l-margin--3
+                - const abilities = ['strength', 'dexterity', 'constitution', 'intelligence', 'wisdom', 'charisma'];
+                .l-ability-points-grid
+                    each ability in abilities
+                        .c-ability-points
+                            label= ability.toUpperCase()
+                            input(type='checkbox' name=`abilities[]` value=`${ability}`)
+                
+                //- Class saving throw proficiencies
+                .l-margin--3
+                h2 Saving Throw Proficiencies
+                hr
+                .l-margin--3
+                .l-ability-points-grid
+                    each ability in abilities
+                        .c-ability-points
+                            label= ability.toUpperCase()
+                            input(type='checkbox' name=`st_proficiencies[]` value=`${ability}`)
+
+                //- Skill proficiencies
+                .l-margin--3
+                h2 Skill Proficiencies (Pick from):
+                hr
+                .l-margin--3
+                - const skills = ['acrobatics', 'animal_handling', 'arcana', 'athletics', 'deception', 'history', 'insight', 'intimidation', 'investigation', 'medicine', 'nature', 'perception', 'performance', 'persuasion', 'religion', 'sleight_of_hand', 'stealth', 'survival'];
+                .l-ability-points-grid
+                    each skill in skills
+                        .c-ability-points
+                            if skill == 'animal_handling'
+                                label A. HANDLING
+                            else if skill == 'sleight_of_hand'
+                                label S.O.HAND
+                            else
+                                label= skill.toUpperCase().replace(/_/g, ' ')
+                            input(type='checkbox' name=`skills[skills][]` value=`${skill}`)
+                .l-margin--2
+                .c-edithero-form__input
+                    label(for='skills[choose]') Choose:
+                    input(type='number' name='skills[choose]' placeholder='--')
+
+                //- Spell ability
+                .l-margin--3
+                h2 Spell Ability (if spellcaster class)
+                hr
+                .l-margin--3
+                .l-ability-points-grid
+                    each ability in abilities
+                        .c-ability-points
+                            label= ability.toUpperCase()
+                            input(type='radio' name=`spell_ability` value=`${ability}`)
+                .l-margin--3
+                hr
+                .l-margin--2
+                
+                //- Armor and weapon proficiencies
+                .c-edithero-form__input.c-edithero-form__input--stack
+                    label(for='armor_weapon_proficiencies') Armor and Weapon Proficiencies:
+                    textarea(name='armor_weapon_proficiencies' placeholder='Write class armor and weapon proficiencies here.')
+                
+                //- Tool proficiencies
+                .c-edithero-form__input.c-edithero-form__input--stack
+                    label(for='tool_proficiencies') Tool Proficiencies
+                    textarea(name='tool_proficiencies' placeholder='Write class tool proficiencies here.')
+                
+                //- Create class button
+                .l-margin--3
+                button.c-button--large.m-clickable(type='submit') Create Class
+    
+    //- Edit class section
+    else
+        .l-main-content
+            //- Validation Errors
+            if errors
+                h2 Please fix the following errors:
+                ul
+                    each error in errors
+                        li= error.msg
+                        
+        .l-main-content
+            form.c-edithero-form(action='' method='post' autocomplete='off')
+                //- Class name
+                .c-edithero-form__input
+                    label(for='name') *Class Name:
+                    input(type='text' name='name' placeholder='Monk' value=heroClass.name required)
+                //- Class description
+                .c-edithero-form__input.c-edithero-form__input--stack
+                    label(for='description') Description:
+                    textarea.js-ckeditor(name='description' data-ckeditor='herodesc' placeholder='Write class description here.')=(heroClass.description || null)
+                
+                //- Class hit die, hp at first level, hp at higher levels
+                .l-margin--2
+                .c-edithero-form__input
+                    label(for='hit_die') Hit Die:
+                    input(type='text' name='hit_die' placeholder='d8' value=(heroClass.hit_die || null))
+                    
+                    label(for='hitpoints_start') Hit Points at 1st Level:
+                    input(type='text' name='hitpoints_start' placeholder='8 + your Constitution modifier' value=(heroClass.hitpoints_start || null))
+                    
+                    label(for='hitpoints_higherlvls') Hit Points at Higher Levels:
+                    input(type='text' name='hitpoints_higherlvls' placeholder='1d8 (or 5) + your Constitution modifier per Monk level after 1st' value=(heroClass.hitpoints_higherlvls || null))
+                
+                //- Primary abilities
+                .l-margin--2
+                h2 Primary Abilities
+                hr
+                .l-margin--3
+                - const abilities = ['strength', 'dexterity', 'constitution', 'intelligence', 'wisdom', 'charisma'];
+                .l-ability-points-grid
+                    each ability in abilities
+                        .c-ability-points
+                            label= ability.toUpperCase()
+                            if heroClass.abilities.findIndex(primary => primary == ability) != -1
+                                input(type='checkbox' name=`abilities[]` value=`${ability}` checked)
+                            else
+                                input(type='checkbox' name=`abilities[]` value=`${ability}`)
+                
+                //- Saving throw proficiencies
+                .l-margin--3
+                h2 Saving Throw Proficiencies
+                hr
+                .l-margin--3
+                .l-ability-points-grid
+                    each ability in abilities
+                        .c-ability-points
+                            label= ability.toUpperCase()
+                            if heroClass.st_proficiencies.findIndex(proficient => proficient == ability) != -1
+                                input(type='checkbox' name=`st_proficiencies[]` value=`${ability}` checked)
+                            else
+                                input(type='checkbox' name=`st_proficiencies[]` value=`${ability}`)
+
+                //- Skill proficiencies
+                .l-margin--3
+                h2 Skill Proficiencies (Pick from):
+                hr
+                .l-margin--3
+                - const skills = ['acrobatics', 'animal_handling', 'arcana', 'athletics', 'deception', 'history', 'insight', 'intimidation', 'investigation', 'medicine', 'nature', 'perception', 'performance', 'persuasion', 'religion', 'sleight_of_hand', 'stealth', 'survival'];
+                .l-ability-points-grid
+                    each skill in skills
+                        .c-ability-points
+                            if skill == 'animal_handling'
+                                label A. HANDLING
+                            else if skill == 'sleight_of_hand'
+                                label S.O.HAND
+                            else
+                                label= skill.toUpperCase().replace(/_/g, ' ')
+                            if heroClass.skills.skills.findIndex(proficient => proficient == skill) != -1
+                                input(type='checkbox' name=`skills[skills][]` value=`${skill}` checked)
+                            else
+                                input(type='checkbox' name=`skills[skills][]` value=`${skill}`)
+                .l-margin--2
+                .c-edithero-form__input
+                    label(for='skills[choose]') Choose:
+                    input(type='number' name='skills[choose]' placeholder='--' value=(heroClass.skills.choose || null))
+                
+                //- Spell ability
+                .l-margin--3
+                h2 Spell Ability (if spellcaster class)
+                hr
+                .l-margin--3
+                .l-ability-points-grid
+                    each ability in abilities
+                        .c-ability-points
+                            if heroClass.spell_ability == ability
+                                label= ability.toUpperCase()
+                                input(type='radio' name=`spell_ability` value=`${ability}` checked)
+                            else
+                                label= ability.toUpperCase()
+                                input(type='radio' name=`spell_ability` value=`${ability}`)
+                .l-margin--3
+                hr
+                .l-margin--2
+                
+                //- Armor and weapon proficiencies
+                .c-edithero-form__input.c-edithero-form__input--stack
+                    label(for='armor_weapon_proficiencies') Armor and Weapon Proficiencies:
+                    textarea(name='armor_weapon_proficiencies' placeholder='Write class armor and weapon proficiencies here.')=(heroClass.armor_weapon_proficiencies || null)
+                
+                //- Tool proficiencies
+                .c-edithero-form__input.c-edithero-form__input--stack
+                    label(for='tool_proficiencies') Tool Proficiencies
+                    textarea(name='tool_proficiencies' placeholder='Write class tool proficiencies here.')=(heroClass.tool_proficiencies || null)
+                
+                //- Save changes and delete class buttons
+                .l-margin--3
+                .l-ability-points-grid.grid--2
+                    button.c-button--large.m-clickable(type='submit' name='deleteclass' value='false') Save Changes
+                    button.c-button--large.m-background-red.m-clickable(type='submit' name='deleteclass' value='true') Delete Class
+    
+    script.
+        function setupDeSelRadios() {
+            var radios = document.getElementsByName('spell_ability');
+            var tmpRadio;
+            var i = 0;
+            for(i = 0; i < radios.length; i++) {
+                radios[i].onclick = () => {
+                    const target = event.target;
+                    if(tmpRadio == target) {
+                        target.checked = false;
+                        tmpRadio = null;
+                    } else {
+                        tmpRadio = target;
+                    }
+                };
+            }
+        };
+
+        document.addEventListener('DOMContentLoaded', () => {
+            setupDeSelRadios();
+        });

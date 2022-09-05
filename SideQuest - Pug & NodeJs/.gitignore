@@ -1,0 +1,11 @@
+.env
+.DS_Store
+
+node_modules/
+_samplereadmes/
+
+plugins/ckeditor/ckeditor5
+
+public/images/characters
+
+views/test

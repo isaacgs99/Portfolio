@@ -1,0 +1,107 @@
+//- Creates spell row and dropdown
+//- Options:
+    * None: Will load default spell row and dropdown
+    * Edit (false || true): Used in users/heroes to be able to remove spell from character and add JS functionality.
+    * DM (false || true): Removes spell duration from spell row and makes casting time in spell row display depending on window size
+    * Type ('racial' || 'class'): Used in conjuction with edit: true. It makes form hidden input name spells.racial[] or spells.class[]
+mixin spellRow(spell, options={ edit: false, dm: false, type: '' })
+    
+    //- If options.edit == true, add js classes to row class and add js id to row
+    -
+        let rowClass = 'c-spell c-spell--display m-clickable';
+        let rowId = '';
+        if(options.edit) {
+            rowClass = `c-spell m-clickable js-spell-loaded js-spellidx_${options.index}`;
+            rowId = `js-racial_${spell._id}`;
+        }
+        //- if(options.dm) rowClass = 'c-spell c-spell--display m-clickable js-loadedresult';
+    
+    //- Spell row
+    tr(class=rowClass id=rowId)
+        //- Spell school image
+        td
+            img.c-spell__image(src=`/images/icons/schools/${spell.school.toLowerCase()}.png` alt=`${spell.school} school image`)
+        - const spellLevelDict = {'0': 'Cantrip', '1': '1st', '2': '2nd', '3': '3rd', '4': '4th', '5': '5th', '6': '6th', '7': '7th', '8': '8th', '9': '9th'};
+        
+        //- If options.edit == false, load spell level to spell row
+        if !options.edit
+            td.m-color-lightgray= spellLevelDict[spell.level]
+        
+        //- Spell name, school, and components
+        td= spell.name
+            p.m-color-lightgray= `${spell.school} • ${spell.components.join(', ')}`
+        
+        //- If options.dm == false, load normal casting time and duration to spell row. Else, only load responsive casting time
+        if !options.dm
+            td= spell.casting_time
+            td= spell.duration
+        else
+            td.m-responsive-display--table= spell.casting_time
+        
+        //- Spell Range
+        td= spell.range
+        
+        //- If options.edit == true, add js class to dropdown button
+        - let dropdownButtonClass = !options.edit ? 'c-dropdown-button' : 'c-dropdown-button js-dropdown-button-loaded';
+        //- -
+            let dropdownButtonClass = 'c-dropdown-button';
+            if(options.edit) dropdownButtonClass = 'c-dropdown-button js-dropdown-button-loaded';
+            if(options.dm) dropdownButtonClass = 'c-dropdown-button js-loadedresult--button'
+        td(class=dropdownButtonClass) &nabla;
+
+    //- If options.edit == true, load spell dropdown with js class
+    - let dropdownRowClass = !options.edit ? '' : `js-spellidx_${options.index}`;
+    //- -
+        let dropdownRowClass = '';
+        if(options.edit) dropdownRowClass = `js-spellidx_${options.index}`;
+        if(options.dm) dropdownRowClass = 'js-loadedresult--description';
+    tr(class=dropdownRowClass)
+        
+        //- If options.edit == true, add js classes to dropdown class and make colspan 6 instead of 7
+        -
+            let dropdownClass = 'c-spell-description';
+            let dropdownColspan = '7';
+            if (options.edit) { 
+                dropdownClass += ' js-spell-description-loaded';
+                dropdownColspan = '6';
+            }
+        
+        //- Spell dropdown
+        td(class=`${dropdownClass}` colspan=`${dropdownColspan}`)
+            //- Spell name
+            h4= spell.name
+            
+            //- Spell level
+            if spell.level === 0
+                em= `${spell.school} Cantrip ${spell.ritual ? '(ritual)' : ''} ${spell.concentration ? '(concentration)' : ''}`
+            else if spell.level === 1
+                em=`${spell.level}st-level ${spell.school.toLowerCase()} ${spell.ritual ? '(ritual)' : ''} ${spell.concentration ? '(concentration)' : ''}`
+            else if spell.level === 2
+                em=`${spell.level}nd-level ${spell.school.toLowerCase()} ${spell.ritual ? '(ritual)' : ''} ${spell.concentration ? '(concentration)' : ''}`
+            else if spell.level === 3
+                em=`${spell.level}rd-level ${spell.school.toLowerCase()} ${spell.ritual ? '(ritual)' : ''} ${spell.concentration ? '(concentration)' : ''}`
+            else
+                em=`${spell.level}th-level ${spell.school.toLowerCase()} ${spell.ritual ? '(ritual)' : ''} ${spell.concentration ? '(concentration)' : ''}`
+            
+            //- Spell Casting time, range, components, and duration
+            .l-margin--2
+            p <strong>Casting Time: </strong> #{spell.casting_time}
+            p <strong>Range: </strong> #{spell.range}
+            p <strong>Components: </strong>
+                span= `${spell.components.join(', ')}`
+                span= `${spell.materials != '' && spell.materials != undefined ? ` (${spell.materials})` : ''}`
+            p <strong>Duration: </strong> #{spell.duration}
+
+            //- Spell description
+            .l-margin--2
+            if spell.description != '' && spell.description != undefined
+                - let spellDescLines = spell.description.replace(/(\r\n|\r|\n)/g, '<br>');
+                p !{spellDescLines}
+            
+            //- If options.edit == true, add hidden input at bottom with a value of the current spell id and add a remove spell button
+            if options.edit
+                //- - let inputName = options.type == 'racial' ? 'spells.racial[]' : 'spells.class[]';
+                input(type='hidden' class='js-hiddenracialspells' name=`spells.${options.type}[]` id=`js-inputracial_${spell._id},${spell.level}` value=`${spell._id}`)
+                .l-margin--2
+                button(type='button' class='c-button m-clickable js-removebutton-loaded') Remove Spell
+

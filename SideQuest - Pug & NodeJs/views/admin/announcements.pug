@@ -1,0 +1,92 @@
+extends ../layout
+
+block content
+    //- If accessed through /admin, use admin route. Else, use dm route
+    - const route = url.includes('/admin/') ? 'admin' : 'dm';
+    
+    //- Header
+    .l-margin-start
+    //- Main announcement section header
+    if url.endsWith('/announcements')
+        a.l-divider(href=`/${route}`)
+            .c-divider__left
+                h1 &#10525; Anuncios
+            .c-divider__right
+    //- New, edit, and search announcement headers
+    else
+        a.l-divider(href=`/${route}/announcements`)
+            .c-divider__left
+                //- New announcement
+                if url.endsWith('/newannouncement')
+                    h1 &#10525; Anuncio Nuevo
+                //- Search announcement
+                else if url.endsWith('/search')
+                    h1 &#10525; Anuncios: Búsqueda
+                //- Edit announcement
+                else
+                    h1 &#10525; Editar Anuncio: #{announcement.name}
+            .c-divider__right
+    
+    //- Main and search announcements section
+    if url.endsWith('/announcements') || url.endsWith('/search')
+        .l-main-content
+            //- Validation Errors
+            if errors
+                h2 Please fix the following errors:
+                ul
+                    each error in errors
+                        li= error.msg
+            //- Announcement search bar
+            .l-search
+                form.c-search(action=`/${route}/announcements/search` method='post' autocomplete='off')
+                    .c-search__input
+                        label(for='name') Nombre del anuncio
+                        input(type='text' name='name' id='name' placeholder='Buscar anuncio por nombre')
+                    .c-search__input--button
+                        button.c-button--large.m-clickable(type='submit') Buscar
+
+            //- New announcement button
+            .l-margin--2
+            .l-ability-points-grid.grid--3
+                div
+                a.c-button--large.m-clickable(href=`/${route}/announcements/newannouncement`) Anuncio Nuevo
+                div
+        
+        //- Anouncement table display
+        .l-margin--3
+        .l-main-content
+            table.l-spells
+                each announcement in announcements
+                    tr.c-spell 
+                        td.m-align-left
+                            a.m-color-black(href=`/${route}/announcements/edit/${announcement._id}`) #{announcement.name}
+                        td.m-align-left
+                            - const date = new Date(announcement.date)
+                            a.m-color-black(href=`/${route}/announcements/edit/${announcement._id}`)= `${String(date.getDate()).padStart(2,'0')}/${String(date.getMonth() + 1).padStart(2,'0')}/${date.getFullYear()}`
+
+    //- New announcement section                       
+    else if url.endsWith('/newannouncement')
+        .l-main-content
+            form.c-edithero-form(action='' method='post' autocomplete='off')
+                .c-edithero-form__input
+                    label(for='name') *Nombre del Anuncio:
+                    input(type='text' name='name' id='name' placeholder='Anuncio 1' required)
+                .c-edithero-form__input.c-edithero-form__input--stack
+                    label(for='summary') Anuncio:
+                    textarea.js-ckeditor(name='summary' data-ckeditor='default' placeholder='Escribe el anuncio aquí.')
+                .l-margin--2
+                button.c-button--large.m-clickable.l-margin-right--1(type='submit') Crear Anuncio
+    
+    //- Edit announcement section
+    else
+        .l-main-content
+            form.c-edithero-form(action='' method='post' autocomplete='off')
+                .c-edithero-form__input
+                    label(for='name') *Nombre del Anuncio:
+                    input(type='text' name='name' id='name' placeholder='Anuncio 1' value=announcement.name required)
+                .c-edithero-form__input.c-edithero-form__input--stack
+                    label(for='summary') Anuncio:
+                    textarea.js-ckeditor(name='summary' data-ckeditor='default' placeholder='Escribe el anuncio aquí.')= announcement.summary || ''
+                .l-margin--2
+                button.c-button--large.m-clickable.l-margin-right--1(type='submit' name='deleteannouncement' value='false') Guardar Cambios
+                button.c-button--large.m-clickable.m-background-red(type='submit' name='deleteannouncement' value='true') Borrar Anuncio

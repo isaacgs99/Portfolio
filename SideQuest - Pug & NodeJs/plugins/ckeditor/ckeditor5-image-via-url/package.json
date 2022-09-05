@@ -1,0 +1,7 @@
+{
+    "name": "@ckeditor/ckeditor5-image-via-url",
+    "version": "1.0.0",
+    "description": "A CKEditor plugin that only allows users to upload images via url.",
+    "author": "khanhna",
+    "repository": "github:khanhna/ckeditor5-image-via-url"
+}

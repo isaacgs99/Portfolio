@@ -1,0 +1,46 @@
+extends ../layout
+
+block content
+
+    .l-margin-start
+    .l-main-content
+        h1= user.username
+        hr
+
+        if successUser
+            h2 Tus cambios han sido guardados exitosamente. Por favor <a class='m-color-red' href='/login'>vuelva a ingresar</a> con su información nueva.
+        else if !successUser && successPass
+            h2 Tus cambios han sido guardados exitosamente.
+        if errors
+            h2 Por favor corrija los siguientes errores:
+            ul
+                each error in errors
+                    li= error.msg
+        
+        //- Change user and pass block with image
+        .l-margin--3
+        .l-login
+            form.c-login-form(action='' method='post' autocomplete='off')
+                .c-login-form__input
+                    label(for="username") Usuario:
+                    if successUser
+                        input(type="text" name="username" id="username" placeholder="Ingresa tu usuario nuevo..." required value=user.username disabled)
+                    else
+                        input(type="text" name="username" id="username" placeholder="Ingresa tu usuario nuevo..." required value=user.username)
+                .c-login-form__input
+                    label(for="password") Contraseña Nueva:
+                    if successUser
+                        input(type="password" name="password" id="password" placeholder="Ingresa tu contraseña nueva..." disabled)
+                    else
+                        input(type="password" name="password" id="password" placeholder="Ingresa tu contraseña nueva...")
+                .c-login-form__input
+                    label(for="confirm_password") Confirmar Contraseña:
+                    if successUser
+                        input(type="password" name="confirm_password" id="confirm_password" placeholder="Ingresa tu contraseña nueva..." disabled)
+                    else
+                        input(type="password" name="confirm_password" id="confirm_password" placeholder="Ingresa tu contraseña nueva...")
+                .c-login-form__input
+                    if !successUser
+                        button.c-button--white(type="submit") Actualizar información
+            img#login__logo(src='/images/logos/logo.png' alt=`${siteName} Logo`)
+                    

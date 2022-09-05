@@ -1,0 +1,728 @@
+extends ../layout
+include ../mixins/_spell_form
+include ../mixins/_spell_row
+
+//- TODO:
+    * Onclick tab functions should be through event listeners and fetch info through AJAX:
+        - .c-tabs__button.m-clickable(data-for-tab=`${index}` onclick=`abilitiesTab(${JSON.stringify(races)})`)
+    * Hidden input to pass in race info could be done through ajax:
+        - input#js-racejson(type='hidden' value=`${JSON.stringify(races)}`)
+    * Hidden input to pass in class info could be done through ajax:
+        - input#js-classjson(type='hidden' value=`${JSON.stringify(classes)}`)
+        - input#js-heroClassSkillsjson(type='hidden' value=`${JSON.stringify(hero.class_proficiencies)}`)
+    * Hidden input for spells could be done through ajax:
+        - input#js-dbracial(type='hidden' value=`${JSON.stringify(hero.spells.racial)}`)
+    
+//- OPTIONAL TODO:
+    * Class:
+        - Add levelup
+        - Add class things on levelup (like eldritch invocation, etc)
+
+block content
+    
+    //- User heroes main section
+    if url.endsWith('/heroes')
+        
+        //- Header
+        .l-margin-start
+        .l-divider
+            .c-divider__left
+                h1 Mis Héroes
+            .c-divider__right
+        
+        .l-main-content
+            //- User heroes display
+            .l-cards
+                each hero in userHeroes
+                    a.c-card(href=`heroes/${hero._id}`)
+                        .c-card__header
+                            .c-card__header-left
+                                h2 #{hero.name}
+                            .c-card__header-right
+                        if hero.image != '' && hero.image != undefined
+                            img.c-card__image(src=`http://res.cloudinary.com/duezou4td/image/upload/${hero.image}.png` alt=`${hero.name}'s Image`)
+                        else
+                            img.c-card__image(src=tmpImg)
+                
+                //- Create hero card
+                a.c-card(href='heroes/newHero')
+                    .c-card__header
+                        .c-card__header-left
+                            h2 Crear Héroe
+                        .c-card__header-right
+                    img.c-card__image(src='/images/resources/tortle.png' alt='Create Hero Image')
+    
+    //- Hero creation and edit section
+    else
+        //- Headers
+        .l-margin-start
+        //- Admin header
+        if url.includes('/admin/')
+            a.l-divider(href=`/admin/heroes`)
+                .c-divider__left
+                    h1 &#10525; Editar Héroe
+                .c-divider__right
+        //- User new hero and edit hero headers
+        else
+            a.l-divider(href=`/users/heroes`)
+                .c-divider__left
+                    //- New hero header
+                    if url.endsWith('/newHero')
+                        h1 &#10525; Crear Héroe
+                    //- Edit hero header
+                    else
+                        h1 &#10525; Editar Héroe
+                .c-divider__right
+
+        //- New/edit hero tabs
+        .c-tabs
+            //- Tab Sidebar
+            .c-tabs__sidebar
+                - const links = ['Race & Class', 'Abilities', 'STs & Skills', 'Description', 'Equipment'];
+                each link, index in links
+                    //- If Abilities Tab (to add onclick function)
+                    if index == 1
+                        .c-tabs__button.m-clickable(data-for-tab=`${index}` onclick=`abilitiesTab(${JSON.stringify(races)})`)
+                            .c-tabs__button-left
+                                h2= `${index+1}. ${link}`
+                            .c-tabs__button-right
+                    //- If Last Tab (Equipment) (to add onclick function)
+                    else if index == 4
+                        .c-tabs__button.m-clickable(data-for-tab=`${index}` onclick=`saveAbilities()`)
+                            .c-tabs__button-left
+                                h2= `${index+1}. ${link}`
+                            .c-tabs__button-right
+                    else
+                        .c-tabs__button.m-clickable(data-for-tab=`${index}`)
+                            if index == 0
+                                .c-tabs__button-left.c-tabs__button-left--active
+                                    h2= `${index+1}. ${link}`
+                                .c-tabs__button-right.c-tabs__button-right--active
+                            else
+                                .c-tabs__button-left
+                                    h2= `${index+1}. ${link}`
+                                .c-tabs__button-right
+
+            //- Race & Class
+            .l-margin--3
+            
+            //- Form actions for new hero and edit hero
+            - let formAction = '';
+            if url.endsWith('/newHero')
+                - formAction = `/users/heroes/newHero`;
+            else
+                - formAction = `/users/heroes/${hero._id}`;
+            
+            //- Main form
+            form.c-edithero-form(action=`${formAction}` method='post' enctype='multipart/form-data' autocomplete='off')
+                //- Hidden input for admin hero update
+                if url.includes('/admin/')
+                    input(type='hidden' name='admin' value='true')
+                
+                //- Tab 1: Race and Class
+                #l-main-content--edit-hero.c-tabs__content.c-tabs__content--active(data-tab='0')
+                    //- Hero name
+                    h2 Character Name
+                    hr
+                    .l-margin--3
+                    input#hero-name(type='text' name='name' placeholder='Varian Wrynn' required value=(hero ? hero.name : null))
+
+                    //- Hero image
+                    .l-margin--3
+                    h2 Image
+                    hr
+                    .l-margin--3
+                    
+                    if !hero
+                        input(type='file' name='image' id='image')
+                    else
+                        //- If hero exists and has an image, load it with a remove image option. Else, load normal image input.
+                        if hero.image != '' && hero.image != undefined
+                            .l-ability-points-grid.grid--2
+                                img.image-preview(src=`http://res.cloudinary.com/duezou4td/image/upload/${hero.image}.png`, alt=`${hero.name}'s Image`)
+                                div
+                                    input(type='file' name='image' id='image')
+                                    .c-radiochoice
+                                            p Remove Image
+                                            label(for="remove_image.true") Yes
+                                            input(type="radio" name='remove_image' id='remove_image.true' value='true')
+                                            label(for="remove_image.false") No
+                                            input(type="radio" name='remove_image' id='remove_image.false' value='false' checked)
+                        else
+                            input(type='file' name='image' id='image')
+
+                    //- Race
+                    .l-margin--3
+                    h2 Race
+                    hr
+                    .l-margin--3
+                    input#js-racejson(type='hidden' value=`${JSON.stringify(races)}`)
+                    
+                    //- Hero race select
+                    select#search_race(name='race' onchange=`raceUpdate(${JSON.stringify(races)})`)
+                        //- If no hero, default option is selected.
+                        //- Else if hero and no race, default option is selected.
+                        //- Else, hero race is selected.
+                        if !hero
+                            option(value='-1' selected) -----
+                            each race, index in races
+                                option(value=`${index},${race._id}`)= race.name
+                        else if hero && !hero.race
+                            option(value='-1' selected) -----
+                            each race, index in races
+                                option(value=`${index},${race._id}`)= race.name
+                        else
+                            option(value='-1') -----
+                            each race, index in races
+                                if race._id.toString() == hero.race.toString()
+                                    option(value=`${index},${race._id}` selected)= race.name
+                                else
+                                    option(value=`${index},${race._id}`)= race.name
+                    
+                    //- Race info display (Filled by JS)
+                    .l-margin--3
+                    .c-description#race-description
+                        h3 Race Name
+                        p Race Description
+                        p <strong>Alignment: </strong>
+                            span Race Alignment
+                        p <strong>Speed: </strong>
+                            span -- ft
+                        p <strong>Size: </strong>
+                            span Race Size
+                        p <strong>Languages: </strong>
+                            span Race Languages
+                        p <strong>Ability Score Improvements: </strong>
+                            span Race Ability Score Improvements
+                        .l-margin--3
+                        h3 Traits
+                        p Race Traits
+                
+                    //- Class
+                    .l-margin--3
+                    h2 Class
+                    hr
+                    .l-margin--3
+                    input#js-classjson(type='hidden' value=`${JSON.stringify(classes)}`)
+                    
+                    if hero
+                        input#js-heroClassSkillsjson(type='hidden' value=`${JSON.stringify(hero.class_proficiencies)}`)
+                    
+                    //- Hero class select
+                    select#search_class(name='class' onchange=`displayClass(${JSON.stringify(classes)})`)
+                        //- If no hero, default option is selected.
+                        //- Else if hero and no class, default option is selected.
+                        //- Else, hero class is selected.
+                        if !hero
+                            option(value='-1' selected) -----
+                            each heroClass, index in classes
+                                option(value=`${index},${heroClass._id}`)= heroClass.name
+                        else if hero && !hero.class
+                            option(value='-1' selected) -----
+                            each heroClass, index in classes
+                                option(value=`${index},${heroClass._id}`)= heroClass.name
+                        else
+                            option(value='-1') -----
+                            each heroClass, index in classes
+                                if heroClass._id.toString() == hero.class.toString()
+                                    option(value=`${index},${heroClass._id}` selected)= heroClass.name
+                                else
+                                    option(value=`${index},${heroClass._id}`)= heroClass.name
+
+                    //- Class info display (Filled by JS)
+                    .l-margin--3
+                    .c-description#class-description
+                        h3 Class Name
+                        p Class Description
+                        p <strong>Hit Die: </strong>
+                            span Class Hit Die
+                        p <strong>Hit Points at 1st Level: </strong>
+                            span Number + your Constitution modifier
+                        p <strong>Hit Points at Higher Levels: </strong>
+                            span 1 Hit Die (or 1HD/2+1) + your Constitution modifier per class level after 1st
+
+                        p <strong>Primary Abilities: </strong>
+                            span Class Abilities
+                        p <strong>Saving Throw Proficiencies: </strong>
+                            span Class ST Proficiencies
+
+                        //- Added in with JS if class is spellcaster
+                        //- p <strong>Spell Save DC = </strong>
+                        //-     span 8 + your proficiency bonus + your spell ability modifier
+                        //- p <strong>Spell Attack Modifier = </strong>
+                        //-     span your proficiency bonus + your spell ability modifier
+                        
+                        p <strong>Skill Proficiencies: </strong>
+                        .c-skillprofs
+                            //- Add selects with skills to choose from
+
+                        p <strong>Armor and Weapon Proficiencies: </strong>
+                            span Class A&W Proficiencies
+
+                        p <strong>Tool Proficiencies: </strong>
+                            span Class Tool Proficiencies
+                
+                //- Tab 2: Abilities
+                #l-main-content--edit-hero.c-tabs__content(data-tab='1')
+                    h2 Physical Attributes
+                    hr
+                    .l-margin--3
+                        .l-ability-points-grid.grid--5#m-abilities__physical
+                            .c-ability-points
+                                label(for='level') Level
+                                input(type='number' name='level' id='js-level' min='1' max='20' placeholder='--' value=(hero ? hero.level : '1'))
+                            .c-ability-points
+                                label(for='physical_attributes.ac') AC
+                                input(type='number' name='physical_attributes.ac' min='0' placeholder='--' value=(hero ? hero.physical_attributes.ac : null))
+                            .c-ability-points
+                                label(for='physical_attributes.initiative') Initiative
+                                input(type='number' name='physical_attributes.initiative' placeholder='--' value=(hero ? hero.physical_attributes.initiative : null))
+                            .c-ability-points
+                                label(for='physical_attributes.speed') Speed
+                                input(type='number' name='physical_attributes.speed' min='0' placeholder='--' value=(hero ? hero.physical_attributes.speed : null))
+                            .c-ability-points
+                                label(for='abilities.inspiration') Inspiration
+                                if hero && hero.abilities.inspiration
+                                    input(type='checkbox' name=`abilities.inspiration` value='true' checked)
+                                else
+                                    input(type='checkbox' name=`abilities.inspiration` value='true')
+
+                    .l-margin--3
+                    - const abilities = ['Strength', 'Dexterity', 'Constitution', 'Intelligence', 'Wisdom', 'Charisma'];
+                    - const baseScores = [8, 10, 12, 13, 14, 15]
+                    h2 Abilities
+                    hr
+
+                    //- Ability Array
+                    .l-margin--2
+                    p.m-color-lightgray.m-align-center (Initial array of abilities)
+                    .l-margin--2
+                    .l-ability-points-grid
+                        each ability in abilities
+                            .c-ability-points
+                                label= ability.toUpperCase()
+                                select.js-abilityselect(name=`abilities.${ability.toLowerCase()}.base_score` id=`${ability.toLowerCase()}-base` onchange=`updateBase('${ability.toLowerCase()}')`)
+                                    if !hero
+                                        option(value='' selected) -----
+                                        each score in baseScores
+                                            option(value=`${score}`) #{score}
+                                    else
+                                        option(value='') -----
+                                        each score in baseScores
+                                            if score == hero.abilities[ability.toLowerCase()].base_score
+                                                option(value=`${score}` selected) #{score}
+                                            else
+                                                option(value=`${score}`) #{score}
+
+                    //- Ability tables
+                    .l-margin--3
+                    .l-ability-grid
+                        each ability in abilities
+                            .c-ability
+                                table.c-ability__table(id=`${ability.toLowerCase()}-table`)
+                                    thead
+                                        tr
+                                            th.c-ability__header(colspan='2')
+                                                .c-ability__header-content
+                                                    strong= ability.toUpperCase()
+                                                    img(src=`/images/icons/abilities/${ability.toLowerCase()}.svg` alt=`${ability} icon`)
+                                    tbody
+                                        tr
+                                            td Total Score
+                                            td 0
+                                        tr
+                                            td Modifier
+                                            td +0
+                                        tr
+                                            td Base Score
+                                            td 0
+                                        tr
+                                            td Racial Bonus
+                                            td +0
+                                                //- input(type='number' name=`abilities.${ability.toLowerCase()}.racial_bonus` id=`${ability.toLowerCase()}-racial_bonus` placeholder='--' onchange='updateTotals()')
+                                        tr
+                                            td Ability Improvements
+                                            td
+                                                input(type='number' name=`abilities.${ability.toLowerCase()}.improvements` id=`${ability.toLowerCase()}-improvements` placeholder='--' onchange='updateTotals()' value=(hero ? hero.abilities[ability.toLowerCase()].improvements : null))
+                                        tr
+                                            td Misc Bonus
+                                            td
+                                                input(type='number' name=`abilities.${ability.toLowerCase()}.misc_bonus` id=`${ability.toLowerCase()}-misc_bonus` placeholder='--' onchange='updateTotals()' value=(hero ? hero.abilities[ability.toLowerCase()].misc_bonus : null))
+                                                
+                                .c-ability__input
+                                    label(for='other') Other Modifier
+                                    input(type='number' name=`abilities.${ability.toLowerCase()}.other` id=`${ability.toLowerCase()}-other` placeholder='--' onchange=`updateTotals()` value=(hero ? hero.abilities[ability.toLowerCase()].other : null))
+                                .c-ability__input
+                                    label(for='override') Override Score
+                                    input(type='number' name=`abilities.${ability.toLowerCase()}.override` id=`${ability.toLowerCase()}-override` placeholder='--' onchange=`updateTotals()` value=(hero ? hero.abilities[ability.toLowerCase()].override : null))
+                                input(type='hidden' name=`abilities.${ability.toLowerCase()}.racial_bonus` id=`${ability.toLowerCase()}-racial_bonus`)
+                                input(type='hidden' name=`abilities.${ability.toLowerCase()}.total_score` id=`${ability.toLowerCase()}-total_score`)
+                                input(type='hidden' name=`abilities.${ability.toLowerCase()}.modifier` id=`${ability.toLowerCase()}-modifier`)
+                        input(type='hidden' name='abilities.proficiency_bonus' id='js-profbonus')
+                        input(type='hidden' name='abilities.passive_perception' id='js-passiveperception')
+
+                    //- Spells
+                    h2 Spells 
+                    hr
+                    .l-margin--2
+                    p.m-color-lightgray.m-align-center (Can't find a spell? Create it in the spell section and add it to your character in the edit character section)
+                    .l-margin--2
+                    
+                    //- Spell select
+                    .l-margin--3
+                    .l-select-button.button--2#m-spells_selectbuttons
+                        select(id='js-spellselect')
+                            option(value='-1' selected) - select -
+                            each level in spells
+                                if (level[0] != undefined)
+                                    - const currLvl = level[0].level;
+                                    if (currLvl == 0)
+                                        - let levelName = 'Cantrips';
+                                        optgroup(label=levelName)
+                                    else
+                                        - let levelName = `Level ${currLvl}`;
+                                        optgroup(label=levelName)
+                                    each spell in level
+                                        if (spell instanceof Object)
+                                            option(value=`${spell.level},${spell._id}`) #{spell.name}
+                        if hero
+                            input#js-dbracial(type='hidden' value=`${JSON.stringify(hero.spells.racial)}`)
+                            input#js-dbclass(type='hidden' value=`${JSON.stringify(hero.spells.class)}`)
+                        input#js-spellsjson(type='hidden' value=`${JSON.stringify(spells)}`)
+                        button.c-button(type='button' onclick=`addSpell('racial',${JSON.stringify(spells)})`) +<br>Racial Spell
+                        button.c-button(type='button' onclick=`addSpell('class',${JSON.stringify(spells)})`) +<br>Class Spell
+
+                    //- Racial spells (Constructed by JS)
+                    .l-margin--2
+                    - const levelNames = ['cantrip', 'level1', 'level2', 'level3', 'level4', 'level5', 'level6', 'level7', 'level8', 'level9'];
+                    h3#js-racialtitle Racial Spells
+                    .l-margin--2
+
+                    if !hero
+                        each level in levelNames
+                            .js-racialspells.m-inactive
+                                if level == 'cantrip'
+                                    h4(id=`js-racial-${level}`) Cantrips
+                                else
+                                    h4(id=`js-racial-${level}`)= `Level ${level.substring(level.length-1)}`
+                                table.l-spells
+                                    tbody
+                    else
+                        - for(let i = 0; i < 10; i++)
+                            - let divclass = i in heroSpells.racial ? 'js-racialspells' : 'js-racialspells m-inactive';
+                            div(class=`${divclass}`)
+                                if i == 0
+                                    h4(id=`js-racial-cantrip`) Cantrips
+                                else
+                                    h4(id=`js-racial-${levelNames[i]}`)= `Level ${i}`
+                                table.l-spells
+                                    tbody
+                                        if i in heroSpells.racial
+                                            - let index = 0;
+                                            each spell in heroSpells.racial[`${i}`]
+                                                +spellRow(spell, { edit: true, type: 'racial', index: `${index}` })
+                                                - index++;
+
+                    //- This is more or less how JS constructs the spells
+                    //- .js-racialspells.m-inactive
+                    //-     h4(id='js-racial-cantrip') Cantrips
+                    //-     table.l-spells
+                    //-         tbody
+                    //-           tr (spellrow)
+                    //-           tr (spelldropdown)
+                    //-                 td
+                    //-                     input(type='hidden' name='spells_racial' id='js-hiddenracial')
+                    
+                    //- Class spells (Constructed by JS)
+                    .l-margin--2
+                    h3#js-classtitle Class Spells
+                    .l-margin--2
+
+                    if !hero
+                        each level in levelNames
+                            .js-classspells.m-inactive
+                                if level == 'cantrip'
+                                    h4(id=`js-racial-${level}`) Cantrips
+                                else
+                                    h4(id=`js-racial-${level}`)= `Level ${level.substring(level.length-1)}`
+                                table.l-spells
+                                    tbody
+                    else
+                        - for(let i = 0; i < 10; i++)
+                            - let divclass = i in heroSpells.class ? 'js-classspells' : 'js-classspells m-inactive';
+                            div(class=`${divclass}`)
+                                if i == 0
+                                    h4(id=`js-racial-cantrip`) Cantrips
+                                else
+                                    h4(id=`js-racial-${levelNames[i]}`)= `Level ${i}`
+                                table.l-spells
+                                    tbody
+                                        if i in heroSpells.class
+                                            - let index = 0;
+                                            each spell in heroSpells.class[i]
+                                                +spellRow(spell, { edit: true, type: 'class', index: `${index}` })
+                                                - index++;
+
+                    //- This is more or less how JS constructs the spells                
+                    //- .js-classspells.m-inactive
+                    //-     h4(id='js-racial-cantrip') Cantrips
+                    //-     table.l-spells
+                    //-         tbody
+                    //-           tr (spellrow)
+                    //-           tr (spelldropdown)
+                    //-                 td
+                    //-                     input(type='hidden' name='spells_class' id='js-hiddenclass')
+                    
+
+
+                //- Tab 3: STs & Skills
+                #l-main-content--edit-hero.c-tabs__content(data-tab='2')
+                    h2 Saving Throw Proficiencies
+                    hr
+
+                    //- Saving throw prificiencies checkboxes
+                    .l-margin--3
+                    .l-ability-points-grid
+                        each ability in abilities
+                            .c-ability-points
+                                label= ability.toUpperCase()
+                                if hero && hero.saving_throws[ability.toLowerCase()]
+                                    input(type='checkbox' name=`saving_throws.${ability.toLowerCase()}` id=`${ability.toLowerCase()}-saving_throws` value='true' checked)
+                                else
+                                    input(type='checkbox' name=`saving_throws.${ability.toLowerCase()}` id=`${ability.toLowerCase()}-saving_throws` value='true')
+                                
+                    
+                    //- Skill proficiencies checkboxes
+                    .l-margin--3
+                    - const skills = ['acrobatics', 'animal_handling', 'arcana', 'athletics', 'deception', 'history', 'insight', 'intimidation', 'investigation', 'medicine', 'nature', 'perception', 'performance', 'persuasion', 'religion', 'sleight_of_hand', 'stealth', 'survival'];
+                    h2 Skill Proficiencies
+                    hr
+                    .l-margin--3
+                    .l-ability-points-grid
+                        each skill in skills
+                            .c-ability-points
+                                if skill == 'animal_handling'
+                                    label A. HANDLING
+                                else if skill == 'sleight_of_hand'
+                                    label S.O.HAND
+                                else
+                                    label= skill.toUpperCase().replace(/_/g, ' ')
+                                if hero && hero.skills[skill]
+                                    input(type='checkbox' name=`skills.${skill.toLowerCase()}` class='skillprofs-grid' id=`${skill.toLowerCase()}-skill` value='true' checked)
+                                else
+                                    input(type='checkbox' name=`skills.${skill.toLowerCase()}` class='skillprofs-grid' id=`${skill.toLowerCase()}-skill` value='true')
+                
+                //- Tab 4: Description
+                #l-main-content--edit-hero.c-tabs__content(data-tab='3')
+                    h2 Description
+                    hr
+                    .l-margin--3
+                    .c-edithero-form__input
+                        label(for='description.background') Background
+                        input(type='text' name='description.background' placeholder='Acolyte' value=(hero ? hero.description.background : null))
+
+                        label(for='description.alignment') Alignment
+                        input(type='text' name='description.alignment' placeholder='Lawful Good' value=(hero ? hero.description.alignment : null))
+                    
+                        label(for='description.faith') Faith
+                        input(type='text' name='description.faith' placeholder='Alurhelin' value=(hero ? hero.description.faith : null))
+                    
+                        label(for='description.place_of_origin') Place of Origin
+                        input(type='text' name='description.place_of_origin' placeholder='Orzov' value=(hero ? hero.description.place_of_origin : null))
+                    
+                    .l-margin--3
+                    h3 Physical Description
+                    hr
+                    .l-margin--3
+                    .c-edithero-form__input
+                        label(for='description.physical.age') Age
+                        input(type='number' name='description.physical.age' min='0' placeholder='23' value=(hero ? hero.description.physical.age : null))
+                    
+                        label(for='description.physical.height') Height (f"in)
+                        input(type='text' name='description.physical.height' placeholder='5"10' value=(hero ? hero.description.physical.height : null))
+                    
+                        label(for='description.physical.weight') Weight (lbs)
+                        input(type='number' name='description.physical.weight' placeholder='165' value=(hero ? hero.description.physical.weight : null))
+                    
+                        label(for='description.physical.eye_color') Eye Color
+                        input(type='text' name='description.physical.eye_color' placeholder='Brown' value=(hero ? hero.description.physical.eye_color : null))
+                    
+                        label(for='description.physical.skin_color') Skin Color
+                        input(type='text' name='description.physical.skin_color' placeholder='White' value=(hero ? hero.description.physical.skin_color : null))
+                    
+                        label(for='description.physical.hair_color') Hair Color
+                        input(type='text' name='description.physical.hair_color' placeholder='Black' value=(hero ? hero.description.physical.hair_color : null))
+                        
+                        label(for='description.physical.gender') Gender
+                        input(type='text' name='description.physical.gender' placeholder='Male' value=(hero ? hero.description.physical.gender : null))
+                    
+                    .l-margin--3
+                    h3 Personality
+                    hr
+                    .l-margin--3
+                    .c-edithero-form__input
+                        label(for='description.personality.traits') Traits
+                        input(type='text' name='description.personality.traits' placeholder='PHB (p.123)' value=(hero ? hero.description.personality.traits : null))
+
+                        label(for='description.personality.ideals') Ideals
+                        input(type='text' name='description.personality.ideals' placeholder='PHB (p.123)' value=(hero ? hero.description.personality.ideals : null))
+
+                        label(for='description.personality.bonds') Bonds
+                        input(type='text' name='description.personality.bonds' placeholder='PHB (p.123)' value=(hero ? hero.description.personality.bonds : null))
+
+                        label(for='description.personality.flaws') Flaws
+                        input(type='text' name='description.personality.flaws' placeholder='PHB (p.123)' value=(hero ? hero.description.personality.flaws : null))
+                    
+                    .l-margin--3
+                    h3 Features and Traits
+                    hr
+                    .l-margin--3
+                    .c-edithero-form__input.c-edithero-form__input--stack
+                        label(for='additional_info.proficiencies_and_languages') Proficiencies and Languages
+                        textarea.js-ckeditor(name='additional_info.proficiencies_and_languages' id='js-languages' data-ckeditor='herodesc' placeholder='Write your proficiencies and languages here')=(hero ? hero.additional_info.proficiencies_and_languages : null)
+                    .c-edithero-form__input.c-edithero-form__input--stack
+                        label(for='additional_info.features_and_traits') Features and Traits
+                        textarea.js-ckeditor(name='additional_info.features_and_traits' data-ckeditor='herodesc' placeholder='Write your features and traits here (not including racial traits)')=(hero ? hero.additional_info.features_and_traits : null)
+                    .c-edithero-form__input.c-edithero-form__input--stack
+                        label(for='additional_info.additional_features_traits') Additional Features and Traits
+                        textarea.js-ckeditor(name='additional_info.additional_features_traits' data-ckeditor='herodesc' placeholder='Write additional features and traits here (not including racial traits)')=(hero ? hero.additional_info.additional_features_traits : null)
+
+                    .l-margin--3
+                    h3 Notes
+                    hr
+                    
+                    //- Organization notes
+                    .l-margin--3
+                    .c-edithero-form__input
+                        label(for='description.notes.organization.name') Organization Name
+                        input(type='text' name='description.notes.organization.name' placeholder='Al\'Dragur' value=(hero ? hero.description.notes.organization.name : null))
+                    .c-edithero-form__input.c-edithero-form__input--stack
+                        label(for='emblem_image') Organization Emblem
+                        if !hero
+                            input(type='file' name='emblem_image' id='emblem_image')
+                        else
+                            if hero.description.notes.organization.emblem != '' && hero.description.notes.organization.emblem != undefined
+                                .l-ability-points-grid.grid--2
+                                    img.image-preview(src=`http://res.cloudinary.com/duezou4td/image/upload/${hero.description.notes.organization.emblem}.png`, alt=`${hero.name}'s Image`)
+                                    div
+                                        input(type='file' name='emblem_image' id='emblem_image')
+                                        .c-radiochoice
+                                                p Remove Emblem
+                                                label(for="remove_emblem.true") Yes
+                                                input(type="radio" name='remove_emblem' id='remove_emblem.true' value='true')
+                                                label(for="remove_emblem.false") No
+                                                input(type="radio" name='remove_emblem' id='remove_emblem.false' value='false' checked)
+                            else
+                                input(type='file' name='emblem_image' id='emblem_image')
+                        //- label(for='description.notes.organization.emblem') Organization Emblem
+                        //- input(type='file' name='description.notes.organization.emblem')
+                    .c-edithero-form__input.c-edithero-form__input--stack
+                        label(for='description.notes.organization.text') Organization Notes
+                        textarea.js-ckeditor(name='description.notes.organization.text' data-ckeditor='herodesc' placeholder='Write notes about your organization here' )=(hero ? hero.description.notes.organization.text : null)
+                    
+                    //- Allies, enemies, backstory, other
+                    .l-margin--2
+                    hr
+                    .c-edithero-form__input.c-edithero-form__input--stack
+                        label(for='description.notes.allies') Allies
+                        textarea(name='description.notes.allies' placeholder='Write notes about your allies here')=(hero ? hero.description.notes.allies : null)
+                    .c-edithero-form__input.c-edithero-form__input--stack
+                        label(for='description.notes.enemies') Enemies
+                        textarea(name='description.notes.enemies' placeholder='Write notes about your enemies here')=(hero ? hero.description.notes.enemies : null)
+                    .c-edithero-form__input.c-edithero-form__input--stack
+                        label(for='description.notes.backstory') Backstory
+                        if !hero
+                            textarea.js-ckeditor(name='description.notes.backstory' data-ckeditor='default' placeholder='Write your backstory here')
+                        else
+                            textarea.js-ckeditor(name='description.notes.backstory' data-ckeditor='default' placeholder='Write your backstory here')= hero.description.notes.backstory
+                    .c-edithero-form__input.c-edithero-form__input--stack
+                        label(for='description.notes.other') Other
+                        textarea(name='description.notes.other' placeholder='Write other notes here')=(hero ? hero.description.notes.other : null)
+
+                    
+                //- Tab 5: Equipment
+                #l-main-content--edit-hero.c-tabs__content(data-tab='4')
+                    h2 Equipment
+                    hr
+                    
+                    //- Currency
+                    .l-margin--3
+                    .l-ability-points-grid.grid--5
+                        .c-ability-points
+                            label(for='equipment.money.copper') Copper
+                            input(type='number' min='0' name='equipment.money.copper' placeholder='--' value=(hero ? hero.equipment.money.copper : null))
+                        .c-ability-points
+                            label(for='equipment.money.silver') Silver
+                            input(type='number' min='0' name='equipment.money.silver' placeholder='--' value=(hero ? hero.equipment.money.silver : null))
+                        .c-ability-points
+                            label(for='equipment.money.electrum') Electrum
+                            input(type='number' min='0' name='equipment.money.electrum' placeholder='--' value=(hero ? hero.equipment.money.electrum : null))
+                        .c-ability-points
+                            label(for='equipment.money.gold') Gold
+                            input(type='number' min='0' name='equipment.money.gold' placeholder='--' value=(hero ? hero.equipment.money.gold : null))
+                        .c-ability-points
+                            label(for='equipment.money.platinum') Platinum
+                            input(type='number' min='0' name='equipment.money.platinum' placeholder='--' value=(hero ? hero.equipment.money.platinum : null))
+
+                    //- Equipment, inventory, treasure
+                    .c-edithero-form__input.c-edithero-form__input--stack
+                        label(for='equipment.starting') Starting Equipment
+                        textarea.js-ckeditor(name='equipment.starting' data-ckeditor='herodesc' placeholder='Write your starting equipment here')=(hero ? hero.equipment.starting : null)
+                    .c-edithero-form__input.c-edithero-form__input--stack
+                        label(for='equipment.active') Active Equipment
+                        textarea.js-ckeditor(name='equipment.active' data-ckeditor='herodesc' placeholder='Write your active equipment here')=(hero ? hero.equipment.active : null)
+                    .c-edithero-form__input.c-edithero-form__input--stack
+                        label(for='equipment.inventory') Inventory
+                        textarea.js-ckeditor(name='equipment.inventory' data-ckeditor='herodesc' placeholder='Write your inventory here')=(hero ? hero.equipment.inventory : null)
+                    .c-edithero-form__input.c-edithero-form__input--stack
+                        label(for='equipment.treasure') Treasure
+                        textarea.js-ckeditor(name='equipment.treasure' data-ckeditor='herodesc' placeholder='Write your treasure here')=(hero ? hero.equipment.treasure : null)
+                    
+                    //- Weapons
+                    .l-margin--3
+                    h3 Weapons
+                    hr
+                    .l-margin--3
+                    .c-edithero-form__input
+                        - let phArray = [{name:'Large Crossbow', bonus:'3', damage:'1d8+1 Piercing'},{name:'Dagger', bonus:'3', damage:'1d4+1 Piercing'},{name:'Dart', bonus:'3', damage:'1d4+1 Piercing'}];
+                        - for(let i = 0; i < 3; i++)
+                            - const currentPh = phArray[i];
+                            label(for=`equipment.weapons.list[${i}][name]`) Weapon #{i+1} Name:
+                            input(type='text' name=`equipment.weapons.list[${i}][name]` id=`equipment.weapons.list[${i}][name]` placeholder=(currentPh.name) value=(hero ? hero.equipment.weapons.list[i].name : null))
+                            
+                            label(for=`equipment.weapons.list[${i}][attackBonus]`) Weapon #{i+1} Attack Bonus:
+                            input(type='number' name=`equipment.weapons.list[${i}][attackBonus]` id=`equipment.weapons.list[${i}][attackBonus]` placeholder=(currentPh.bonus) value=(hero ? hero.equipment.weapons.list[i].attackBonus : null))
+                            
+                            label(for=`equipment.weapons.list[${i}][damage]`) Weapon #{i+1} Damage:
+                            input(type='text' name=`equipment.weapons.list[${i}][damage]` id=`equipment.weapons.list[${i}][damage]` placeholder=(currentPh.damage) value=(hero ? hero.equipment.weapons.list[i].damage : null))
+                    
+                    .c-edithero-form__input.c-edithero-form__input--stack       
+                        label(for='equipment.weapons.notes') Weapon Notes:
+                        textarea.js-ckeditor(name='equipment.weapons.notes' data-ckeditor='herodesc' placeholder="Large Crossbow - range: 80ft/320ft\nDagger - range 20ft/60ft\nDart - range 20ft/60ft")=(hero ? hero.equipment.weapons.notes : null)
+
+                    //- Save and delete buttons
+                    .l-margin--3
+                    if url.endsWith('/newHero')
+                        button.c-button--large(type='submit') Save
+                    else
+                        .l-ability-points-grid.grid--2
+                            button.c-button--large.m-clickable(type='submit') Save
+                            button.c-button--large.m-background-red.m-clickable(type='submit' name='deletecharacter' value='true') Delete Character
+
+        script(src="/javascripts/script.js")
+        script(src="/javascripts/edithero.js")
+        script.
+            // Sets up tabs when DOM loads
+            document.addEventListener('DOMContentLoaded', () => {
+                setupTabs();    // Setup tabs
+                raceUpdate(JSON.parse(document.querySelector('#js-racejson').value), 'load');   // Display race info from loaded hero race
+                const heroSkills = document.querySelector('#js-heroClassSkillsjson') || null;   // Get loaded hero selected class skills
+                // If loaded hero selected class skills exists, display class info and update skill proficiencies tab
+                if(heroSkills != null) {
+                    displayClass(JSON.parse(document.querySelector('#js-classjson').value), JSON.parse(document.querySelector('#js-heroClassSkillsjson').value));
+                    updateSkillProfs();
+                }
+
+                updateBaseAll();    // Update all base scores in ability tables
+                loadedSpellsListeners();    // Load all spell dropdown functionality
+            });

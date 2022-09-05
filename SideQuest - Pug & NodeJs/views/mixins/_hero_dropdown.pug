@@ -1,0 +1,161 @@
+//- Dropdown for DM Notes that mimics spell view behaviour with hero or character info
+mixin heroDropdown(hero, type='')
+    
+    td(class='c-spell-description' colspan='6')
+        
+        //- Hero Dropdown
+        if type == 'hero'
+            //- Hero statistics Table
+            h3 Statistics
+            - const ab = hero.abilities;
+            - const physAtt = hero.physical_attributes;
+            table#hero__skills
+                thead
+                        tr
+                            th Icon
+                            th Stat
+                            th Stat Name
+                tbody
+                    tr
+                        td
+                            img.c-stat-card__image(src='/images/icons/shield.png' alt='Shield icon')
+                        td #{physAtt.ac}
+                        td Armor Class
+                    tr
+                        td
+                            img.c-stat-card__image(src='/images/icons/d20.png' alt='d20 icon')
+                        td= physAtt.initiative > 0 ? `+${physAtt.initiative}` : physAtt.initiative
+                        td Initiative
+                    tr
+                        td
+                            img.c-stat-card__image(src='/images/icons/d20.png' alt='d20 icon')
+                        if ab.proficiency_bonus > 0
+                            td +#{ab.proficiency_bonus}
+                        else
+                            td #{ab.proficiency_bonus}
+                        td Proficiency Bonus
+                    tr
+                        td
+                            img.c-stat-card__image(src='/images/icons/eye.png' alt='Eye icon')
+                        td #{ab.passive_perception}
+                        td Passive Perception
+                    tr
+                        td
+                            if ab.inspiration
+                                img.c-stat-card__image(src='/images/icons/checkmark.png' alt='Checkmark icon')
+                            else
+                                img.c-stat-card__image(src='/images/icons/cross.png' alt='Cross icon')
+                        if ab.inspiration
+                            td Yes
+                        else
+                            td No
+                        td Inspiration
+                    tr
+                        td
+                            img.c-stat-card__image(src='/images/icons/heart.png' alt='Heart icon')
+                        if hero.class
+                            - const startHPNum = parseInt(hero.class.hitpoints_start.split(' ')[0]);
+                            - const maxHPString = hero.class.hitpoints_higherlvls.split(')')[0];
+                            - const classHPNum = parseInt(maxHPString.substring(maxHPString.length-1));
+                            if (hero.level == 1)
+                                td= startHPNum + hero.abilities.constitution.modifier
+                            else
+                                td= (hero.level-1) * (classHPNum + hero.abilities.constitution.modifier) + startHPNum + hero.abilities.constitution.modifier
+                        else
+                            td No Class
+                        td Max HP
+                    tr
+                        td
+                            img.c-stat-card__image(src='/images/icons/d20.png' alt='d20 icon')
+                        if hero.class
+                            td #{hero.level}#{hero.class.hit_die}
+                        else
+                            td No Class
+                        td Total HitDie
+                    tr
+                        td
+                            img.c-stat-card__image(src='/images/icons/running.png' alt='Running icon')
+                        td #{hero.physical_attributes.speed} ft
+                        td Speed
+            
+            //- Hero Ability scores table
+            .l-margin--3
+            h3 Ability Scores
+            - const st = hero.saving_throws;
+            - const abNameArr = ['Strength', 'Dexterity', 'Constitution', 'Intelligence', 'Wisdom', 'Charisma'];
+            - const abArr = [ ab.strength.total_score, ab.dexterity.total_score, ab.constitution.total_score, ab.intelligence.total_score, ab.wisdom.total_score, ab.charisma.total_score];
+            - const abModArr = [ab.strength.modifier, ab.dexterity.modifier, ab.constitution.modifier, ab.intelligence.modifier, ab.wisdom.modifier, ab.charisma.modifier];
+            - const stArr = [st.strength, st.dexterity, st.constitution, st.intelligence, st.wisdom, st.charisma];
+            table#hero__ability-scores.hero__ability-scores--notes
+                thead
+                    tr
+                        th Score
+                        th Ability
+                        th Ability Modifier
+                        th Saving Throw
+                tbody
+                    - for(let i = 0; i < 6; i++)
+                        tr
+                            td= abArr[i]
+                            td= abNameArr[i]
+                            if (abModArr[i] > 0)
+                                td= `+${abModArr[i]}`
+                            else
+                                td= abModArr[i]
+                            if (stArr[i])
+                                td= abModArr[i]+ab.proficiency_bonus > 0 ? `+${abModArr[i]+ab.proficiency_bonus}` : abModArr[i]+ab.proficiency_bonus
+                            else
+                                td= abModArr[i] > 0 ? `+${abModArr[i]}` : abModArr[i]
+
+            //- Hero Skills table
+            .l-margin--3
+            h3 Skills
+            - const sk = hero.skills;
+            - const skNameArr = ['Acrobatics', 'Animal Handling', 'Arcana', 'Athletics', 'Deception', 'History', 'Insight', 'Intimidation', 'Investigation', 'Medicine', 'Nature', 'Perception', 'Performance', 'Persuasion', 'Religion', 'Sleight of Hand', 'Stealth', 'Survival'];
+            - const skArr = [sk.acrobatics, sk.animal_handling, sk.arcana, sk.athletics, sk.deception, sk.history, sk.insight, sk.intimidation, sk.investigation, sk.medicine, sk.nature, sk.perception, sk.performance, sk.persuasion, sk.religion, sk.sleight_of_hand, sk.stealth, sk.survival];
+            - const skDict = {'Acrobatics': abModArr[1], 'Animal Handling': abModArr[4], 'Arcana': abModArr[3], 'Athletics': abModArr[0], 'Deception': abModArr[5], 'History': abModArr[3], 'Insight': abModArr[4], 'Intimidation': abModArr[5], 'Investigation': abModArr[3], 'Medicine': abModArr[4], 'Nature': abModArr[3], 'Perception': abModArr[4], 'Performance': abModArr[5], 'Persuasion': abModArr[5], 'Religion': abModArr[3], 'Sleight of Hand': abModArr[1], 'Stealth': abModArr[1], 'Survival': abModArr[4]}
+                table#hero__skills
+                    thead
+                        tr
+                            th Proficient
+                            th Bonus
+                            th Skill Name
+                    tbody
+                        - for(let i = 0; i < skArr.length; i++)
+                            tr
+                                if (skArr[i])
+                                    td
+                                        img(src='/images/icons/checkmark.png')
+                                    td= skDict[skNameArr[i]]+ab.proficiency_bonus > 0 ? `+${skDict[skNameArr[i]]+ab.proficiency_bonus}` : skDict[skNameArr[i]]+ab.proficiency_bonus
+                                else
+                                    td
+                                    td= skDict[skNameArr[i]] > 0 ? `+${skDict[skNameArr[i]]}` : skDict[skNameArr[i]]
+                                td= skNameArr[i]
+        
+        //- Character Dropdown
+        else if type == 'character'
+            - const character = hero
+            h3= character.name
+            p <strong>Título: </strong> #{`${character.title || '???'}`}
+            p <strong>Afiliación: </strong> #{`${character.affiliation || '???'}`}
+            p <strong>Lugar de Origen o donde fué conocido: </strong> #{`${character.place || '???'}`}
+            p <strong>Edad: </strong> #{`${character.age || '???'}`}
+            p <strong>Raza: </strong> #{`${character.race || '???'}`}
+            p <strong>Clase: </strong> #{`${character.class || '???'}`}
+            p <strong>Tamaño: </strong> #{`${character.size || '???'}`}
+
+            .l-margin--2
+            strong Apariencia
+            if character.appearance != '' && character.appearance != undefined
+                - const lines = character.appearance.split(/(\r\n|\r|\n)/g)
+                each line in lines
+                    p= line
+            else
+                p ???
+            
+            .l-margin--2
+            strong Resumen
+            if character.summary != '' && character.summary != undefined
+                p !{character.summary}
+            else
+                p #{character.name} no tiene historia/resumen.

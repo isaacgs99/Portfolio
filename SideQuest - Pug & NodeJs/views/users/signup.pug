@@ -1,0 +1,36 @@
+extends ../layout
+
+block content
+    
+    //- Header
+    .l-margin-start
+    .l-divider
+        .c-divider__left
+            h1 Crear Cuenta
+        .c-divider__right
+
+    //- Error section for flash messages (UNIMPLEMENTED)
+    if errors
+        ul
+            for error in errors
+                li= error.msg
+    
+    //- Main signup section
+    .l-main-content
+        .l-margin--7
+        //- Signup form
+        .l-login
+            form.c-login-form(action="" method="POST" autocomplete='off')
+                .c-login-form__input
+                    label(for="username") Usuario:
+                    input(type="text" name="username" id="username" placeholder="Ingresa tu usuario..." required)
+                .c-login-form__input
+                    label(for="password") Contraseña:
+                    input(type="password" name="password" id="password" placeholder="Ingresa tu contraseña..." required)
+                .c-login-form__input
+                    label(for="confirm_password") Verificar Contraseña:
+                    input(type="password" name="confirm_password" id="confirm_password" placeholder="Confirma tu contraseña..." required)
+                .c-login-form__input
+                    button.c-button--white(type="submit") Crear Cuenta
+            //- Website logo image
+            img#login__logo(src='/images/logos/logo.png' alt=`${siteName} Logo`)

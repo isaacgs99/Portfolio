@@ -1,0 +1,38 @@
+extends layout
+
+block content
+  //- Three main home page options with their respective pictures
+  .l-carousel
+    .l-carousel__option
+      img(src="/images/resources/tortle.png", alt="Tortle image")
+      a.c-button(href='/heroes') Héroes
+
+    .l-carousel__option
+      img(src="/images/resources/group.png", alt="Group image")
+      a.c-button(href='/characters') Personajes
+
+    .l-carousel__option
+      img(src="/images/resources/castle.png", alt="Castle image")
+      a.c-button(href='/story') Historia
+
+  .l-margin--9
+  .l-divider
+    .c-divider__left 
+      h1 Anuncios
+    .c-divider__right
+
+  //- Load all announcements
+  each announcement in announcements
+    .l-content-box
+      .c-content-box
+        img.c-content-box__image(src='/images/logos/favicon.png' alt=`${siteName} Logo`)
+        
+        .l-content-box__content
+          .c-content-box__title
+            h3 #{announcement.name}
+            - const date = new Date(announcement.date)
+            em.l-content-box__title--info= `Posted ${String(date.getDate()).padStart(2,'0')}/${String(date.getMonth() + 1).padStart(2,'0')}/${date.getFullYear()} by ${announcement.user}`
+          
+          .l-content-box__text
+            //- Announcements preview
+            p !{announcement.summary}

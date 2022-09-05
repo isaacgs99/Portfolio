@@ -1,0 +1,123 @@
+extends ../layout
+
+block content
+
+    //- Headers
+    .l-margin-start
+    //- Main manage users header
+    if url.endsWith('/users')
+        a.l-divider(href=`/admin`)
+            .c-divider__left
+                h1 &#10525; Manage Users
+            .c-divider__right
+    //- Edit users header
+    else
+        a.l-divider(href=`/admin/users`)
+            .c-divider__left
+                h1 &#10525; Edit #{userEdit.username}
+            .c-divider__right
+
+    //- Main manage users section
+    if url.endsWith('/users')
+        .l-main-content
+            .l-manageusers-grid
+                //- Admin user list
+                div
+                    h2.m-align-center Admins
+                    hr
+                    .l-margin--3
+                    ul.c-manageusers-grid__list
+                        each user in users
+                            if user.isAdmin
+                                li
+                                    a.c-button(href=`/admin/users/${user._id}`)= user.username
+                //- DM user list
+                div
+                    h2.m-align-center DMs
+                    hr
+                    .l-margin--3
+                    ul.c-manageusers-grid__list
+                        each user in users
+                            if user.isDM
+                                li
+                                    a.c-button(href=`/admin/users/${user._id}`)= user.username
+                //- Default user list
+                div
+                    h2.m-align-center Users
+                    hr
+                    .l-margin--3
+                    ul.c-manageusers-grid__list
+                        each user in users
+                            if !user.isAdmin && !user.isDM
+                                li
+                                    a.c-button(href=`/admin/users/${user._id}`)= user.username
+    
+    //- Edit user section
+    else
+        .l-main-content
+            if errors
+                h2 Please fix the following errors:
+                ul
+                    each error in errors
+                        li= error.msg
+
+            form(action='' method='post' autocomplete='off')
+                .l-manageusers-grid
+                    //- Account level
+                    div
+                        h2.m-align-center Account level
+                        hr
+                        .l-margin--2
+                        //- form.c-adminuser-form(action=`/admin/users/${user._id}/editPrivilege` method='post')
+                        .c-adminuser-form
+                            .c-adminuser-checkboxes
+                                .c-checkbox
+                                    label(for='isAdmin') Admin
+                                    if userEdit.isAdmin
+                                        input(type='checkbox' name='isAdmin' value='true' checked)
+                                    else
+                                        input(type='checkbox' name='isAdmin' value='true')
+                                .c-checkbox
+                                    label(for='isDM') DM
+                                    if userEdit.isDM
+                                        input(type='checkbox' name='isDM' value='true' checked)
+                                    else
+                                        input(type='checkbox' name='isDM' value='true')
+                    
+                    //- Username and password
+                    div
+                        h2.m-align-center Edit username / password
+                        hr
+                        .l-margin--2
+                        //- form.c-adminuser-form(action='' method='post')
+                        .c-adminuser-form
+                            .c-adminuser-form__input
+                                label(for="username") Username:
+                                input(type="text" name="username" id="username" placeholder="Input new username..." required value=userEdit.username)
+                            .c-adminuser-form__input
+                                label(for="password") New Password:
+                                input(type="password" name="password" id="password" placeholder="Input new password...")
+                            .c-adminuser-form__input
+                                label(for="confirm_password") Confirm Password:
+                                input(type="password" name="confirm_password" id="confirm_password" placeholder="Input new password...")
+                    
+                    //- Hero transfer
+                    div
+                        h2.m-align-center Heroes
+                        hr
+                        .l-margin--3
+                        //- form.c-adminuser-form(action='' method='post')
+                        .c-adminuser-form
+                            each hero, idx in userHeroes
+                                strong #{hero.name}
+                                .c-adminuser-form__input
+                                    p Transfer to:
+                                    select(name='transfer[]')
+                                        option(value='-1' selected) -----
+                                        each user in users
+                                            option(value=`${hero._id},${user._id}`)= user.username
+                                .l-margin--2
+                        
+                .l-margin--3
+                div.m-align-center
+                    button.c-button--large.m-clickable(type='submit') Save

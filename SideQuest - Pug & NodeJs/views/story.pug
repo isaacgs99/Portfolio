@@ -1,0 +1,65 @@
+extends layout
+include mixins/_comments
+
+block content
+    
+    //- Story main and search sections
+    if url.endsWith('/story') || url.endsWith('/search')
+        
+        //- Header
+        .l-margin-start
+        if url.endsWith('/story')
+            .l-divider
+                .c-divider__left
+                    h1 Historia
+                .c-divider__right
+        else
+            a.l-divider(href='/story')
+                .c-divider__left
+                    h1 &#10525; Historia: Búsqueda
+                .c-divider__right
+
+        .l-main-content
+            //- Validation Errors
+            if errors
+                h2 Please fix the following errors:
+                ul
+                    each error in errors
+                        li= error.msg
+                        
+            //- Story search
+            .l-search
+                form.c-search(action='/story/search' method='post' autocomplete='off')
+                    .c-search__input
+                        label(for='name') Nombre de la sesión
+                        input(type='text' name='name' id='name' placeholder='Buscar sesión por nombre')
+                    .c-search__input--button
+                        button.c-button--large.m-clickable(type='submit') Buscar
+        
+        //- Story table display
+        .l-margin--3
+        .l-main-content
+            table.l-spells
+                each story in stories
+                    tr.c-spell
+                        td.m-align-left
+                            a.m-color-black(href=`/story/${story._id}`) #{story.name}
+    
+    //- Story view section
+    else
+        //- Header
+        .l-margin-start
+        a.l-divider(href='/story')
+            .c-divider__left
+                h1 &#10525; Historia
+            .c-divider__right
+        
+        //- Story content
+        .l-main-content
+            h2= story.name
+            hr
+            p !{story.summary}
+
+        //- Story comments
+        .l-main-content.l-clearleft
+            +comments(story.comments, `${story._id}`, 'story')

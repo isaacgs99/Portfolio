@@ -1,0 +1,67 @@
+doctype html
+html(lang='es')
+  head
+    title= title
+
+    //- Stylesheet
+    link(rel='stylesheet', href='/stylesheets/style.css')
+
+    //- CKEditor5 Script
+    script(src='/javascripts/ckeditor/dist/ckeditor_bundle.js')
+    
+    //- Favicon
+    link(rel="icon" type="image/png" href="/images/logos/favicon.png")
+  body
+    //- Global Variables
+    - const tmpImg = 'https://lunawood.com/wp-content/uploads/2018/02/placeholder-image.png'
+    
+    //- Header/Nav
+    header
+      nav
+        img.nav__logo(src='/images/logos/logo.png', alt=`${siteName} Logo`)
+
+        ul
+          li
+            a(href="/") Inicio
+          li
+            a(href="/heroes") Héroes
+          li
+            a(href="/characters") Personajes
+          li
+            a(href="/story") Historia
+          li
+            a(href="/maps") Lugares
+          //- If user is not logged in
+          if !user
+            li
+              a(href="/login") Ingresar
+          //- Else if user is logged in
+          else
+            li.l-dropdown
+              a.m-cursor-normal #{user.username}
+              ul.c-dropdown
+                li 
+                  a(href=`/users`) Cuenta
+                li 
+                  a(href=`/users/heroes`) Héroes
+                li
+                  a(href=`/users/spells`) Spells
+                li 
+                  a(href=`/users/characters`) Personajes
+                li
+                  a(href=`/users/story`) Historias
+                li
+                  a(href=`/users/maps`) Lugares
+                //- If user is admin or dm
+                if user.isAdmin
+                  li
+                    a(href=`/admin`) Admin
+                if user.isDM
+                  li
+                    a(href='/dm') DM
+            li
+              a(href="/logout")
+                img#nav__icon(src='/images/icons/logout.png' alt="logout")
+          
+    main
+      block content

@@ -1,0 +1,91 @@
+extends ../layout
+
+block content
+    
+    //- Headers
+    .l-margin-start
+    //- Edit story main header
+    if url.endsWith('/story')
+        .l-divider
+            .c-divider__left
+                h1 Editar Historia
+            .c-divider__right
+    //- New, edit and search edit story headers
+    else
+        a.l-divider(href=`/users/story`)
+            .c-divider__left
+                //- New story header
+                if url.endsWith('/newstory')
+                    h1 &#10525; Nueva Historia
+                //- Search story header
+                else if url.endsWith('/search')
+                    h1 &#10525; Editar Historia: Búsqueda
+                //- Edit story header
+                else
+                    h1 &#10525; Editar Historia: #{story.name}
+            .c-divider__right
+    
+    //- Edit story and search story main section
+    if url.endsWith('/story') || url.endsWith('/search')
+        .l-main-content
+            //- Validation Errors
+            if errors
+                h2 Please fix the following errors:
+                ul
+                    each error in errors
+                        li= error.msg
+                        
+            //- Edit story search bar
+            .l-search
+                form.c-search(action=`/users/story/search` method='post' autocomplete='off')
+                    .c-search__input
+                        label(for='name') Nombre de la sesión
+                        input(type='text' name='name' id='name' placeholder='Buscar sesión por nombre')
+                    .c-search__input--button
+                        button.c-button--large.m-clickable(type='submit') Buscar
+
+            //- New story button
+            .l-margin--2
+            .l-ability-points-grid.grid--3
+                div
+                a.c-button--large.m-clickable(href=`/users/story/newstory`) Nueva Historia
+                div
+        
+        //- Story table display
+        .l-margin--3
+        .l-main-content
+            table.l-spells
+                each story in stories
+                    tr.c-spell
+                        td.m-align-left
+                            a.m-color-black(href=`/users/story/edit/${story._id}`) #{story.name}
+
+    //- New story section
+    else if url.endsWith('/newstory')
+        .l-main-content
+            //- New story form
+            form.c-edithero-form(action='' method='post' autocomplete='off')
+                .c-edithero-form__input
+                    label(for='name') *Nombre de la Sesión:
+                    input(type='text' name='name' id='name' placeholder='Sesión 1' required)
+                .c-edithero-form__input.c-edithero-form__input--stack
+                    label(for='summary') Resumen:
+                    textarea.js-ckeditor(name='summary' data-ckeditor='default' placeholder='Escribe el resumen principal de la sesión aquí.')
+                .l-margin--2
+                button.c-button--large.m-clickable(type='submit') Crear Nueva Historia
+    
+    //- Edit story section
+    else
+        .l-main-content
+            //- Edit story form
+            form.c-edithero-form(action='' method='post' autocomplete='off')
+                .c-edithero-form__input
+                    label(for='name') *Nombre de la Sesión:
+                    input(type='text' name='name' id='name' placeholder='Sesión 1' value=story.name required)
+                .c-edithero-form__input.c-edithero-form__input--stack
+                    label(for='summary') Resumen:
+                    textarea.js-ckeditor(name='summary' data-ckeditor='default' placeholder='Escribe el resumen principal de la sesión aquí.')= story.summary || ''
+                //- Save changes and delete story buttons
+                .l-margin--2
+                button.c-button--large.m-clickable.l-margin-right--1(type='submit' name='deletestory' value='false') Guardar Cambios
+                button.c-button--large.m-clickable.m-background-red(type='submit' name='deletestory' value='true') Borrar Historia
