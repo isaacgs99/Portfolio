@@ -1,4 +1,4 @@
-# Project_NDFA-Lambda
+# Project_NFA-Lambda
 
 ## Team
 Isaac Garza Strimlingas A01025798 <br> 
