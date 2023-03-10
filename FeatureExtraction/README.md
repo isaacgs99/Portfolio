@@ -1,13 +1,3 @@
-# FeatureExtraction
+# Feature Extraction Module - C++ (OpenCV)
 
-Este es el módulo encargado de Feature Extraction para el proyecto de reconocimiento facial y verificacion.
-
-Recuerden que para poder compilar y correr el programa deben de seguir los siguientes pasos:
-
-1) mkdir build (En caso de que no exista)
-2) cd build
-3) cmake ..
-4) make
-5) ./my_project
-
-:)
+In this project, my college teamates and I were dedicated to use OpenCV library, to create a module for feature extraction, in a face recognition project.
