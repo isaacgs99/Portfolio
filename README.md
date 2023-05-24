@@ -3,6 +3,9 @@
 
 ## Projects
 
+### Practice Typer
+This web project used HTML/CSS, Vanilla JS and Flask for it's development. In this business case, me and my college teamate, wanted to create a space were MLH's students could practice their retyping skill for coding in the most popular programming languages, while there is no summer coding programs.
+
 ### NFA Lambda (Automaton)
 The project is a C++ program that simulates a Non-deterministic Finite Automaton (NFA) with Lambda transitions. The program is able to read an automaton from a text file and then try different inputs on it. The user can create the automaton by providing the transitions, states, and acceptance states. 
 
