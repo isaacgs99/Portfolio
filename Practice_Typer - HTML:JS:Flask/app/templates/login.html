@@ -1,0 +1,41 @@
+{% extends 'base.html' %}
+
+{% block style %}
+<link rel="stylesheet" href="../static/styles/login.css">
+<link rel="stylesheet" href="{{ url_for('static', filename='styles/landing.css') }}">
+{% endblock %}
+
+{% block head %}
+<title>Login Page</title>
+{% endblock %}
+
+{% block body %}
+<nav class="navbar navbar-expand-lg navbar-dark bg-transparent fixed-top" id="registerNav">
+  <div class="container px-4">
+      <a class="navbar-brand" href="/">Back to Home</a>
+  </div>
+</nav>
+
+<div id="body-size">
+  <div id="regis">
+      <h1 class="text-center text-white pt-5">Login</h1>
+      <h6 class="text-center text-white pt-1">Fill in to sign-in to your account</h6>
+  </div>
+  <div class="container sign-box-color text-white shadow-lg rounded" id="login-bx">
+      <form method="post">
+          <div class="form-group px-5 pt-4 pb-4">
+              <label for="username"><b>Username:</b></label>
+              <input type="text" class="form-control-sm" id="username" name="username" placeholder="Enter Username" required>
+
+              <label for="password"><b>Password:</b></label>
+              <input type="password" class="form-control-sm" placeholder="Enter Password" name="password" id="password" required>
+              <hr>
+              <button type="submit" class="btn btn-success btn-md w-100 pb-2">Login</button>
+          </div>
+      </form>
+  </div>
+  <div class="container w-100 bg-transparent text-white d-flex align-items-center justify-content-center pt-4">
+      <p>Don't have an account? <a style="color: white;" href="/register">Create one!</a></p>
+  </div>    
+</div>
+{% endblock %}
